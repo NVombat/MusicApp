@@ -7,9 +7,6 @@ module.exports = {
         montserrat: ['"Montserrat"', 'sans-serif'],
       },
     },
-    screens: {
-      xs: '360px',
-    },
   },
   variants: {
     extend: {},
