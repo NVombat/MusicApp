@@ -1,19 +1,36 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import Navbar from './components/shared/Navbar';
-import { Home, Auth, Profile, PageError } from './Pages/Index';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { useContext } from 'react';
+import Layout from './components/Layout/Layout';
+import UserProfile from './components/Profile/UserProfile';
+import AuthPage from './pages/AuthPage';
+import HomePage from './pages/HomePage';
+import AuthContext from './store/auth-context';
 
-const App = () => {
+function App() {
+  const authCtx = useContext(AuthContext);
   return (
-    <Router>
-      <Navbar />
+    <Layout>
       <Switch>
-        <Route path='/' exact component={Home} />
-        <Route path='/auth' exact component={Auth} />
-        <Route path='/profile' exact component={Profile} />
-        <Route path='*' exact component={PageError} />
+        <Route path='/' exact>
+          <HomePage />
+        </Route>
+        {!authCtx.isLoggedIn && (
+          <Route path='/auth'>
+            <AuthPage />
+          </Route>
+        )}
+
+        <Route path='/profile'>
+          {authCtx.isLoggedIn && <UserProfile />}{' '}
+          {!authCtx.isLoggedIn && <Redirect to='/auth' />}
+        </Route>
+
+        <Route path='*'>
+          <Redirect to='/' />
+        </Route>
       </Switch>
-    </Router>
+    </Layout>
   );
-};
+}
 
 export default App;
