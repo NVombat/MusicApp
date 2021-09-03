@@ -70,6 +70,17 @@ export const Navbar = () => {
                 <li>
                   <Link
                     className="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75 transform transition hover:scale-110"
+                    to="/record"
+                  >
+                    <i className="fab fa-facebook-square text-lg leading-lg text-white opacity-75"></i>
+                    <span className="ml-2">Record</span>
+                  </Link>
+                </li>
+              )}
+              {isLoggedIn && (
+                <li>
+                  <Link
+                    className="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75 transform transition hover:scale-110"
                     to="/profile"
                   >
                     <i className="fab fa-facebook-square text-lg leading-lg text-white opacity-75"></i>
@@ -77,6 +88,7 @@ export const Navbar = () => {
                   </Link>
                 </li>
               )}
+
               {isLoggedIn && (
                 <li className="flex bg-blue-500 text-white px-2 rounded-lg hover:bg-blue-600 focus:outline-none">
                   <button onClick={logoutHandler}>Logout</button>
