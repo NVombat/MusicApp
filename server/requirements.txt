@@ -6,3 +6,12 @@ pymongo==3.12.0
 python-dotenv==0.19.0
 pytz==2021.1
 sqlparse==0.4.1
+
+
+#https://github.com/readbeyond/aeneas - API TESTING
+#https://www.readbeyond.it/aeneas/ - API TESTING
+
+# python -m aeneas.tools.execute_task /home/nvombat/Desktop/MusicApp/server/apitesting/test_data/audio.mp3 
+# /home/nvombat/Desktop/MusicApp/server/apitesting/test_data/lyrics.txt 
+# "task_language=eng|os_task_file_format=json|is_text_type=plain" 
+# /home/nvombat/Desktop/MusicApp/server/apitesting/test_data/map_1.json
