@@ -1,4 +1,3 @@
-import Layout from '../components/shared/Layout';
 import Hero from '../components/Home/Hero';
 
 interface Props {}
@@ -6,11 +5,7 @@ interface Props {}
 const Home = (props: Props) => {
   console.log('here');
 
-  return (
-    <Layout>
-      <Hero />
-    </Layout>
-  );
+  return <Hero />;
 };
 
 export default Home;
