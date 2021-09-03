@@ -7,6 +7,8 @@ import {
   Profile,
   ForgetPassword,
   PageNotFound,
+  Posts,
+  Record,
 } from './pages/Index';
 import Layout from './components/shared/Layout';
 import AuthContext from './context/auth-context';
@@ -17,13 +19,20 @@ const App = () => {
     <Layout>
       <Switch>
         <Route path="/" exact component={Home} />
-        {!authCtx.isLoggedIn && <Route path="/auth" exact component={Auth} />}
-        <Route path="/forgetpassword" exact component={ForgetPassword} />
         <Route path="/about" exact component={About} />
+        <Route path="/posts" exact component={Posts} />
+        <Route path="/forgetpassword" exact component={ForgetPassword} />
+
         <Route path="/profile">
           {authCtx.isLoggedIn && <Profile />}
           {!authCtx.isLoggedIn && <Redirect to="/auth" />}
         </Route>
+        <Route path="/record">
+          {authCtx.isLoggedIn && <Record />}
+          {!authCtx.isLoggedIn && <Redirect to="/auth" />}
+        </Route>
+
+        {!authCtx.isLoggedIn && <Route path="/auth" exact component={Auth} />}
 
         <Route path="*" component={PageNotFound} />
       </Switch>
