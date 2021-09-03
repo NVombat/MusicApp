@@ -5,7 +5,7 @@ let logoutTimer;
 const AuthContext = React.createContext({
   token: '',
   isLoggedIn: false,
-  login: (token, expirationTime) => {},
+  login: (token) => {},
   logout: () => {},
 });
 
