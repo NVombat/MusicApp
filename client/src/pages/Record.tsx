@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import Video from '../components/Record/Video';
-import RecordAudio from '../components/Record/RecordAudio';
-import RecordVideo from '../components/Record/RecordVideo';
+import { Video, RecordAudio, RecordVideo } from '../components/Record/Index';
 import { Camera, Mic } from '../utils/icons/Index';
 
 const Record = () => {
