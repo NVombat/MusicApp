@@ -1,6 +1,4 @@
-import TopHeader from '../components/About/TopHeader';
-import Team from '../components/About/Team';
-import Faq from '../components/About/Faq';
+import { TopHeader, Team, Faq } from '../components/About/index';
 
 const About = () => {
   return (

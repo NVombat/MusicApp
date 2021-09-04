@@ -25,7 +25,6 @@ const ForgetPassword = () => {
         }
       })
       .catch((err) => {
-        alert('Incorrect Email or Email does not exist');
         history.replace('/');
       });
   };
