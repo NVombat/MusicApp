@@ -8,11 +8,7 @@ export const NavLinks = [
     link: '/about',
   },
   {
-    label: 'Song Tracks',
-    link: '/song-tracks',
-  },
-  {
-    label: 'Song Book',
-    link: '/song-book',
+    label: 'Posts',
+    link: '/posts',
   },
 ];

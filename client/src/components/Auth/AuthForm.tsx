@@ -1,16 +1,11 @@
 import { useContext, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import AuthContext from '../../context/auth-context';
-import { Phone, Email } from '../../utils/icons/Index';
 
-const AuthForm = () => {
+const EmailAuthForm = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [isPhoneAuth, setIsPhoneAuth] = useState<boolean>(false);
-  const [isEmailAuth, setIsEmailAuth] = useState<boolean>(true);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
-  const [otp, setotp] = useState<string>();
   const [authError, setAuthError] = useState<boolean>(false);
   const history = useHistory();
 
@@ -18,20 +13,6 @@ const AuthForm = () => {
 
   const switchAuthModehandler = () => {
     setIsLogin((prevState) => !prevState);
-  };
-
-  const switchPhoneAuthHandler = () => {
-    if (isPhoneAuth === false) {
-      setIsPhoneAuth(true);
-      setIsEmailAuth(false);
-    }
-  };
-
-  const switchEmailAuthHandler = () => {
-    if (isEmailAuth === false) {
-      setIsEmailAuth(true);
-      setIsPhoneAuth(false);
-    }
   };
 
   const submitHandler = (event: any) => {
@@ -79,7 +60,7 @@ const AuthForm = () => {
   };
 
   return (
-    <div className="font-sans mt-10">
+    <div>
       <div className="relative min-h-screen flex flex-col sm:justify-center items-center ">
         <div className="relative sm:max-w-sm w-full">
           <div className="card bg-blue-400 shadow-lg  w-full h-full rounded-3xl absolute  transform -rotate-6"></div>
@@ -93,57 +74,28 @@ const AuthForm = () => {
             </label>
             <form className="mt-10">
               <div>
-                <label htmlFor="Email">
-                  {isPhoneAuth ? 'Phone number' : 'Email'}
-                </label>
-                {isPhoneAuth ? (
-                  <input
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    type="number"
-                    placeholder="+91 XXXXXXXXXX"
-                    className="mt-1 text-center px-4 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0 focus:outline-none"
-                    min="0"
-                    maxLength={10}
-                    minLength={10}
-                    required
-                  />
-                ) : (
-                  <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="email"
-                    placeholder="johndoe@gmail.com"
-                    className="mt-1 px-4 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0 focus:outline-none"
-                    required
-                  />
-                )}
+                <label htmlFor="Email">Email</label>
+
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type="email"
+                  placeholder="johndoe@gmail.com"
+                  className="mt-1 px-4 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0 focus:outline-none"
+                  required
+                />
               </div>
               <div className="mt-7">
-                {isPhoneAuth ? (
-                  <div>
-                    <label htmlFor="Otp">OTP</label>
-                    <input
-                      value={otp}
-                      onChange={(e) => setotp(e.target.value)}
-                      type="password"
-                      placeholder="X X X X"
-                      className="mt-1 text-center px-4 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0 focus:outline-none"
-                      required
-                    />
-                  </div>
-                ) : (
-                  <div>
-                    <label htmlFor="Password">Password</label>
-                    <input
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      type="password"
-                      placeholder="********"
-                      className="mt-1 px-4 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0 focus:outline-none"
-                    />
-                  </div>
-                )}
+                <div>
+                  <label htmlFor="Password">Password</label>
+                  <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    type="password"
+                    placeholder="********"
+                    className="mt-1 px-4 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0 focus:outline-none"
+                  />
+                </div>
               </div>
               {authError && (
                 <div className="text-red-500 font-semibold my-4">
@@ -151,51 +103,26 @@ const AuthForm = () => {
                 </div>
               )}
               <div className="mt-7">
-                {isEmailAuth ? (
-                  <button
-                    onClick={submitHandler}
-                    className="bg-blue-500 w-full py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
-                  >
-                    {isLogin ? 'Login' : 'Register'}
-                  </button>
-                ) : (
-                  <div>
-                    <button className="bg-blue-500 w-full my-3 py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
-                      Get OTP
-                    </button>
-                    <button className="bg-blue-500 w-full my-3 py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
-                      Login
-                    </button>
-                  </div>
-                )}
+                <button
+                  onClick={submitHandler}
+                  className="bg-blue-500 w-full py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
+                >
+                  {isLogin ? 'Login' : 'Register'}
+                </button>
               </div>
-              <Link to="/forgetpassword">Forget Password?</Link>
-              <div className="flex mt-7 items-center text-center">
+              <Link to="/forgetpassword">
+                <span className="flex justify-center mt-3 text-gray-600">
+                  Forget Password?
+                </span>
+              </Link>
+              {/* <div className="flex mt-7 items-center text-center">
                 <hr className="border-gray-300 border-1 w-full rounded-md" />
                 <label className="block font-medium text-sm text-gray-600 w-full">
                   Login Options
                 </label>
                 <hr className="border-gray-300 border-1 w-full rounded-md" />
-              </div>
-              <div className="flex mt-7 justify-center w-full">
-                <button
-                  className="mr-5 bg-blue-500 border-none px-4 py-2 rounded-xl cursor-pointer text-white shadow-xl hover:shadow-inner transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
-                  onClick={switchPhoneAuthHandler}
-                >
-                  <div className="flex items-center">
-                    <Phone /> Phone
-                  </div>
-                </button>
+              </div> */}
 
-                <button
-                  className="bg-red-400 border-none px-4 py-2 rounded-xl cursor-pointer text-white shadow-xl hover:shadow-inner transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105"
-                  onClick={switchEmailAuthHandler}
-                >
-                  <div className="flex items-center">
-                    <Email /> Email
-                  </div>
-                </button>
-              </div>
               <div className="mt-7">
                 <div className="flex justify-center items-center">
                   <label className="mr-2">New User?</label>
@@ -215,4 +142,4 @@ const AuthForm = () => {
   );
 };
 
-export default AuthForm;
+export default EmailAuthForm;

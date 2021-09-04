@@ -5,3 +5,5 @@ export { default as Profile } from './Profile';
 export { default as ForgetPassword } from './ForgetPassword';
 export { default as PageNotFound } from './PageNotFound';
 export { default as ResetPassword } from './ResetPassowrd';
+export { default as Posts } from './Posts';
+export { default as Record } from './Record';
