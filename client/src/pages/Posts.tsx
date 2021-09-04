@@ -1,5 +1,10 @@
+import { Hero } from '../components/Posts/Index';
 const Posts = () => {
-  return <div>Posts Page</div>;
+  return (
+    <div>
+      <Hero />
+    </div>
+  );
 };
 
 export default Posts;
