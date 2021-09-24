@@ -24,7 +24,7 @@ const RecordAudio = () => {
               </button>
             </div>
             <span className="flex justify-center">
-              <audio src={mediaBlobUrl} controls />
+              <audio src={mediaBlobUrl as string} controls />
             </span>
           </div>
         )}

@@ -24,7 +24,7 @@ const RecordVideo = () => {
               </button>
             </div>
             <span className="flex justify-center">
-              <video src={mediaBlobUrl} controls />
+              <video src={mediaBlobUrl as string} controls />
             </span>
           </div>
         )}

@@ -1,17 +1,25 @@
 import { useState } from 'react';
-import { Video, RecordAudio, RecordVideo } from '../components/Record/Index';
+import {
+  Video,
+  RecordAudio,
+  RecordVideo,
+  Upload,
+} from '../components/Record/Index';
 import { Camera, Mic } from '../utils/icons/Index';
 
 const Record = () => {
   const [recordAudio, setRecordAudio] = useState<boolean>(false);
   const [recordVideo, setRecordVideo] = useState<boolean>(false);
+  const [upload, setUpload] = useState<boolean>(false);
 
   const switchToAudioHandler = () => {
+    setUpload(true);
     setRecordAudio(true);
     setRecordVideo(false);
   };
 
   const switchToVideoHandler = () => {
+    setUpload(true);
     setRecordVideo(true);
     setRecordAudio(false);
   };
@@ -35,6 +43,7 @@ const Record = () => {
       </div>
       {recordAudio && <RecordAudio />}
       {recordVideo && <RecordVideo />}
+      {upload && <Upload />}
     </div>
   );
 };
