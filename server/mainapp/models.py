@@ -1,7 +1,7 @@
 import pymongo
 import os
 
-from errors import FileAlreadyExistsForCurrentUserError, FileDoesNotExistForCurrentUserError
+from .errors import FileAlreadyExistsForCurrentUserError, FileDoesNotExistForCurrentUserError
 from dotenv import load_dotenv
 load_dotenv()
 
