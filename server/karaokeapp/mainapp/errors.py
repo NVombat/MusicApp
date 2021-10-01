@@ -1,5 +1,9 @@
-from core.errorfactory import MusicDataErrors
+# from core.errorfactory import MusicDataErrors
 
 
-class FileAlreadyExistsForCurrentUserError(MusicDataErrors):
+class FileAlreadyExistsForCurrentUserError(Exception):
+    ...
+
+
+class FileDoesNotExistForCurrentUserError(Exception):
     ...

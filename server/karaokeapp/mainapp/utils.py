@@ -3,18 +3,28 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import response
 
+from .errors import FileAlreadyExistsForCurrentUserError
+from . import Music_Data
 
-def music_data_api(request, **kwargs):
+
+def music_data(request, **kwargs):
     try:
-        if request.GET[""]:
-            pass
+        name = request.GET["Name"]
+        email = request.GET["Email"]
+        filename = request.GET["Filename"]
 
-        else:
-            pass
+        Music_Data.insert_data(name, email, filename)
 
-        return response.JsonResponse(data="Test", status=status.HTTP_200_OK)
-
-    except Exception as e:
         return response.JsonResponse(
-            {"error": "Error Occured"}, status=status.HTTP_400_BAD_REQUEST
+            {
+                "Name": name,
+                "Email": email,
+                "Filename": filename,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    except FileAlreadyExistsForCurrentUserError as e:
+        return response.JsonResponse(
+            {"error": str(e)}, status=status.HTTP_400_BAD_REQUEST
         )
