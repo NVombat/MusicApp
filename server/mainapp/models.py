@@ -1,8 +1,12 @@
 import pymongo
 import os
 
-from .errors import FileAlreadyExistsForCurrentUserError, FileDoesNotExistForCurrentUserError
+from .errors import (
+    FileAlreadyExistsForCurrentUserError,
+    FileDoesNotExistForCurrentUserError,
+)
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -25,14 +29,10 @@ class MusicData:
         Returns:
             None
         """
-        if self.db.find_one(
-            {
-                "Email": email,
-                "Filename": filename
-            }
-        ):
+        if self.db.find_one({"Email": email, "Filename": filename}):
             raise FileAlreadyExistsForCurrentUserError(
-                "File Already Exists With This Name For Current User")
+                "File Already Exists With This Name For Current User"
+            )
 
         data = {"Name": name, "Email": email, "Filename": filename}
         self.db.insert_one(data)
@@ -61,7 +61,8 @@ class MusicData:
             )
         else:
             raise FileDoesNotExistForCurrentUserError(
-                "File Does Not Exists For The Current User")
+                "File Does Not Exists For The Current User"
+            )
 
 
 # md = MusicData()

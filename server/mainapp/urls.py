@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import UserLogin
+from .views import Upload
 
 urlpatterns = [
-    path('login', UserLogin, UserLogin.as_view()),
+    path("upload", Upload, Upload.as_view()),
 ]

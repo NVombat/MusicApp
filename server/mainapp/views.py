@@ -7,7 +7,7 @@ from django.http import response
 from mainapp import Music_Data
 
 
-class UserLogin(APIView):
+class Upload(APIView):
     def post(self, request, **kwargs) -> JsonResponse:
         """
         Backend receiving data (downloading)
