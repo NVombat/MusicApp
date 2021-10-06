@@ -28,3 +28,7 @@ def music_data(request, **kwargs):
         return response.JsonResponse(
             {"error": str(e)}, status=status.HTTP_400_BAD_REQUEST
         )
+    except Exception as e:
+        return response.JsonResponse(
+            {"error": "Error Occured While Receiving Data"}, status=status.HTTP_400_BAD_REQUEST
+        )
