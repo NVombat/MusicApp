@@ -16,7 +16,9 @@ class Upload(APIView):
         print("REQUEST DATA:", request.data)
         # music_data_upload(request)
 
-        return response.JsonResponse(data={"response": "true"}, status=status.HTTP_200_OK)
+        return response.JsonResponse(
+            data={"response": "true"}, status=status.HTTP_200_OK
+        )
 
     def get(self, request, **kwargs):
         """

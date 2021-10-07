@@ -5,7 +5,11 @@ from rest_framework import status
 from django.http import response
 import requests
 
-from core.settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME
+from core.settings import (
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    AWS_STORAGE_BUCKET_NAME,
+)
 from .errors import FileAlreadyExistsForCurrentUserError
 from . import Music_Data
 
@@ -18,16 +22,18 @@ def music_data_upload(request, **kwargs):
         filename = request.data.get("Filename")
         uploadedFile = request.data.get("File")
 
-        cloudFilename = 'files/' + filename
+        cloudFilename = "files/" + filename
 
         Music_Data.insert_data(name, email, filename)
 
-        session = Session(aws_access_key_id=AWS_ACCESS_KEY_ID,
-                          aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                          )
-        s3 = session.resource('s3')
+        session = Session(
+            aws_access_key_id=AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        )
+        s3 = session.resource("s3")
         s3.Bucket(AWS_STORAGE_BUCKET_NAME).put_object(
-            Key=cloudFilename, Body=uploadedFile)
+            Key=cloudFilename, Body=uploadedFile
+        )
 
         return response.JsonResponse(
             {
@@ -53,7 +59,7 @@ def music_data(request, **kwargs):
     try:
         url = ""
         filename = ""
-        files = {'file': open(filename, 'rb')}
+        files = {"file": open(filename, "rb")}
         r = requests.post(url, files=files)
 
     except Exception as e:
