@@ -1,11 +1,12 @@
+from dotenv import load_dotenv
 import pymongo
 import os
 
 from .errors import (
+    DataFetchingError,
     FileAlreadyExistsForCurrentUserError,
     FileDoesNotExistForCurrentUserError,
 )
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -18,13 +19,16 @@ class MusicData:
         client = pymongo.MongoClient(os.getenv("MONGO_URI"))
         self.db = client[os.getenv("MONGO_DB")][os.getenv("DATA_COLLECTION")]
 
-    def insert_data(self, name: str, email: str, filename: str) -> None:
+    def insert_data(
+        self, name: str, email: str, filename: str, cloud_filename: str
+    ) -> None:
         """Insert file name and data into db
 
         Args:
             name: User Name
             email: User Email ID
             filename: Name of File
+            cloud_filename: Name/Path of file in S3
 
         Returns:
             None
@@ -34,7 +38,12 @@ class MusicData:
                 "File Already Exists With This Name For Current User"
             )
 
-        data = {"Name": name, "Email": email, "Filename": filename}
+        data = {
+            "Name": name,
+            "Email": email,
+            "Filename": filename,
+            "CloudFilename": cloud_filename,
+        }
         self.db.insert_one(data)
 
     def delete_data(self, email: str, filename: str) -> None:
@@ -61,16 +70,33 @@ class MusicData:
             )
         else:
             raise FileDoesNotExistForCurrentUserError(
-                "File Does Not Exists For The Current User"
+                "File Does Not Exist For The Current User"
             )
+
+    def fetch_data(self) -> list:
+        """Fetches all data from db
+        Args:
+            None
+
+        Returns:
+            List of dictionaries containing all db entries
+        """
+        if data := self.db.find():
+            data_response = []
+
+            for val in data:
+                data_response.append(val)
+
+            return data_response
+        raise DataFetchingError("Error While Fetching Data")
 
 
 # md = MusicData()
 # try:
-#     md.insert_data("Nikhill Vombatkere", "nv9824@srmist.edu.in", "stay.mp3")
-#     md.insert_data("Aradhya Tripathi", "at5079@srmist.edu.in", "hello.mp3")
-#     md.insert_data("Sanah Sidhu", "ss6153@srmist.edu.in", "dream.mp3")
-#     md.insert_data("Nikhill Vombatkere", "nv9824@srmist.edu.in", "done.mp3")
+#     md.insert_data("Nikhill Vombatkere", "nv9824@srmist.edu.in", "stay.mp3", "files/nv9824/stay.mp3")
+#     md.insert_data("Aradhya Tripathi", "at5079@srmist.edu.in", "hello.mp3", "files/at5079/hello.mp3")
+#     md.insert_data("Sanah Sidhu", "ss6153@srmist.edu.in", "dream.mp3", "files/ss6153/dream.mp3")
+#     md.insert_data("Nikhill Vombatkere", "nv9824@srmist.edu.in", "done.mp3", "files/nv9824/done.mp3")
 # except FileAlreadyExistsForCurrentUserError as e:
 #     print("Error:", str(e))
 
@@ -78,3 +104,5 @@ class MusicData:
 #     md.delete_data("nv9824@srmist.edu.in", "done.mp3")
 # except FileDoesNotExistForCurrentUserError as e:
 #     print("Error:", str(e))
+
+# print(md.fetch_data())

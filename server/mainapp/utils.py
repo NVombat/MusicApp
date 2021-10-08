@@ -10,60 +10,70 @@ from core.settings import (
     AWS_SECRET_ACCESS_KEY,
     AWS_STORAGE_BUCKET_NAME,
 )
-from .errors import FileAlreadyExistsForCurrentUserError
+from .errors import DataFetchingError, FileAlreadyExistsForCurrentUserError
 from . import Music_Data
 
 
-def music_data_upload(request, **kwargs):
+def recv_music_data(request, **kwargs):
     try:
-        print(request.data)
+        print("Request Object DATA:", request.data)
+
         name = request.data.get("Name")
         email = request.data.get("Email")
         filename = request.data.get("Filename")
         uploadedFile = request.data.get("File")
 
-        cloudFilename = "files/" + filename
+        filename = filename.lower()
+        subfolder = email.split("@")[0]
+        cloudFilename = "files/" + subfolder + "/" + filename
 
-        Music_Data.insert_data(name, email, filename)
+        Music_Data.insert_data(name, email, filename, cloudFilename)
 
-        session = Session(
-            aws_access_key_id=AWS_ACCESS_KEY_ID,
-            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-        )
-        s3 = session.resource("s3")
-        s3.Bucket(AWS_STORAGE_BUCKET_NAME).put_object(
-            Key=cloudFilename, Body=uploadedFile
-        )
+        try:
+            session = Session(
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            )
+            s3 = session.resource("s3")
+            s3.Bucket(AWS_STORAGE_BUCKET_NAME).put_object(
+                Key=cloudFilename, Body=uploadedFile
+            )
+
+        except Exception as e:
+            return response.JsonResponse(
+                {"error": "AWS File Upload Error", "success_status": False},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
 
         return response.JsonResponse(
-            {
-                "Name": name,
-                "Email": email,
-                "Filename": filename,
-            },
+            {"success_status": True},
             status=status.HTTP_200_OK,
         )
 
-    except FileAlreadyExistsForCurrentUserError as e:
+    except FileAlreadyExistsForCurrentUserError as fae:
         return response.JsonResponse(
-            {"error": str(e)}, status=status.HTTP_400_BAD_REQUEST
+            {"error": str(fae), "success_status": False},
+            status=status.HTTP_400_BAD_REQUEST,
         )
     except Exception as e:
         return response.JsonResponse(
-            {"error": "Error Occured While Receiving Data"},
-            status=status.HTTP_400_BAD_REQUEST,
+            {"error": "Error Occured While Receiving Data", "success_status": False},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
-def music_data(request, **kwargs):
+def send_music_data(request, **kwargs):
     try:
-        url = ""
-        filename = ""
-        files = {"file": open(filename, "rb")}
-        r = requests.post(url, files=files)
+        data = Music_Data.fetch_data()
+        return response.JsonResponse(data=data, status=status.HTTP_200_OK)
 
     except Exception as e:
         return response.JsonResponse(
             {"error": "Error Occured While Sending Data"},
-            status=status.HTTP_400_BAD_REQUEST,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+    except DataFetchingError as dfe:
+        return response.JsonResponse(
+            {"error": str(dfe)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
