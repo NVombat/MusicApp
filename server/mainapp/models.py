@@ -1,11 +1,13 @@
+from bson.json_util import dumps, loads
 from dotenv import load_dotenv
 import pymongo
+import json
 import os
 
 from .errors import (
-    DataFetchingError,
     FileAlreadyExistsForCurrentUserError,
     FileDoesNotExistForCurrentUserError,
+    DataFetchingError,
 )
 
 load_dotenv()
@@ -82,12 +84,23 @@ class MusicData:
             List of dictionaries containing all db entries
         """
         if data := self.db.find():
-            data_response = []
+            data_response = {}
 
+            cnt = 1
             for val in data:
-                data_response.append(val)
+                data_response[str(cnt)] = val
+                cnt = cnt + 1
 
+            # json_data = dumps(data_response, indent = 2)
             return data_response
+
+        # if data := self.db.find():
+
+        #     data_response = list(data)
+        #     json_data = dumps(data_response, indent = 2)
+
+        #     return json_data
+
         raise DataFetchingError("Error While Fetching Data")
 
 

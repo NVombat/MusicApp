@@ -16,6 +16,7 @@ from . import Music_Data
 
 def recv_music_data(request, **kwargs):
     try:
+        print("POST REQUEST")
         print("Request Object DATA:", request.data)
 
         name = request.data.get("Name")
@@ -64,8 +65,13 @@ def recv_music_data(request, **kwargs):
 
 def send_music_data(request, **kwargs):
     try:
-        data = Music_Data.fetch_data()
-        return response.JsonResponse(data=data, status=status.HTTP_200_OK)
+        print("GET REQUEST")
+        record = Music_Data.fetch_data()
+        print(record)
+        return response.JsonResponse(
+            {"success_status": True}, status=status.HTTP_200_OK
+        )
+        # return response.JsonResponse(record, status=status.HTTP_200_OK)
 
     except Exception as e:
         return response.JsonResponse(
