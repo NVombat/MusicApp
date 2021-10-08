@@ -10,7 +10,7 @@ from core.settings import (
     AWS_SECRET_ACCESS_KEY,
     AWS_STORAGE_BUCKET_NAME,
 )
-from .errors import FileAlreadyExistsForCurrentUserError
+from .errors import DataFetchingError, FileAlreadyExistsForCurrentUserError
 from . import Music_Data
 
 
@@ -41,32 +41,39 @@ def recv_music_data(request, **kwargs):
 
         except Exception as e:
             return response.JsonResponse(
-                {"error": "AWS File Upload Error", "success": False},
+                {"error": "AWS File Upload Error", "success_status": False},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
         return response.JsonResponse(
-            {"success": True},
+            {"success_status": True},
             status=status.HTTP_200_OK,
         )
 
-    except FileAlreadyExistsForCurrentUserError as e:
+    except FileAlreadyExistsForCurrentUserError as fae:
         return response.JsonResponse(
-            {"error": str(e), "success": False}, status=status.HTTP_400_BAD_REQUEST
+            {"error": str(fae), "success_status": False},
+            status=status.HTTP_400_BAD_REQUEST,
         )
     except Exception as e:
         return response.JsonResponse(
-            {"error": "Error Occured While Receiving Data", "success": False},
+            {"error": "Error Occured While Receiving Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
 def send_music_data(request, **kwargs):
     try:
-        return response.JsonResponse()
+        data = Music_Data.fetch_data()
+        return response.JsonResponse(data=data, status=status.HTTP_200_OK)
 
     except Exception as e:
         return response.JsonResponse(
             {"error": "Error Occured While Sending Data"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+    except DataFetchingError as dfe:
+        return response.JsonResponse(
+            {"error": str(dfe)},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )

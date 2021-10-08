@@ -1,9 +1,9 @@
 from dotenv import load_dotenv
 import pymongo
-import json
 import os
 
 from .errors import (
+    DataFetchingError,
     FileAlreadyExistsForCurrentUserError,
     FileDoesNotExistForCurrentUserError,
 )
@@ -19,7 +19,9 @@ class MusicData:
         client = pymongo.MongoClient(os.getenv("MONGO_URI"))
         self.db = client[os.getenv("MONGO_DB")][os.getenv("DATA_COLLECTION")]
 
-    def insert_data(self, name: str, email: str, filename: str, cloud_filename: str) -> None:
+    def insert_data(
+        self, name: str, email: str, filename: str, cloud_filename: str
+    ) -> None:
         """Insert file name and data into db
 
         Args:
@@ -36,8 +38,12 @@ class MusicData:
                 "File Already Exists With This Name For Current User"
             )
 
-        data = {"Name": name, "Email": email,
-                "Filename": filename, "CloudFilename": cloud_filename}
+        data = {
+            "Name": name,
+            "Email": email,
+            "Filename": filename,
+            "CloudFilename": cloud_filename,
+        }
         self.db.insert_one(data)
 
     def delete_data(self, email: str, filename: str) -> None:
@@ -64,7 +70,7 @@ class MusicData:
             )
         else:
             raise FileDoesNotExistForCurrentUserError(
-                "File Does Not Exists For The Current User"
+                "File Does Not Exist For The Current User"
             )
 
     def fetch_data(self) -> list:
@@ -73,14 +79,16 @@ class MusicData:
             None
 
         Returns:
-            list of dictionaries containing all db entries
+            List of dictionaries containing all db entries
         """
-        data = self.db.find()
-        data_response = []
-        for val in data:
-            data_response.append(val)
+        if data := self.db.find():
+            data_response = []
 
-        return data_response
+            for val in data:
+                data_response.append(val)
+
+            return data_response
+        raise DataFetchingError("Error While Fetching Data")
 
 
 # md = MusicData()

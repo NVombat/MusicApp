@@ -5,12 +5,15 @@ from rest_framework import status
 from django.http import response
 import requests
 
-from .utils import recv_music_data
+from .utils import recv_music_data, send_music_data
 from mainapp import Music_Data
 
 
 class Data(APIView):
     def post(self, request, **kwargs) -> JsonResponse:
+        """
+        When User Uploads -> Data is received via POST request
+        """
 
         print("Receiving Data API")
 
@@ -18,8 +21,13 @@ class Data(APIView):
 
         return data
 
-    def get(self, request, **kwargs):
+    def get(self, request, **kwargs) -> JsonResponse:
         """
-        Backend will be uploading data (sending)
+        When User Requests Data -> Data is sent via JsonResponse
         """
-        return response.JsonResponse(data={"response": "true"})
+
+        print("Sending Data API")
+
+        data = send_music_data(request)
+
+        return data
