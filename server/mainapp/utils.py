@@ -23,9 +23,11 @@ def recv_music_data(request, **kwargs):
         filename = request.data.get("Filename")
         uploadedFile = request.data.get("File")
 
-        cloudFilename = "files/" + filename
+        filename = filename.lower()
+        subfolder = email.split("@")[0]
+        cloudFilename = "files/" + subfolder + "/" + filename
 
-        Music_Data.insert_data(name, email, filename)
+        Music_Data.insert_data(name, email, filename, cloudFilename)
 
         try:
             session = Session(
@@ -39,14 +41,12 @@ def recv_music_data(request, **kwargs):
 
         except Exception as e:
             return response.JsonResponse(
-            {"error": "AWS File Upload Error", "success": False},
-            status=status.HTTP_503_SERVICE_UNAVAILABLE,
-        )
+                {"error": "AWS File Upload Error", "success": False},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE,
+            )
 
         return response.JsonResponse(
-            {
-                "success": True
-            },
+            {"success": True},
             status=status.HTTP_200_OK,
         )
 
@@ -63,8 +63,7 @@ def recv_music_data(request, **kwargs):
 
 def send_music_data(request, **kwargs):
     try:
-        return response.JsonResponse(
-        )
+        return response.JsonResponse()
 
     except Exception as e:
         return response.JsonResponse(
