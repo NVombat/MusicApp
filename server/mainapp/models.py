@@ -64,6 +64,9 @@ class MusicData:
                 "File Does Not Exists For The Current User"
             )
 
+    def fetch_data(self):
+        return self.db.find()
+
 
 # md = MusicData()
 # try:

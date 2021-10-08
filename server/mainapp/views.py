@@ -5,20 +5,18 @@ from rest_framework import status
 from django.http import response
 import requests
 
-from .utils import music_data_upload
+from .utils import recv_music_data
 from mainapp import Music_Data
 
 
-class Upload(APIView):
+class Data(APIView):
     def post(self, request, **kwargs) -> JsonResponse:
 
-        print("CHECKING API")
-        print("REQUEST DATA:", request.data)
-        # music_data_upload(request)
+        print("Receiving Data API")
 
-        return response.JsonResponse(
-            data={"response": "true"}, status=status.HTTP_200_OK
-        )
+        data = recv_music_data(request)
+
+        return data
 
     def get(self, request, **kwargs):
         """
