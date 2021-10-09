@@ -2,6 +2,8 @@ from dotenv import load_dotenv
 import pymongo
 import os
 
+from core.settings import DATABASE
+
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     FileDoesNotExistForCurrentUserError,
@@ -16,8 +18,8 @@ class MusicData:
         """
         Connect to MongoDB
         """
-        client = pymongo.MongoClient(os.getenv("MONGO_URI"))
-        self.db = client[os.getenv("MONGO_DB")][os.getenv("DATA_COLLECTION")]
+        client = pymongo.MongoClient(DATABASE["mongo_uri"])
+        self.db = client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
 
     def insert_data(
         self, name: str, email: str, filename: str, cloud_filename: str
