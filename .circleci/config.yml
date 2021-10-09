@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.8.5
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            /home/circleci/repo/venv/bin/python3 -m pip install --upgrade pip
+            pip install -r requirements.txt
+      - run:
+          name: run server
+          command: |
+            . venv/bin/activate
+            . ./run_server.sh
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            . ./test_handler.sh
+      - run:
+          name: run unit tests
+          command: |
+            . venv/bin/activate
+            cd server
+            . ./run_tests.sh
+            cd ..
