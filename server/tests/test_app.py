@@ -7,8 +7,6 @@ import os
 
 from core.settings import DATABASE
 
-load_dotenv()
-
 
 class TestApp(unittest.TestCase):
     @classmethod
@@ -20,6 +18,7 @@ class TestApp(unittest.TestCase):
         cls.pymongo_client = pymongo.MongoClient(DATABASE["mongo_uri"])
         cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
         cls.base_url = "http://localhost:8000/"
+        cls.api_url = "http://localhost:8000/api/data"
 
     def test_models(self):
         pass
