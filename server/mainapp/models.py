@@ -1,7 +1,5 @@
-from bson.json_util import dumps, loads
 from dotenv import load_dotenv
 import pymongo
-import json
 import os
 
 from .errors import (
@@ -75,15 +73,22 @@ class MusicData:
                 "File Does Not Exist For The Current User"
             )
 
-    def fetch_data(self) -> list:
+    def fetch_data(self) -> dict:
         """Fetches all data from db
+
         Args:
             None
 
         Returns:
-            List of dictionaries containing all db entries
+            Dictionary of dictionaries containing all db entries
         """
-        if data := self.db.find():
+        if data := self.db.find(
+            {},
+            {
+                "_id": 0,
+            },
+        ):
+
             data_response = {}
 
             cnt = 1
@@ -91,15 +96,7 @@ class MusicData:
                 data_response[str(cnt)] = val
                 cnt = cnt + 1
 
-            # json_data = dumps(data_response, indent = 2)
             return data_response
-
-        # if data := self.db.find():
-
-        #     data_response = list(data)
-        #     json_data = dumps(data_response, indent = 2)
-
-        #     return json_data
 
         raise DataFetchingError("Error While Fetching Data")
 

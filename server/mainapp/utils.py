@@ -1,20 +1,26 @@
 from django.http.response import JsonResponse
 from rest_framework.response import Response
-from boto3.session import Session
 from rest_framework import status
 from django.http import response
 import requests
 
-from core.settings import (
-    AWS_ACCESS_KEY_ID,
-    AWS_SECRET_ACCESS_KEY,
-    AWS_STORAGE_BUCKET_NAME,
+from .errors import (
+    FileAlreadyExistsForCurrentUserError,
+    DataFetchingError,
 )
-from .errors import DataFetchingError, FileAlreadyExistsForCurrentUserError
-from . import Music_Data
+from . import S3_Functions, Music_Data
 
 
 def recv_music_data(request, **kwargs):
+    """Handles data when user uploads through POST requests
+
+    Args:
+        request
+        **kwargs
+
+    Returns:
+        response.JsonResponse
+    """
     try:
         print("POST REQUEST")
         print("Request Object DATA:", request.data)
@@ -30,21 +36,7 @@ def recv_music_data(request, **kwargs):
 
         Music_Data.insert_data(name, email, filename, cloudFilename)
 
-        try:
-            session = Session(
-                aws_access_key_id=AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-            )
-            s3 = session.resource("s3")
-            s3.Bucket(AWS_STORAGE_BUCKET_NAME).put_object(
-                Key=cloudFilename, Body=uploadedFile
-            )
-
-        except Exception as e:
-            return response.JsonResponse(
-                {"error": "AWS File Upload Error", "success_status": False},
-                status=status.HTTP_503_SERVICE_UNAVAILABLE,
-            )
+        S3_Functions.upload_file_to_s3(cloudFilename, uploadedFile)
 
         return response.JsonResponse(
             {"success_status": True},
@@ -64,22 +56,31 @@ def recv_music_data(request, **kwargs):
 
 
 def send_music_data(request, **kwargs):
+    """Sends data when user requests through GET requests
+
+    Args:
+        request
+        **kwargs
+
+    Returns:
+        response.JsonResponse
+    """
     try:
         print("GET REQUEST")
+
         record = Music_Data.fetch_data()
+        record["success_status"] = True
         print(record)
-        return response.JsonResponse(
-            {"success_status": True}, status=status.HTTP_200_OK
-        )
-        # return response.JsonResponse(record, status=status.HTTP_200_OK)
+
+        return response.JsonResponse(record, status=status.HTTP_200_OK)
 
     except Exception as e:
         return response.JsonResponse(
-            {"error": "Error Occured While Sending Data"},
+            {"error": "Error Occured While Sending Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
     except DataFetchingError as dfe:
         return response.JsonResponse(
-            {"error": str(dfe)},
+            {"error": str(dfe), "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
