@@ -7,6 +7,8 @@ import os
 
 from core.settings import DATABASE
 
+load_dotenv()
+
 
 class TestApp(unittest.TestCase):
     @classmethod
