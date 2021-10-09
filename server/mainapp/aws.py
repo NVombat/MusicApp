@@ -1,6 +1,7 @@
 from boto3.session import Session
 from rest_framework import status
 from django.http import response
+import botocore
 import boto3
 
 from core.settings import (
@@ -8,6 +9,7 @@ from core.settings import (
     AWS_SECRET_ACCESS_KEY,
     AWS_ACCESS_KEY_ID,
 )
+from .errors import AWSDownloadError
 
 
 class AWSFunctionsS3:
@@ -69,3 +71,37 @@ class AWSFunctionsS3:
                 {"error": "AWS File Deletion Error", "success_status": False},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
+
+    def download_file_from_s3(self, cloudFilename: str, downloadFilename: str):
+        """Downloads file from S3 bucket
+
+        Args:
+            cloudFilename: Name of file in S3 bucket
+            downloadFilename: Name of file after download
+
+        Returns:
+            None -> Success
+            response.JsonResponse -> Failure
+        """
+        s3 = boto3.resource("s3")
+
+        try:
+            print("Downloading File from AWS S3")
+
+            s3.Bucket(AWS_STORAGE_BUCKET_NAME).download_file(
+                cloudFilename, downloadFilename
+            )
+
+            print("File Downloaded Successfully")
+
+        except botocore.exceptions.ClientError as e:
+            if e.response["Error"]["Code"] == "404":
+                return response.JsonResponse(
+                    {
+                        "error": "Download Error! The Object Does Not Exist",
+                        "success_status": False,
+                    },
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE,
+                )
+            else:
+                raise AWSDownloadError("Download Error, Please Try Again Later")
