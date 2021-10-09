@@ -27,9 +27,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG")
+DEBUG = True if os.getenv("DEBUG") else False
 
-ALLOWED_HOSTS = []
+USE_DATABASE = "MONGO" if DEBUG is False else "TEST"
+
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -80,13 +82,22 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
+if USE_DATABASE == "MONGO":
+    DATABASE = {"mongo_uri": os.getenv("MONGO_URI"), "db": os.getenv("MONGO_DB")}
+elif USE_DATABASE == "TEST":
+    DATABASE = {
+        "mongo_uri": os.getenv("TEST_MONGO_URI"),
+        "db": os.getenv("TEST_MONGO_DB"),
+    }
+
+print("USING DB: ", DATABASE["db"])
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
