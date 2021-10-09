@@ -66,20 +66,20 @@ def recv_music_data(request, **kwargs):
 def send_music_data(request, **kwargs):
     try:
         print("GET REQUEST")
+
         record = Music_Data.fetch_data()
+        record["success_status"] = True
         print(record)
-        return response.JsonResponse(
-            {"success_status": True}, status=status.HTTP_200_OK
-        )
-        # return response.JsonResponse(record, status=status.HTTP_200_OK)
+
+        return response.JsonResponse(record, status=status.HTTP_200_OK)
 
     except Exception as e:
         return response.JsonResponse(
-            {"error": "Error Occured While Sending Data"},
+            {"error": "Error Occured While Sending Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
     except DataFetchingError as dfe:
         return response.JsonResponse(
-            {"error": str(dfe)},
+            {"error": str(dfe), "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
