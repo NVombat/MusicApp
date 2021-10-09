@@ -13,5 +13,9 @@ class DataFetchingError(MusicDataErrors):
     ...
 
 
+class AWSDownloadError(AWSErrors):
+    ...
+
+
 class AWSUploadError(AWSErrors):
     ...

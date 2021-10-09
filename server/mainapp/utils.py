@@ -7,6 +7,7 @@ import requests
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     DataFetchingError,
+    AWSDownloadError,
 )
 from . import S3_Functions, Music_Data
 
@@ -48,6 +49,11 @@ def recv_music_data(request, **kwargs):
             {"error": str(fae), "success_status": False},
             status=status.HTTP_400_BAD_REQUEST,
         )
+    except AWSDownloadError as ade:
+        return response.JsonResponse(
+            {"error": str(ade), "success_status": False},
+            status=status.HTTP_503_SERVICE_UNAVAILABLE,
+        )
     except Exception as e:
         return response.JsonResponse(
             {"error": "Error Occured While Receiving Data", "success_status": False},
@@ -74,13 +80,13 @@ def send_music_data(request, **kwargs):
 
         return response.JsonResponse(record, status=status.HTTP_200_OK)
 
-    except Exception as e:
-        return response.JsonResponse(
-            {"error": "Error Occured While Sending Data", "success_status": False},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
     except DataFetchingError as dfe:
         return response.JsonResponse(
             {"error": str(dfe), "success_status": False},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+    except Exception as e:
+        return response.JsonResponse(
+            {"error": "Error Occured While Sending Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
