@@ -7,6 +7,7 @@ import os
 
 from core.settings import DATABASE
 
+
 class TestApp(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
