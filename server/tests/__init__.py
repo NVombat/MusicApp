@@ -7,3 +7,5 @@ class Base:
             "CloudFilename": "tests/nv9824/test.mp3",
             "File": "/home/nvombat/Desktop/MusicApp/music_data/English/rec_1.mp3",
         }
+
+        self.wrong_data = {"wrong_file": "wrong.txt", "wrong_email": "wrong@test.com"}
