@@ -11,7 +11,7 @@ from . import Base
 data = Base()
 
 
-class TestClient(unittest.TestCase):
+class TestAPI(unittest.TestCase):
     """
     Integration tests
     """
@@ -24,22 +24,18 @@ class TestClient(unittest.TestCase):
         cls.client = requests.Session()
         cls.pymongo_client = pymongo.MongoClient(DATABASE["mongo_uri"])
         cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
-        cls.api_url = "http://localhost:8000/api/data"
-
-    def test_data_send(self):
-        response = self.client.get(self.api_url)
-        self.assertEqual(response.status_code, 200)
+        cls.api_url = "http://localhost:5000/api/data"
 
     def test_data_recv(self):
-        self.clean()
-
         response = self.client.post(
             url=self.api_url,
             data=data.test_data,
         )
         self.assertEqual(response.status_code, 200)
 
-        self.clean()
+    def test_data_send(self):
+        response = self.client.get(self.api_url)
+        self.assertEqual(response.status_code, 200)
 
     @classmethod
     def tearDownClass(cls) -> None:

@@ -19,7 +19,7 @@ from . import Base
 data = Base()
 
 
-class TestClient(unittest.TestCase):
+class TestModels(unittest.TestCase):
     """
     Integration tests
     """
@@ -32,7 +32,7 @@ class TestClient(unittest.TestCase):
         cls.client = requests.Session()
         cls.pymongo_client = pymongo.MongoClient(DATABASE["mongo_uri"])
         cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
-        cls.api_url = "http://localhost:8000/api/data"
+        cls.api_url = "http://localhost:5000/api/data"
 
     def test_file_exists(self):
         response = self.client.post(
@@ -49,8 +49,6 @@ class TestClient(unittest.TestCase):
                 data.test_data["Filename"],
                 data.test_data["CloudFilename"],
             )
-
-        self.clean()
 
     def test_file_not_exists(self):
         with self.assertRaises(FileDoesNotExistForCurrentUserError):
