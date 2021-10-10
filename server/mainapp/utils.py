@@ -33,6 +33,8 @@ def recv_music_data(request, **kwargs):
         filename = request.data.get("Filename")
         uploadedFile = request.data.get("File")
 
+        print(name, email, filename, uploadedFile)
+
         filename = filename.lower()
         subfolder = email.split("@")[0]
         cloudFilename = AWS_BUCKET_FOLDER + subfolder + "/" + filename

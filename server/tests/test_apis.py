@@ -11,7 +11,7 @@ from . import Base
 data = Base()
 
 
-class TestClient(unittest.TestCase):
+class TestAPI(unittest.TestCase):
     """
     Integration tests
     """
@@ -24,7 +24,7 @@ class TestClient(unittest.TestCase):
         cls.client = requests.Session()
         cls.pymongo_client = pymongo.MongoClient(DATABASE["mongo_uri"])
         cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
-        cls.api_url = "http://localhost:8000/api/data"
+        cls.api_url = "http://localhost:5000/api/data"
 
     def test_data_recv(self):
         response = self.client.post(

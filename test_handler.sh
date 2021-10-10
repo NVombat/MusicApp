@@ -9,6 +9,6 @@ sleep 10s
 
 cd server
 
-. ./run_tests.sh
+python3 test_runner.py
 
 echo "$execution [STOPPING AND CLEANING UP]"

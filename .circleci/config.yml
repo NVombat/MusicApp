@@ -15,12 +15,7 @@ jobs:
             /home/circleci/repo/venv/bin/python3 -m pip install --upgrade pip
             pip install -r requirements.txt
       - run:
-          name: run server
-          command: |
-            . venv/bin/activate
-            . ./run_server.sh
-      - run:
           name: run tests
           command: |
             . venv/bin/activate
-            . ./test_handler.sh
+            bash test_handler.sh
