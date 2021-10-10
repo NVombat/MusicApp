@@ -4,11 +4,13 @@ from rest_framework import status
 from django.http import response
 import requests
 
+from core.settings import AWS_BUCKET_FOLDER
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     DataFetchingError,
     AWSDownloadError,
 )
+
 from . import S3_Functions, Music_Data
 
 
@@ -33,7 +35,7 @@ def recv_music_data(request, **kwargs):
 
         filename = filename.lower()
         subfolder = email.split("@")[0]
-        cloudFilename = "files/" + subfolder + "/" + filename
+        cloudFilename = AWS_BUCKET_FOLDER + subfolder + "/" + filename
 
         Music_Data.insert_data(name, email, filename, cloudFilename)
 
