@@ -5,7 +5,15 @@ import pymongo
 import os
 
 from core.settings import DATABASE
-from mainapp import S3_Functions
+from mainapp.errors import (
+    FileAlreadyExistsForCurrentUserError,
+    FileDoesNotExistForCurrentUserError,
+    DataFetchingError,
+)
+from mainapp import (
+    S3_Functions,
+    Music_Data,
+)
 from . import Base
 
 data = Base()
@@ -26,20 +34,29 @@ class TestClient(unittest.TestCase):
         cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
         cls.api_url = "http://localhost:8000/api/data"
 
-    def test_data_send(self):
-        response = self.client.get(self.api_url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_data_recv(self):
-        self.clean()
-
+    def test_file_exists(self):
         response = self.client.post(
             url=self.api_url,
             data=data.test_data,
         )
+
         self.assertEqual(response.status_code, 200)
 
+        with self.assertRaises(FileAlreadyExistsForCurrentUserError):
+            Music_Data.insert_data(
+                data.test_data["Name"],
+                data.test_data["Email"],
+                data.test_data["Filename"],
+                data.test_data["CloudFilename"],
+            )
+
         self.clean()
+
+    def test_file_not_exists(self):
+        with self.assertRaises(FileDoesNotExistForCurrentUserError):
+            Music_Data.delete_data(
+                data.wrong_data["wrong_email"], data.wrong_data["wrong_file"]
+            )
 
     @classmethod
     def tearDownClass(cls) -> None:
