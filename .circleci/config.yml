@@ -24,3 +24,9 @@ jobs:
           command: |
             . venv/bin/activate
             . ./test_handler.sh
+      - run:
+          name: run unit tests
+          command: |
+            . venv/bin/activate
+            cd server
+            . ./run_tests.sh
