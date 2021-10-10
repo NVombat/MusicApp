@@ -91,11 +91,14 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 if USE_DATABASE == "MONGO":
     DATABASE = {"mongo_uri": os.getenv("MONGO_URI"), "db": os.getenv("MONGO_DB")}
+    AWS_BUCKET_FOLDER = os.getenv("BUCKET_SUBFOLDER")
+
 elif USE_DATABASE == "TEST":
     DATABASE = {
         "mongo_uri": os.getenv("TEST_MONGO_URI"),
         "db": os.getenv("TEST_MONGO_DB"),
     }
+    AWS_BUCKET_FOLDER = os.getenv("TEST_BUCKET_SUBFOLDER")
 
 print("USING DB: ", DATABASE["db"])
 
