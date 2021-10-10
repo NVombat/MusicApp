@@ -50,8 +50,6 @@ class TestClient(unittest.TestCase):
                 data.test_data["CloudFilename"],
             )
 
-        self.clean()
-
     def test_file_not_exists(self):
         with self.assertRaises(FileDoesNotExistForCurrentUserError):
             Music_Data.delete_data(
