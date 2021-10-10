@@ -1,0 +1,31 @@
+os: linux
+
+jobs:
+  include:
+    - stage: Test
+      language: python
+      python:
+        - "3.8"
+        - "3.8.5"
+        - "3.9"
+      install:
+        - cd server/
+        - pip install -r requirements.txt
+        - cd ..
+      script:
+        - bash ./run_server.sh
+    - stage: Test
+      language: python
+      python:
+        - "3.8"
+        - "3.8.5"
+        - "3.9"
+      install:
+        - cd server/
+        - pip install -r requirements.txt
+        - cd ..
+      script:
+        - bash ./test_handler.sh
+
+before_install:
+  - python -m pip install --upgrade pip
