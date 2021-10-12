@@ -38,11 +38,28 @@ class TestAPI(unittest.TestCase):
         response = self.client.get(self.api_posts_url)
         self.assertEqual(response.status_code, 200)
 
+    def test_fail_post(self):
+        response = self.client.post(
+            url=self.api_posts_url,
+            data=data.test_data,
+        )
+        # Method not allowed
+        self.assertEqual(response.status_code, 405)
+
+    def test_fail_get(self):
+        response = self.client.get(self.api_upload_url)
+        # Method not allowed
+        self.assertEqual(response.status_code, 405)
+
     @classmethod
     def tearDownClass(cls) -> None:
         cls.db.delete_many({})
         cls.pymongo_client.close()
         cls.client.close()
+        try:
+            S3_Functions.delete_file_from_s3(data.test_data["CloudFilename"])
+        except Exception as e:
+            print("Deletion Error")
 
     def clean(self):
         self.db.delete_many({})

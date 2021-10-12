@@ -61,6 +61,10 @@ class TestModels(unittest.TestCase):
         cls.db.delete_many({})
         cls.pymongo_client.close()
         cls.client.close()
+        try:
+            S3_Functions.delete_file_from_s3(data.test_data["CloudFilename"])
+        except Exception as e:
+            print("Deletion Error")
 
     def clean(self):
         self.db.delete_many({})
