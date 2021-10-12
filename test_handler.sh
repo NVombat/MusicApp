@@ -26,5 +26,5 @@ end=$(date +%s)
 
 echo "Runtime:- $((end - start)) seconds"
 
-echo "$execution Killing port [...]"
-fuser -k 8000/tcp
+# echo "$execution Killing port [...]"
+# fuser -k 8000/tcp
