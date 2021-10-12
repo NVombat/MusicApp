@@ -28,8 +28,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv("DEBUG") else False
+print("DEBUG VALUE:", DEBUG)
 
 USE_DATABASE = "MONGO" if DEBUG is False else "TEST"
+print("USE_DATABASE:", USE_DATABASE)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -37,13 +39,13 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    "mainapp.apps.MainappConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "mainapp.apps.MainappConfig",
     "rest_framework",
     "storages",
 ]
@@ -87,6 +89,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "core.wsgi.application"
 
+if DEBUG:
+    print("DEVELOPMENT THROTTLE RATE:")
+    REST_FRAMEWORK = {
+        "DEFAULT_THROTTLE_CLASSES": [
+            "rest_framework.throttling.AnonRateThrottle",
+        ],
+        "DEFAULT_THROTTLE_RATES": {
+            "init_throttle": "10/min",
+        },
+        "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    }
+
+else:
+    print("DEPLOYED THROTTLE RATE:")
+    REST_FRAMEWORK = {
+        "DEFAULT_THROTTLE_CLASSES": [
+            "rest_framework.throttling.AnonRateThrottle",
+        ],
+        "DEFAULT_THROTTLE_RATES": {
+            "init_throttle": "1000/min",
+        },
+        "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    }
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

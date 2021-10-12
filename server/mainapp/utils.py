@@ -2,7 +2,6 @@ from django.http.response import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import response
-import requests
 
 from core.settings import AWS_BUCKET_FOLDER
 from .errors import (
