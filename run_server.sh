@@ -1,11 +1,11 @@
 #!/bin/bash
-echo "[STARTING-SERVER] [PORT] 5000"
+echo "[STARTING-SERVER] [PORT] 8000"
 
 echo "Looking for application..."
 cd server
 
 #STARTING APPLICATION
-python3 manage.py runserver 127.0.0.1:5000 &
+python3 manage.py runserver 127.0.0.1:8000 &
 
 cd ../
-echo "Running Django Server [5000]"
+echo "Running Django Server [8000]"
