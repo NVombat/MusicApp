@@ -2,9 +2,12 @@ from django.http.response import JsonResponse
 from rest_framework.views import APIView
 
 from .utils import recv_music_data, send_music_data
+from core.throttle import throttle
 
 
 class Uploads(APIView):
+    throttle_classes = [throttle]
+
     def post(self, request, **kwargs) -> JsonResponse:
         """Receiving user uploaded data via POST requests
 
@@ -23,6 +26,8 @@ class Uploads(APIView):
 
 
 class Posts(APIView):
+    throttle_classes = [throttle]
+
     def get(self, request, **kwargs) -> JsonResponse:
         """Sending user data when hit with GET requests
 
