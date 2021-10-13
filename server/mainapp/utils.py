@@ -31,7 +31,6 @@ def recv_music_data(request, **kwargs):
         email = request.data.get("Email")
         filename = request.data.get("Filename")
         uploadedFile = request.data.get("File")
-       
 
         print(name, email, filename, uploadedFile)
 
