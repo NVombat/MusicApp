@@ -31,6 +31,7 @@ def recv_music_data(request, **kwargs):
         email = request.data.get("Email")
         filename = request.data.get("Filename")
         uploadedFile = request.data.get("File")
+       
 
         print(name, email, filename, uploadedFile)
 
@@ -58,6 +59,7 @@ def recv_music_data(request, **kwargs):
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
     except Exception as e:
+        print(e)
         return response.JsonResponse(
             {"error": "Error Occured While Receiving Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,

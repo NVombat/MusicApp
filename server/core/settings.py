@@ -33,7 +33,7 @@ print("DEBUG VALUE:", DEBUG)
 USE_DATABASE = "MONGO" if DEBUG is False else "TEST"
 print("USE_DATABASE:", USE_DATABASE)
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -47,12 +47,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "mainapp.apps.MainappConfig",
     "rest_framework",
-    "storages",
+    "corsheaders",
+    "storages"
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
