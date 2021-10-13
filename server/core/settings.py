@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "mainapp.apps.MainappConfig",
     "rest_framework",
     "corsheaders",
-    "storages"
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -114,6 +114,13 @@ else:
         },
         "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/home/nvombat/Desktop/MusicApp/server/cache",
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
