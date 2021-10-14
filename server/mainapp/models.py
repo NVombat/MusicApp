@@ -1,3 +1,5 @@
+from django.http.response import JsonResponse
+from django.http import response
 from dotenv import load_dotenv
 import pymongo
 import os
@@ -82,7 +84,7 @@ class MusicData:
             None
 
         Returns:
-            Dictionary of dictionaries containing all db entries
+            response.JsonResponse
         """
         if data := self.db.find(
             {},
@@ -90,15 +92,20 @@ class MusicData:
                 "_id": 0,
             },
         ):
+            # data_response = {}
 
-            data_response = {}
+            # cnt = 1
+            # for val in data:
+            #     data_response[str(cnt)] = val
+            #     cnt = cnt + 1
 
-            cnt = 1
-            for val in data:
-                data_response[str(cnt)] = val
-                cnt = cnt + 1
+            # return data_response
 
-            return data_response
+            docs = list(data)
+            # docs.append({"success_status": True})
+
+            json_data = response.JsonResponse(docs, safe=False)
+            return json_data
 
         raise DataFetchingError("Error While Fetching Data")
 
