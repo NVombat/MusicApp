@@ -24,7 +24,7 @@ class MusicData:
         self.db = client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
 
     def insert_data(
-        self, name: str, email: str, filename: str, cloud_filename: str
+        self, name: str, email: str, filename: str, cloud_filename: str, object_url: str
     ) -> None:
         """Insert file name and data into db
 
@@ -33,6 +33,7 @@ class MusicData:
             email: User Email ID
             filename: Name of File
             cloud_filename: Name/Path of file in S3
+            object_url: URL of object in S3
 
         Returns:
             None
@@ -47,6 +48,7 @@ class MusicData:
             "Email": email,
             "Filename": filename,
             "CloudFilename": cloud_filename,
+            "ObjectURL": object_url,
         }
         self.db.insert_one(data)
 
@@ -108,20 +110,3 @@ class MusicData:
             return json_data
 
         raise DataFetchingError("Error While Fetching Data")
-
-
-# md = MusicData()
-# try:
-#     md.insert_data("Nikhill Vombatkere", "nv9824@srmist.edu.in", "stay.mp3", "files/nv9824/stay.mp3")
-#     md.insert_data("Aradhya Tripathi", "at5079@srmist.edu.in", "hello.mp3", "files/at5079/hello.mp3")
-#     md.insert_data("Sanah Sidhu", "ss6153@srmist.edu.in", "dream.mp3", "files/ss6153/dream.mp3")
-#     md.insert_data("Nikhill Vombatkere", "nv9824@srmist.edu.in", "done.mp3", "files/nv9824/done.mp3")
-# except FileAlreadyExistsForCurrentUserError as e:
-#     print("Error:", str(e))
-
-# try:
-#     md.delete_data("nv9824@srmist.edu.in", "done.mp3")
-# except FileDoesNotExistForCurrentUserError as e:
-#     print("Error:", str(e))
-
-# print(md.fetch_data())
