@@ -2,6 +2,8 @@ from django.http.response import JsonResponse
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import response
+from dotenv import load_dotenv
+import os
 
 from core.settings import AWS_BUCKET_FOLDER
 from .errors import (
@@ -12,6 +14,7 @@ from .errors import (
 
 from . import S3_Functions, Music_Data
 
+load_dotenv()
 
 def recv_music_data(request, **kwargs):
     """Handles data when user uploads through POST requests
@@ -37,8 +40,9 @@ def recv_music_data(request, **kwargs):
         filename = filename.lower()
         subfolder = email.split("@")[0]
         cloudFilename = AWS_BUCKET_FOLDER + subfolder + "/" + filename
+        objectURL = os.getenv("AWS_S3_OBJECT_URL_PREFIX") + cloudFilename
 
-        Music_Data.insert_data(name, email, filename, cloudFilename)
+        Music_Data.insert_data(name, email, filename, cloudFilename, objectURL)
 
         S3_Functions.upload_file_to_s3(cloudFilename, uploadedFile)
 
