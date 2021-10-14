@@ -79,10 +79,11 @@ def send_music_data(request, **kwargs):
         print("GET REQUEST")
 
         record = Music_Data.fetch_data()
-        record["success_status"] = True
-        print(record)
+        # record["success_status"] = True
+        # print(record)
 
-        return response.JsonResponse(record, status=status.HTTP_200_OK)
+        # return response.JsonResponse(record, status=status.HTTP_200_OK)
+        return record
 
     except DataFetchingError as dfe:
         return response.JsonResponse(
