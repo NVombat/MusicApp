@@ -24,7 +24,13 @@ class MusicData:
         self.db = client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
 
     def insert_data(
-        self, date: str, name: str, email: str, filename: str, cloud_filename: str, object_url: str
+        self,
+        date: str,
+        name: str,
+        email: str,
+        filename: str,
+        cloud_filename: str,
+        object_url: str,
     ) -> None:
         """Insert file name and data into db
 
