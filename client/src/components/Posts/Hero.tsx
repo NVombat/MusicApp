@@ -31,6 +31,7 @@ const Hero = () => {
             <ol>{item.Email}</ol>
             <ol>{item.Filename}</ol>
             <ol>{item.CloudFilename}</ol>
+            <a href={item.ObjectURL}>Download</a>
           </li>
         ))
       }
