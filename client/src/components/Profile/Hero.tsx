@@ -5,6 +5,7 @@ import ResetPassword from './ResetPasswordForm';
 
 const Hero = () => {
   const [userData, setUserData] = useState<any>([]);
+  const [reset, setReset] = useState<boolean>(false);
 
   useEffect(() => {
     axios
@@ -18,20 +19,35 @@ const Hero = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  const showReset = () => {
+    setReset(true);
+  };
+
   return (
     <div>
-      <div>
-        {
-          //@ts-ignore
-          userData.map((item, index) => (
-            <ol key={index}>
-              <li>{item.displayName}</li>
-              <li>{item.email}</li>
-            </ol>
-          ))
-        }
+      {
+        //@ts-ignore
+        userData.map((item, index) => (
+          <div>
+            <h1 className="text-2xl font-semibold flex justify-center mt-6">
+              Welcome, {item.displayName}
+            </h1>
+            <h2 className="text-2xl font-semibold flex justify-center mt-6">
+              Email - {item.email}
+            </h2>
+          </div>
+        ))
+      }
+
+      <div className="flex justify-center mt-5">
+        <button
+          onClick={showReset}
+          className="bg-blue-400 text-xl text-white font-bold px-2 py-1 rounded-lg"
+        >
+          Reset Your Password
+        </button>
       </div>
-      <ResetPassword />
+      {reset && <ResetPassword />}
     </div>
   );
 };

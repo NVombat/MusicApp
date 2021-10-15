@@ -25,6 +25,8 @@ const Upload = () => {
           setEmail(user.email);
           setName(user.displayName);
         });
+        console.log(typeof userData);
+
         console.log('email:', email, 'name:', name);
       })
       .catch((err) => console.log(err));
@@ -51,7 +53,7 @@ const Upload = () => {
       })
       .catch((err) => {
         console.log(err, err?.response);
-        console.log('messed up in catch block');
+        console.log('in catch block');
       });
   };
 

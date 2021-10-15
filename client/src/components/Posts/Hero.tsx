@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import Card from './Card';
+import { Downlaod } from '../../utils/icons/Index';
+
 const url = 'http://localhost:8000/api/posts';
 
 const Hero = () => {
@@ -26,13 +29,15 @@ const Hero = () => {
       {
         //@ts-ignore
         posts.map((item, index) => (
-          <li key={index}>
-            <ol>{item.Name}</ol>
-            <ol>{item.Email}</ol>
-            <ol>{item.Filename}</ol>
-            <ol>{item.CloudFilename}</ol>
-            <a href={item.ObjectURL}>Download</a>
-          </li>
+          <div className="flex justify-center items-center">
+            <Card
+              key={index}
+              link={item.ObjectURL}
+              downloadIcon={<Downlaod />}
+              name={item.Name}
+              filename={item.Filename}
+            />
+          </div>
         ))
       }
     </div>

@@ -6,3 +6,4 @@ export { default as Mic } from './Mic';
 export { default as Camera } from './Camera';
 export { default as Play } from './Play';
 export { default as Stop } from './Stop';
+export { default as Downlaod } from './Download';
