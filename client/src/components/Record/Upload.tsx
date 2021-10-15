@@ -1,18 +1,41 @@
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const url = 'http://localhost:8000/api/uploads';
 
 enum Inputs {
-  Name = 'Name',
-  Email = 'Email',
   File = 'File',
 }
 
 const Upload = () => {
+  const [userData, setUserData] = useState<any>([]);
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+
+  useEffect(() => {
+    axios
+      .post(`${process.env.REACT_APP_GET_USER}`, {
+        idToken: localStorage.getItem('token'),
+      })
+      .then((res) => {
+        //@ts-ignore
+        setUserData(res.data.users);
+        //@ts-ignore
+        userData.map((user) => {
+          setEmail(user.email);
+          setName(user.displayName);
+        });
+        console.log('email:', email, 'name:', name);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
-    let _name = (e.target as HTMLFormElement)[Inputs.Name].value;
-    let _email = 'abc@gmail.com';
+
+    let _name = name;
+    // Enter Dynamic Email option
+    let _email = email;
     let _file = (e.target as HTMLFormElement)[Inputs.File].files[0];
     const finalFormData = new FormData();
 
@@ -34,10 +57,7 @@ const Upload = () => {
 
   return (
     <div>
-      <h1 className="flex justify-center px-2 font-bold text-xl my-10">
-        Upload
-      </h1>
-      <div className="relative min-h-full flex flex-col sm:justify-center items-center ">
+      <div className="relative min-h-full flex flex-col sm:justify-center items-center mt-10">
         <div className="relative sm:max-w-sm w-full">
           <div className="card bg-blue-400 shadow-lg  w-full h-full rounded-3xl absolute  transform -rotate-6"></div>
           <div className="card bg-red-400 shadow-lg  w-full h-full rounded-3xl absolute  transform rotate-6"></div>
@@ -46,15 +66,6 @@ const Upload = () => {
               Upload Media
             </label>
             <form className="mt-10" onSubmit={submitForm}>
-              <div>
-                <label>Name</label>
-                <input
-                  name={Inputs.Name}
-                  type="text"
-                  placeholder="John Doe"
-                  className="mt-1 px-4 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0 focus:outline-none"
-                />
-              </div>
               <div className="mt-7">
                 <div>
                   <label>Choose File</label>
