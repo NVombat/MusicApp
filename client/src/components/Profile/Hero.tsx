@@ -3,13 +3,15 @@ import axios from 'axios';
 
 import ResetPassword from './ResetPasswordForm';
 
+const getUserDataURL = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+
 const Hero = () => {
   const [userData, setUserData] = useState<any>([]);
   const [reset, setReset] = useState<boolean>(false);
 
   useEffect(() => {
     axios
-      .post(`${process.env.REACT_APP_GET_USER}`, {
+      .post(getUserDataURL, {
         idToken: localStorage.getItem('token'),
       })
       .then((res) => {
