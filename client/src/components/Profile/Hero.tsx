@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 
+import AuthContext from '../../context/auth-context';
 import ResetPassword from './ResetPasswordForm';
+import UpdateProfile from './UpdateProfile';
 
 const getUserDataURL = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
 
 const Hero = () => {
   const [userData, setUserData] = useState<any>([]);
   const [reset, setReset] = useState<boolean>(false);
+  const [update, setUpdate] = useState<boolean>(false);
+  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
     axios
@@ -23,6 +27,12 @@ const Hero = () => {
 
   const showReset = () => {
     setReset(true);
+    setUpdate(false);
+  };
+
+  const showUpdate = () => {
+    setUpdate(true);
+    setReset(false);
   };
 
   return (
@@ -44,12 +54,19 @@ const Hero = () => {
       <div className="flex justify-center mt-5">
         <button
           onClick={showReset}
-          className="bg-blue-400 text-xl text-white font-bold px-2 py-1 rounded-lg"
+          className="bg-blue-400 text-xl text-white font-bold px-2 py-1 rounded-lg mx-2"
         >
           Reset Your Password
         </button>
+        <button
+          onClick={showUpdate}
+          className="bg-blue-400 text-xl text-white font-bold px-2 py-1 rounded-lg mx-2"
+        >
+          Update your Profile
+        </button>
       </div>
       {reset && <ResetPassword />}
+      {update && <UpdateProfile />}
     </div>
   );
 };
