@@ -33,7 +33,7 @@ print("DEBUG VALUE:", DEBUG)
 USE_DATABASE = "MONGO" if DEBUG is False else "TEST"
 print("USE_DATABASE:", USE_DATABASE)
 
-ALLOWED_HOSTS = [] if DEBUG is True else ["*"]
+ALLOWED_HOSTS = [] if DEBUG is True else ["musicappjtv.herokuapp.com"]
 
 
 # Application definition
