@@ -50,7 +50,7 @@ const EmailAuthForm = () => {
         );
         //@ts-ignore
         authCtx.login(data.idToken, expirationTime.toISOString());
-        history.replace('/');
+        history.replace('/profile');
       })
       .catch((err) => {
         setAuthError(true);
