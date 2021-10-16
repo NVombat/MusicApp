@@ -33,7 +33,7 @@ print("DEBUG VALUE:", DEBUG)
 USE_DATABASE = "MONGO" if DEBUG is False else "TEST"
 print("USE_DATABASE:", USE_DATABASE)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] if DEBUG is True else ["*"]
 
 
 # Application definition
@@ -92,7 +92,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 if DEBUG:
-    print("DEVELOPMENT THROTTLE RATE:")
+    print("THROTTLE RATE: DEVELOPMENT")
     REST_FRAMEWORK = {
         "DEFAULT_THROTTLE_CLASSES": [
             "rest_framework.throttling.AnonRateThrottle",
@@ -104,7 +104,7 @@ if DEBUG:
     }
 
 else:
-    print("DEPLOYED THROTTLE RATE:")
+    print("THROTTLE RATE: DEPLOYMENT")
     REST_FRAMEWORK = {
         "DEFAULT_THROTTLE_CLASSES": [
             "rest_framework.throttling.AnonRateThrottle",
