@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import axios from 'axios';
 
 const url = 'http://localhost:8000/api/uploads';
@@ -8,25 +9,30 @@ enum Inputs {
 }
 
 const Upload = () => {
-  const [userData, setUserData] = useState<any>([]);
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const history = useHistory();
+
+  const getUserDataURL = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
 
   useEffect(() => {
     axios
-      .post(`${process.env.REACT_APP_GET_USER}`, {
+      .post(getUserDataURL, {
         idToken: localStorage.getItem('token'),
       })
       .then((res) => {
+        console.log(res.data);
         //@ts-ignore
-        setUserData(res.data.users);
+        console.log(res.data.users[0].email, res.data.users[0].displayName);
         //@ts-ignore
-        userData.map((user) => {
-          setEmail(user.email);
-          setName(user.displayName);
-        });
-        console.log(typeof userData);
-
+        setEmail(res.data.users[0].email);
+        //@ts-ignore
+        setName(res.data.users[0].displayName);
+        //@ts-ignore
+        // userData.map((user) => {
+        //   setEmail(user.email);
+        //   setName(user.displayName);
+        // });
         console.log('email:', email, 'name:', name);
       })
       .catch((err) => console.log(err));
@@ -36,7 +42,6 @@ const Upload = () => {
     e.preventDefault();
 
     let _name = name;
-    // Enter Dynamic Email option
     let _email = email;
     let _file = (e.target as HTMLFormElement)[Inputs.File].files[0];
     const finalFormData = new FormData();
@@ -50,6 +55,7 @@ const Upload = () => {
       .post(url, finalFormData)
       .then((res) => {
         console.log(res);
+        history.replace('/posts');
       })
       .catch((err) => {
         console.log(err, err?.response);
