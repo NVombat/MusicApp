@@ -1,4 +1,3 @@
-from django.http.response import JsonResponse
 from django.http import response
 from dotenv import load_dotenv
 import pymongo
