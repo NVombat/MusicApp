@@ -33,7 +33,7 @@ print("DEBUG VALUE:", DEBUG)
 USE_DATABASE = "MONGO" if DEBUG is False else "TEST"
 print("USE_DATABASE:", USE_DATABASE)
 
-ALLOWED_HOSTS = [] #["*"]
+ALLOWED_HOSTS = []  # ["*"]
 
 
 # Application definition
