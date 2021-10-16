@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
 import axios from 'axios';
 
 const url = 'http://localhost:8000/api/uploads';
@@ -10,6 +11,7 @@ enum Inputs {
 const Upload = () => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const history = useHistory();
 
   const getUserDataURL = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
 
@@ -53,6 +55,7 @@ const Upload = () => {
       .post(url, finalFormData)
       .then((res) => {
         console.log(res);
+        history.replace('/posts');
       })
       .catch((err) => {
         console.log(err, err?.response);
