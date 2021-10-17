@@ -99,8 +99,10 @@ if DEBUG:
         ],
         "DEFAULT_THROTTLE_RATES": {
             "init_throttle": "10/min",
+            "anon": "10/min",
         },
         "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+        "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     }
 
 else:
@@ -111,8 +113,10 @@ else:
         ],
         "DEFAULT_THROTTLE_RATES": {
             "init_throttle": "1000/min",
+            "anon": "10/min",
         },
         "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+        "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     }
 
 CACHES = {
