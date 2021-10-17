@@ -25,11 +25,13 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("mainapp.urls")),
     path("docs/", include_docs_urls(title="MusicApp")),
-    path('schema/', get_schema_view(
-        title="MusicApp",
-        description="API for MusicApp",
-        version="1.0.0"
-    ), name='openapi-schema'),
+    path(
+        "schema/",
+        get_schema_view(
+            title="MusicApp", description="API for MusicApp", version="1.0.0"
+        ),
+        name="openapi-schema",
+    ),
 ]
 
 if settings.DEBUG:
