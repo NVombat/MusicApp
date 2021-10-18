@@ -37,10 +37,7 @@ class Uploads(APIView):
         """
         print("Dummy GET Request")
 
-        return response.JsonResponse(
-            {"dummy_status": True},
-            status=status.HTTP_200_OK
-        )
+        return response.JsonResponse({"dummy_status": True}, status=status.HTTP_200_OK)
 
 
 class Posts(APIView):
