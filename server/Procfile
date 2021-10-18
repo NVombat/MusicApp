@@ -1,1 +1,1 @@
-web: gunicorn core.wsgi
+web: gunicorn core.wsgi -p 8000
