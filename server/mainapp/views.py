@@ -26,6 +26,14 @@ class Uploads(APIView):
 
         return data
 
+        # print("Dummy POST Request")
+
+        # name = request.data.get("Name")
+
+        # return response.JsonResponse(
+        #     {"dummy_status": True, "Name": name}, status=status.HTTP_200_OK
+        # )
+
     def get(self, request, **kwargs) -> JsonResponse:
         """Sending dummy response for GET requests
 
@@ -58,3 +66,38 @@ class Posts(APIView):
         data = send_music_data(request, **kwargs)
 
         return data
+
+
+class Test(APIView):
+    throttle_classes = [throttle]
+
+    def post(self, request, **kwargs) -> JsonResponse:
+        """Receiving data via dummy POST requests
+
+        Args:
+            request ([type])
+
+        Returns:
+            JsonResponse
+        """
+
+        print("Dummy POST Request")
+
+        name = request.data.get("Name")
+
+        return response.JsonResponse(
+            {"dummy_status": True, "Name": name}, status=status.HTTP_200_OK
+        )
+
+    def get(self, request, **kwargs) -> JsonResponse:
+        """Sending dummy response for GET requests
+
+        Args:
+            request ([type])
+
+        Returns:
+            JsonResponse
+        """
+        print("Dummy GET Request")
+
+        return response.JsonResponse({"dummy_status": True}, status=status.HTTP_200_OK)
