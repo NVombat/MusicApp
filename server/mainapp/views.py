@@ -26,16 +26,8 @@ class Uploads(APIView):
 
         return data
 
-        # print("Dummy POST Request")
-
-        # name = request.data.get("Name")
-
-        # return response.JsonResponse(
-        #     {"dummy_status": True, "Name": name}, status=status.HTTP_200_OK
-        # )
-
     def get(self, request, **kwargs) -> JsonResponse:
-        """Sending dummy response for GET requests
+        """Dummy response for GET requests
 
         Args:
             request ([type])
@@ -90,7 +82,7 @@ class Test(APIView):
         )
 
     def get(self, request, **kwargs) -> JsonResponse:
-        """Sending dummy response for GET requests
+        """Dummy response for GET requests
 
         Args:
             request ([type])

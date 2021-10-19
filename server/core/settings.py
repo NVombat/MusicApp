@@ -119,22 +119,18 @@ else:
         "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-        "LOCATION": "/home/nvombat/Desktop/MusicApp/server/cache",
+if DEBUG:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+            "LOCATION": "/home/nvombat/Desktop/MusicApp/server/cache",
+        }
     }
-}
+else:
+    print("Deployment Does Not Support Caching")
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
 
 if USE_DATABASE == "MONGO":
     DATABASE = {"mongo_uri": os.getenv("MONGO_URI"), "db": os.getenv("MONGO_DB")}
