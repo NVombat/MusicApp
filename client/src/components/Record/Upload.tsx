@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 
-const url = 'http://localhost:8000/api/uploads';
-
 enum Inputs {
   File = 'File',
 }
@@ -47,7 +45,7 @@ const Upload = () => {
     finalFormData.append('Filename', _file.name);
 
     axios
-      .post(url, finalFormData)
+      .post(`${process.env.REACT_APP_POST_API}`, finalFormData)
       .then((res) => {
         console.log(res);
         history.replace('/posts');
