@@ -28,11 +28,6 @@ const Upload = () => {
         setEmail(res.data.users[0].email);
         //@ts-ignore
         setName(res.data.users[0].displayName);
-        //@ts-ignore
-        // userData.map((user) => {
-        //   setEmail(user.email);
-        //   setName(user.displayName);
-        // });
         console.log('email:', email, 'name:', name);
       })
       .catch((err) => console.log(err));
