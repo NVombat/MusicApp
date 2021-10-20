@@ -26,10 +26,10 @@ const Upload = () => {
         setEmail(res.data.users[0].email);
         //@ts-ignore
         setName(res.data.users[0].displayName);
-        console.log('email:', email, 'name:', name);
+        // console.log('email:', email, 'name:', name);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [email, getUserDataURL, name]);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
