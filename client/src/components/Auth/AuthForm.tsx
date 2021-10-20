@@ -115,13 +115,6 @@ const EmailAuthForm = () => {
                   Forget Password?
                 </span>
               </Link>
-              {/* <div className="flex mt-7 items-center text-center">
-                <hr className="border-gray-300 border-1 w-full rounded-md" />
-                <label className="block font-medium text-sm text-gray-600 w-full">
-                  Login Options
-                </label>
-                <hr className="border-gray-300 border-1 w-full rounded-md" />
-              </div> */}
 
               <div className="mt-7">
                 <div className="flex justify-center items-center">

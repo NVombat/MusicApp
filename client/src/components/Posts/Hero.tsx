@@ -4,14 +4,12 @@ import axios from 'axios';
 import Card from './Card';
 import { Downlaod } from '../../utils/icons/Index';
 
-const url = 'http://localhost:8000/api/posts';
-
 const Hero = () => {
   const [posts, setPosts] = useState<any>([]);
 
   useEffect(() => {
     axios
-      .get(url)
+      .get(`${process.env.REACT_APP_GET_API}`)
       .then((res) => {
         console.log('axios response', res.data);
         console.log('type of axios data', typeof res.data);

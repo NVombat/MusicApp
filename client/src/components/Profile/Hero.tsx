@@ -1,7 +1,6 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import AuthContext from '../../context/auth-context';
 import ResetPassword from './ResetPasswordForm';
 import UpdateProfile from './UpdateProfile';
 
@@ -11,7 +10,6 @@ const Hero = () => {
   const [userData, setUserData] = useState<any>([]);
   const [reset, setReset] = useState<boolean>(false);
   const [update, setUpdate] = useState<boolean>(false);
-  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
     axios

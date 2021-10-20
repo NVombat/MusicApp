@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
 
-const url = 'http://localhost:8000/api/uploads';
-
 enum Inputs {
   File = 'File',
 }
@@ -28,15 +26,10 @@ const Upload = () => {
         setEmail(res.data.users[0].email);
         //@ts-ignore
         setName(res.data.users[0].displayName);
-        //@ts-ignore
-        // userData.map((user) => {
-        //   setEmail(user.email);
-        //   setName(user.displayName);
-        // });
-        console.log('email:', email, 'name:', name);
+        // console.log('email:', email, 'name:', name);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [email, getUserDataURL, name]);
 
   const submitForm = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +45,7 @@ const Upload = () => {
     finalFormData.append('Filename', _file.name);
 
     axios
-      .post(url, finalFormData)
+      .post(`${process.env.REACT_APP_POST_API}`, finalFormData)
       .then((res) => {
         console.log(res);
         history.replace('/posts');
