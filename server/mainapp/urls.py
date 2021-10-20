@@ -1,4 +1,4 @@
-from .views import Test, Uploads, Posts
+from .views import Uploads, Posts
 from django.urls import path
 
 urlpatterns = [
