@@ -51,6 +51,7 @@ const EmailAuthForm = () => {
         //@ts-ignore
         authCtx.login(data.idToken, expirationTime.toISOString());
         history.replace('/profile');
+        alert('Make Sure you update your name in Update Profile Section');
       })
       .catch((err) => {
         setAuthError(true);
