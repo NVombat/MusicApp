@@ -1,9 +1,9 @@
-import { TeamData } from '../../data/Team';
-import Card from './Card';
+// import { TeamData } from '../../data/Team';
+// import Card from './Card';
 const Team = () => {
   return (
     <div>
-      <div className="flex justify-center items-center py-10 text-3xl font-bold">
+      {/* <div className="flex justify-center items-center py-10 text-3xl font-bold">
         Meet Our Team
       </div>
       <div className="flex justify-evenly items-center">
@@ -15,7 +15,7 @@ const Team = () => {
             desgination={item.designation}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
