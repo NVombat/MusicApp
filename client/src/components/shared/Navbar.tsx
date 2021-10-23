@@ -6,7 +6,7 @@ import AuthContext from '../../context/auth-context';
 import { NavLinks } from '../../data/Navbar';
 import NavBurger from '../../utils/icons/NavBurger';
 
-export const Navbar = () => {
+const Navbar = () => {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isLoggedIn;
   const history = useHistory();
@@ -101,3 +101,5 @@ export const Navbar = () => {
     </div>
   );
 };
+
+export default Navbar;
