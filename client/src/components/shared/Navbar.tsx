@@ -6,7 +6,7 @@ import AuthContext from '../../context/auth-context';
 import { NavLinks } from '../../data/Navbar';
 import NavBurger from '../../utils/icons/NavBurger';
 
-export const Navbar = () => {
+const Navbar = () => {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isLoggedIn;
   const history = useHistory();
@@ -26,7 +26,7 @@ export const Navbar = () => {
               className="text-xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
               to="/"
             >
-              JVT
+              VR1 Music App
             </Link>
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
@@ -101,3 +101,5 @@ export const Navbar = () => {
     </div>
   );
 };
+
+export default Navbar;
