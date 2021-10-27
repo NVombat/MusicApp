@@ -33,4 +33,4 @@ $ python3 manage.py runserver
 
 ## 🤝 Contributing
 
-Please read [`Contributing.md`]() for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [`Contributing.md`](https://github.com/NVombat/MusicApp/blob/main/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
