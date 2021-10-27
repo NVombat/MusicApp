@@ -8,15 +8,22 @@ const TopHeader = () => {
       </div>
       <div className="flex justify-between items-center mx-36">
         <div className="mx-4">
-          <div className="my-4 text-xl font-bold">What is VR1 Music App</div>
+          <div className="my-4 text-3xl font-bold">What is the VR1 Music App about</div>
           <div>
-            VR1 Music App is a Karaoke App in which you can register yourself
-            and then sing the song along with karaoke and also upload it for the
-            rest of the people to view it
+            We aim to come together to show solidarity towards the fact that even
+            with our differences, we are all one and alike. We should support
+            one another and accept every individual for who they are. It is our
+            aim to unite the globe through the power of music and celebrate that
+            we are indeed all one
+          </div>
+          <div className="py-4">
+            VR1 Music App is a Karaoke App where you can register yourself
+            and then sing the song along with the karaoke track. You can also upload
+            the recorded audio or video for the rest of the people to view
           </div>
           <div className="py-1">
-            We encourage other people as well to go record and upload the files
-            as well as appreciate other people's work.
+            We encourage everyone to go record and upload the files
+            as well as go, check out and appreciate other peoples recordings.
           </div>
         </div>
         <div className="mx-4">
