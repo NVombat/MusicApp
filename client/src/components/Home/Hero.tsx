@@ -9,16 +9,10 @@ const Hero = () => {
       <div className="flex flex-col justify-center items-center my-5">
         <h1 className="font-bold text-2xl uppercase py-1">VR1 Movement</h1>
         <h1 className="font-bold text-2xl uppercase py-1">
-          LET US SING AND UNITE US ALL
+          WE ARE ALL ONE
         </h1>
         <h1 className="font-bold text-2xl uppercase py-1">
-          WE ARE ONE – HERE WE ARE ALL ONE.
-        </h1>
-        <h1 className="font-bold text-2xl uppercase py-1">
-          THIS IS OUR WORLD. THIS IS YOUR WORLD. SAVE OUR WORLD
-        </h1>
-        <h1 className="font-bold text-2xl uppercase py-1">
-          THIS IS OUR SONG. SING ANY WHERE.DANCE EVERYWHERE.
+          LET US SING, DANCE AND UNITE THE GLOBE TOGETHER
         </h1>
       </div>
       <figure className="flex justify-center py-5">

@@ -34,7 +34,7 @@ const Faq = () => {
                     className="font-bold"
                     href="mailto:jvtfoundation@gmail.com"
                   >
-                    jvtfoundation@gmail.com
+                    jtvfoundation@gmail.com
                   </a>{' '}
                   and{' '}
                   <a className="font-bold" href="mailto:vr1movement@gmail.com">
