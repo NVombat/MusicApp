@@ -9,6 +9,10 @@ class FileDoesNotExistForCurrentUserError(MusicDataErrors):
     ...
 
 
+class ProfileDataUnavailableError(MusicDataErrors):
+    ...
+
+
 class DataFetchingError(MusicDataErrors):
     ...
 

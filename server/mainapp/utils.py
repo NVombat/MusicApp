@@ -7,6 +7,7 @@ import os
 from core.settings import AWS_BUCKET_FOLDER
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
+    ProfileDataUnavailableError,
     DataFetchingError,
     AWSDownloadError,
 )
@@ -99,5 +100,35 @@ def send_music_data(request, **kwargs):
     except Exception as e:
         return response.JsonResponse(
             {"error": "Error Occured While Sending Data", "success_status": False},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+def send_profile_data(request, **kwargs):
+    """Sends profile data when user requests through GET requests
+
+    Args:
+        request
+        **kwargs
+
+    Returns:
+        response.JsonResponse
+    """
+    try:
+        print("USER DATA GET REQUEST")
+        email = request.data.get("Email")
+        print(email)
+
+        user_data = Music_Data.fetch_user_data(email)
+        return user_data
+
+    except ProfileDataUnavailableError as pde:
+        return response.JsonResponse(
+            {"error": str(pde), "success_status": False},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+    except Exception as e:
+        return response.JsonResponse(
+            {"error": "Error Occured While Sending User Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
