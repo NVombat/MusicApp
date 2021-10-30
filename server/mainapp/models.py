@@ -8,6 +8,7 @@ from core.settings import DATABASE
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     FileDoesNotExistForCurrentUserError,
+    ProfileDataUnavailableError,
     DataFetchingError,
 )
 
@@ -45,7 +46,7 @@ class MusicData:
         """
         if self.db.find_one({"Email": email, "Filename": filename}):
             raise FileAlreadyExistsForCurrentUserError(
-                "File Already Exists With This Name For Current User"
+                f"File With Name {filename} Already Exists For User {email}"
             )
 
         data = {
@@ -82,10 +83,10 @@ class MusicData:
             )
         else:
             raise FileDoesNotExistForCurrentUserError(
-                "File Does Not Exist For The Current User"
+                f"File With Name {filename} Does Not Exist For The User {email}"
             )
 
-    def fetch_data(self) -> dict:
+    def fetch_data(self) -> response.JsonResponse:
         """Fetches all data from db
 
         Args:
@@ -96,23 +97,57 @@ class MusicData:
         """
         if data := self.db.find(
             {},
-            {
-                "_id": 0,
-            },
         ).sort("Date", -1):
-            # data_response = {}
-
-            # cnt = 1
-            # for val in data:
-            #     data_response[str(cnt)] = val
-            #     cnt = cnt + 1
-
-            # return data_response
-
             docs = list(data)
             # docs.append({"success_status": True})
 
             json_data = response.JsonResponse(docs, safe=False)
             return json_data
 
-        raise DataFetchingError("Error While Fetching Data")
+        raise DataFetchingError("There Are No Posts In The Database At This Moment")
+
+    def fetch_user_data(self, email) -> response.JsonResponse:
+        """Fetches specific user data from db
+
+        Args:
+            email: Email of user
+
+        Returns:
+            response.JsonResponse
+        """
+        if data := self.db.find_one({"Email": email}):
+            data.sort("Date", -1)
+            docs = list(data)
+            # docs.append({"success_status": True})
+
+            json_data = response.JsonResponse(docs, safe=False)
+            return json_data
+
+        raise ProfileDataUnavailableError(f"The User, {email}, Does Not Have Any Posts")
+
+    def delete_user_data(self, id: str, email: str) -> None:
+        """Delete specific user file from db
+
+        Args:
+            id: Object id
+            email: User Email ID
+
+        Returns:
+            None
+        """
+        if self.db.find_one(
+            {
+                "_id": id,
+                "Email": email,
+            }
+        ):
+            self.db.delete_one(
+                {
+                    "_id": id,
+                    "Email": email,
+                },
+            )
+        else:
+            raise FileDoesNotExistForCurrentUserError(
+                f"File With ID {id} Does Not Exist For The User {email}"
+            )
