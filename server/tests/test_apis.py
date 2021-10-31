@@ -26,6 +26,7 @@ class TestAPI(unittest.TestCase):
         cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
         cls.api_upload_url = "http://localhost:8000/api/uploads"
         cls.api_posts_url = "http://localhost:8000/api/posts"
+        cls.api_profile_url = "http://localhost:8000/api/profile"
 
     def test_data_recv(self):
         response = self.client.post(
@@ -36,6 +37,10 @@ class TestAPI(unittest.TestCase):
 
     def test_data_send(self):
         response = self.client.get(self.api_posts_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_data_send(self):
+        response = self.client.get(self.api_profile_url)
         self.assertEqual(response.status_code, 200)
 
     def test_fail_post(self):

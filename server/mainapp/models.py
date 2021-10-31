@@ -8,7 +8,6 @@ from core.settings import DATABASE
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     FileDoesNotExistForCurrentUserError,
-    ProfileDataUnavailableError,
     DataFetchingError,
 )
 
@@ -105,49 +104,3 @@ class MusicData:
             return json_data
 
         raise DataFetchingError("There Are No Posts In The Database At This Moment")
-
-    def fetch_user_data(self, email) -> response.JsonResponse:
-        """Fetches specific user data from db
-
-        Args:
-            email: Email of user
-
-        Returns:
-            response.JsonResponse
-        """
-        if data := self.db.find_one({"Email": email}):
-            data.sort("Date", -1)
-            docs = list(data)
-            # docs.append({"success_status": True})
-
-            json_data = response.JsonResponse(docs, safe=False)
-            return json_data
-
-        raise ProfileDataUnavailableError(f"The User, {email}, Does Not Have Any Posts")
-
-    def delete_user_data(self, id: str, email: str) -> None:
-        """Delete specific user file from db
-
-        Args:
-            id: Object id
-            email: User Email ID
-
-        Returns:
-            None
-        """
-        if self.db.find_one(
-            {
-                "_id": id,
-                "Email": email,
-            }
-        ):
-            self.db.delete_one(
-                {
-                    "_id": id,
-                    "Email": email,
-                },
-            )
-        else:
-            raise FileDoesNotExistForCurrentUserError(
-                f"File With ID {id} Does Not Exist For The User {email}"
-            )
