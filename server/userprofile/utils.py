@@ -2,9 +2,7 @@ from rest_framework import status
 from django.http import response
 from dotenv import load_dotenv
 
-from .errors import (
-    ProfileDataUnavailableError
-)
+from .errors import ProfileDataUnavailableError
 from . import User_Data
 
 load_dotenv()

@@ -12,6 +12,7 @@ from .errors import (
 
 load_dotenv()
 
+
 class UserData:
     def __init__(self) -> None:
         """
