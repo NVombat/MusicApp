@@ -30,11 +30,15 @@ class UserData:
         Returns:
             response.JsonResponse
         """
-        if data := self.db.find_one({"Email": email}):
+        if data := self.db.find(
+            {"Email": email},
+            {
+                "_id": 0,
+            },
+        ):
             data.sort("Date", -1)
             docs = list(data)
             # docs.append({"success_status": True})
-
             json_data = response.JsonResponse(docs, safe=False)
             return json_data
 
@@ -52,13 +56,13 @@ class UserData:
         """
         if self.db.find_one(
             {
-                "_id": id,
+                "ID": id,
                 "Email": email,
             }
         ):
             self.db.delete_one(
                 {
-                    "_id": id,
+                    "ID": id,
                     "Email": email,
                 },
             )

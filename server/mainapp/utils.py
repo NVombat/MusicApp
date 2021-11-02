@@ -1,19 +1,14 @@
 from rest_framework import status
 from django.http import response
-from dotenv import load_dotenv
 import datetime as d
-import os
 
-from core.settings import AWS_BUCKET_FOLDER
+from core.settings import AWS_BUCKET_FOLDER, AWS_OBJECT_URL_PREFIX
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     DataFetchingError,
     AWSDownloadError,
 )
-
 from . import S3_Functions, Music_Data
-
-load_dotenv()
 
 
 def recv_music_data(request, **kwargs) -> response.JsonResponse:
@@ -42,7 +37,7 @@ def recv_music_data(request, **kwargs) -> response.JsonResponse:
         filename = filename.lower()
         subfolder = email.split("@")[0]
         cloudFilename = AWS_BUCKET_FOLDER + subfolder + "/" + filename
-        objectURL = os.getenv("AWS_S3_OBJECT_URL_PREFIX") + cloudFilename
+        objectURL = AWS_OBJECT_URL_PREFIX + cloudFilename
 
         Music_Data.insert_data(date, name, email, filename, cloudFilename, objectURL)
 

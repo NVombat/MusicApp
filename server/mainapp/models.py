@@ -1,10 +1,10 @@
 from django.http import response
 from dotenv import load_dotenv
 import pymongo
+import uuid
 import os
 
 from core.settings import DATABASE
-
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     FileDoesNotExistForCurrentUserError,
@@ -21,6 +21,21 @@ class MusicData:
         """
         client = pymongo.MongoClient(DATABASE["mongo_uri"])
         self.db = client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
+
+    def generate_id(self) -> str:
+        """Generates a unique hex object id
+
+        Args:
+            None
+
+        Returns:
+            str
+        """
+        uid = uuid.uuid4()
+        obj_id = uid.hex
+        if self.db.find_one({"ID": obj_id}):
+            self.generate_id()
+        return obj_id
 
     def insert_data(
         self,
@@ -49,6 +64,7 @@ class MusicData:
             )
 
         data = {
+            "ID": self.generate_id(),
             "Date": date,
             "Name": name,
             "Email": email,
@@ -96,6 +112,9 @@ class MusicData:
         """
         if data := self.db.find(
             {},
+            {
+                "_id": 0,
+            },
         ).sort("Date", -1):
             docs = list(data)
             # docs.append({"success_status": True})
