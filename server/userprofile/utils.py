@@ -1,11 +1,8 @@
 from rest_framework import status
 from django.http import response
-from dotenv import load_dotenv
 
 from .errors import ProfileDataUnavailableError
 from . import User_Data
-
-load_dotenv()
 
 
 def send_profile_data(request, **kwargs) -> response.JsonResponse:
@@ -29,7 +26,7 @@ def send_profile_data(request, **kwargs) -> response.JsonResponse:
     except ProfileDataUnavailableError as pde:
         return response.JsonResponse(
             {"error": str(pde), "success_status": False},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status=status.HTTP_404_NOT_FOUND,
         )
     except Exception as e:
         return response.JsonResponse(
