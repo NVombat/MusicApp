@@ -31,12 +31,10 @@ class UserData:
             response.JsonResponse
         """
         if data := self.db.find(
-            {
-                "Email": email
-            },
+            {"Email": email},
             {
                 "_id": 0,
-            }
+            },
         ):
             data.sort("Date", -1)
             docs = list(data)

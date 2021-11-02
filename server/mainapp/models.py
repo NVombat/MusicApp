@@ -114,7 +114,7 @@ class MusicData:
             {},
             {
                 "_id": 0,
-            }
+            },
         ).sort("Date", -1):
             docs = list(data)
             # docs.append({"success_status": True})
