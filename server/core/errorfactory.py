@@ -1,3 +1,7 @@
+class CredentialErrors(Exception):
+    ...
+
+
 class MusicDataErrors(Exception):
     ...
 
