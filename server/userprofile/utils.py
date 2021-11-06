@@ -66,6 +66,9 @@ def delete_profile_data(request, **kwargs) -> response.JsonResponse:
         )
     except Exception as e:
         return response.JsonResponse(
-            {"error": "Error Occured While Deleting User Data", "success_status": False},
+            {
+                "error": "Error Occured While Deleting User Data",
+                "success_status": False,
+            },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )

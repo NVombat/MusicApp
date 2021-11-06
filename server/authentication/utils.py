@@ -4,6 +4,7 @@ from django.http import response
 from .errors import InvalidUserCredentialsError, UserDoesNotExistError, UserExistsError
 from . import User_Auth
 
+
 def register_user(request, **kwargs) -> response.JsonResponse:
     """Handles data when user registers through POST requests
 
@@ -26,7 +27,7 @@ def register_user(request, **kwargs) -> response.JsonResponse:
 
         User_Auth.insert_user(name, email, password)
 
-        #GENERATE TOKEN
+        # GENERATE TOKEN
         return response.JsonResponse(
             {"auth_status": True},
             status=status.HTTP_200_OK,
@@ -40,7 +41,10 @@ def register_user(request, **kwargs) -> response.JsonResponse:
     except Exception as e:
         print(e)
         return response.JsonResponse(
-            {"error": "Error Occured While Receiving Registration Data", "auth_status": False},
+            {
+                "error": "Error Occured While Receiving Registration Data",
+                "auth_status": False,
+            },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
@@ -65,11 +69,11 @@ def login_user(request, **kwargs) -> response.JsonResponse:
         print(email, password)
 
         if User_Auth.check_hash(email, password):
-            #GENERATE TOKEN
+            # GENERATE TOKEN
             return response.JsonResponse(
-            {"auth_status": True},
-            status=status.HTTP_200_OK,
-        )
+                {"auth_status": True},
+                status=status.HTTP_200_OK,
+            )
 
     except UserDoesNotExistError as udne:
         return response.JsonResponse(
@@ -84,9 +88,13 @@ def login_user(request, **kwargs) -> response.JsonResponse:
     except Exception as e:
         print(e)
         return response.JsonResponse(
-            {"error": "Error Occured While Receiving Registration Data", "auth_status": False},
+            {
+                "error": "Error Occured While Receiving Registration Data",
+                "auth_status": False,
+            },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
+
 
 def reset_pwd(request, **kwargs) -> response.JsonResponse:
     """Handles data when user resets password through POST requests
