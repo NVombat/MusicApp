@@ -1,4 +1,4 @@
-class CredentialErrors(Exception):
+class AuthenticationErrors(Exception):
     ...
 
 

@@ -33,3 +33,15 @@ def send_profile_data(request, **kwargs) -> response.JsonResponse:
             {"error": "Error Occured While Sending User Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
+
+def delete_profile_data(request, **kwargs) -> response.JsonResponse:
+    """Deletes profile data when user requests through DELETE requests
+
+    Args:
+        request
+        **kwargs
+
+    Returns:
+        response.JsonResponse
+    """
+    pass
