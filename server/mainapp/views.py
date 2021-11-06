@@ -22,9 +22,9 @@ class Uploads(APIView):
 
         print("Receiving Data API")
 
-        data = recv_music_data(request, **kwargs)
+        upload_data = recv_music_data(request, **kwargs)
 
-        return data
+        return upload_data
 
 
 class Posts(APIView):
@@ -43,6 +43,6 @@ class Posts(APIView):
 
         print("Sending Data API")
 
-        data = send_music_data(request, **kwargs)
+        post_data = send_music_data(request, **kwargs)
 
-        return data
+        return post_data

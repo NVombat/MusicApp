@@ -2,7 +2,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.http import response
 
-from .utils import send_profile_data
+from .utils import send_profile_data, delete_profile_data
 from core.throttle import throttle
 
 
@@ -22,9 +22,9 @@ class Profile(APIView):
 
         print("Sending Profile Data API")
 
-        data = send_profile_data(request, **kwargs)
+        profile_data = send_profile_data(request, **kwargs)
 
-        return data
+        return profile_data
 
     def delete(self, request, **kwargs) -> response.JsonResponse:
         """Deleting specific user data when hit with DELETE requests
@@ -38,4 +38,6 @@ class Profile(APIView):
 
         print("Deleting Profile Data API")
 
-        pass
+        delete_data = delete_profile_data(request, **kwargs)
+
+        return delete_data
