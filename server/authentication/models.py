@@ -1,9 +1,9 @@
-from django.http import response
 from dotenv import load_dotenv
 from datetime import datetime
 import hashlib, binascii
 import pymongo
 import random
+import string
 import os
 
 from core.settings import DATABASE
@@ -25,6 +25,26 @@ class UserAuth:
         client = pymongo.MongoClient(DATABASE["mongo_uri"])
         self.db = client[DATABASE["db"]][os.getenv("USER_DATA_COLLECTION")]
 
+    def generate_user_id(self) -> str:
+        """Generates a unique user id
+
+        Args:
+            None
+
+        Returns:
+            str
+        """
+        uid = "".join(
+            random.choice(
+                string.ascii_uppercase + string.ascii_lowercase + string.digits
+            )
+            for _ in range(16)
+        )
+
+        if self.db.find_one({"UID": uid}):
+            uid = self.generate_user_id()
+        return uid
+
     def insert_user(self, name: str, email: str, pwd: str) -> None:
         """Insert user into collection
 
@@ -40,7 +60,12 @@ class UserAuth:
             raise UserExistsError("User Already Exists")
         else:
             pwd = self.hash_password(pwd)
-            rec = {"Username": name, "Email": email, "Password": pwd}
+            rec = {
+                "UID": self.generate_user_id(),
+                "Username": name,
+                "Email": email,
+                "Password": pwd,
+            }
             self.db.insert_one(rec)
 
     def add_verif_code(self, email: str, check_recursive_correctness: int) -> int:
@@ -60,17 +85,11 @@ class UserAuth:
         #    verif_code = random.randint(100000, 999999)
         verif_code = random.randint(100000, 999999)
 
-        print("VERIF CODE BEFORE IF:", verif_code)
-
         if value := self.db.find_one({"verif_code": verif_code}):
-            print("Verification code already exists, Entering RECURSIVE function")
-            self.add_verif_code(email, 1)
+            verif_code = self.add_verif_code(email, 1)
 
         else:
-            print("ELSE VERIF CODE:", verif_code)
-            # verif_code_init_timestamp = datetime.strftime(datetime.now(), format="%H:%M:%S")
             verif_code_init_timestamp = datetime.now()
-            print("Current DATETIME:", verif_code_init_timestamp)
             self.db.update_one(
                 {"Email": email},
                 {
@@ -81,7 +100,6 @@ class UserAuth:
                 },
             )
 
-            print(self.db.find_one({"Email": email}))
             return verif_code
 
     def check_verif_code(self, code: int) -> bool:
@@ -106,17 +124,10 @@ class UserAuth:
                     {"Email": email},
                     {"$unset": {"verif_code": "", "timestamp_created": ""}},
                 )
-                print("Verification Code Expired, Try Again To Generate New Code")
-                # return False
                 raise InvalidVerificationError("Verification Code Expired!")
             else:
-                print(
-                    "Removed Verification Code & Timestamp as code was used successfully"
-                )
                 return True
 
-        print("Verif Code doesnt match or may not exist")
-        # return False
         raise InvalidVerificationError("Invalid Verification Code")
 
     def hash_password(self, pwd: str) -> str:
@@ -181,8 +192,6 @@ class UserAuth:
                     "$unset": {"verif_code": "", "timestamp_created": ""},
                 },
             )
-            print("Password Reset Successfully & verification code deleted")
             return True
-        print("Incorrect Verification Code")
-        # return False
+
         raise InvalidVerificationError("Incorrect Verification Code")
