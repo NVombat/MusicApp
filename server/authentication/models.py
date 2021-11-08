@@ -12,6 +12,7 @@ from .errors import (
     InvalidVerificationError,
     UserDoesNotExistError,
     UserExistsError,
+    InvalidUIDError,
 )
 
 load_dotenv()
@@ -25,7 +26,7 @@ class UserAuth:
         client = pymongo.MongoClient(DATABASE["mongo_uri"])
         self.db = client[DATABASE["db"]][os.getenv("USER_DATA_COLLECTION")]
 
-    def generate_user_id(self) -> str:
+    def generate_uid(self) -> str:
         """Generates a unique user id
 
         Args:
@@ -42,8 +43,38 @@ class UserAuth:
         )
 
         if self.db.find_one({"UID": uid}):
-            uid = self.generate_user_id()
+            uid = self.generate_uid()
         return uid
+
+    def get_uid(self, email: str) -> str:
+        """Fetches user id for particular user
+
+        Args:
+            email: User Email ID
+
+        Returns:
+            str
+        """
+        if value := self.db.find_one({"Email": email}):
+            uid = value["UID"]
+            return uid
+
+        raise UserDoesNotExistError(f"User {email} Does Not Exist")
+
+    def validate_uid(self, uid: str) -> bool:
+        """Validates user id for particular user
+
+        Args:
+            uid: User ID
+
+        Returns:
+            bool
+        """
+        value = self.db.find_one({"UID": uid})
+        if value:
+            return True
+
+        raise InvalidUIDError(f"User With UID {uid} NOT Found")
 
     def insert_user(self, name: str, email: str, pwd: str) -> None:
         """Insert user into collection
@@ -61,7 +92,7 @@ class UserAuth:
         else:
             pwd = self.hash_password(pwd)
             rec = {
-                "UID": self.generate_user_id(),
+                "UID": self.generate_uid(),
                 "Username": name,
                 "Email": email,
                 "Password": pwd,

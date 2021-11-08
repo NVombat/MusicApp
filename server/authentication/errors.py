@@ -15,3 +15,7 @@ class UserDoesNotExistError(AuthenticationErrors):
 
 class UserExistsError(AuthenticationErrors):
     ...
+
+
+class InvalidUIDError(AuthenticationErrors):
+    ...

@@ -2,7 +2,7 @@ from rest_framework import status
 from django.http import response
 
 from .errors import InvalidUserCredentialsError, UserDoesNotExistError, UserExistsError
-from . import User_Auth
+from . import Token_Auth, User_Auth
 
 
 def register_user(request, **kwargs) -> response.JsonResponse:
@@ -26,10 +26,17 @@ def register_user(request, **kwargs) -> response.JsonResponse:
         print(name, email, password)
 
         User_Auth.insert_user(name, email, password)
+        uid = User_Auth.get_uid(email)
+        payload = {"id": uid}
 
-        # GENERATE TOKEN
+        token = Token_Auth.generate_token(
+            payload=payload, expiry=1, get_refresh=True, refresh_exipry=12
+        )
         return response.JsonResponse(
-            {"auth_status": True},
+            data={
+                "access_token": token["access_token"],
+                "refresh_token": token["refresh_token"],
+            },
             status=status.HTTP_200_OK,
         )
 
@@ -37,6 +44,11 @@ def register_user(request, **kwargs) -> response.JsonResponse:
         return response.JsonResponse(
             {"error": str(uee), "auth_status": False},
             status=status.HTTP_400_BAD_REQUEST,
+        )
+    except UserDoesNotExistError as udne:
+        return response.JsonResponse(
+            {"error": str(udne), "auth_status": False},
+            status=status.HTTP_404_NOT_FOUND,
         )
     except Exception as e:
         print(e)
@@ -69,16 +81,24 @@ def login_user(request, **kwargs) -> response.JsonResponse:
         print(email, password)
 
         if User_Auth.check_hash(email, password):
-            # GENERATE TOKEN
+            uid = User_Auth.get_uid(email)
+            payload = {"id": uid}
+
+            token = Token_Auth.generate_token(
+                payload=payload, expiry=1, get_refresh=True, refresh_exipry=12
+            )
             return response.JsonResponse(
-                {"auth_status": True},
+                data={
+                    "access_token": token["access_token"],
+                    "refresh_token": token["refresh_token"],
+                },
                 status=status.HTTP_200_OK,
             )
 
     except UserDoesNotExistError as udne:
         return response.JsonResponse(
             {"error": str(udne), "auth_status": False},
-            status=status.HTTP_400_BAD_REQUEST,
+            status=status.HTTP_404_NOT_FOUND,
         )
     except InvalidUserCredentialsError as ice:
         return response.JsonResponse(
