@@ -48,8 +48,10 @@ def delete_profile_data(request, **kwargs) -> response.JsonResponse:
     try:
         print("USER DATA DELETE REQUEST")
 
-        pid = request.data.get("ID")
+        pid = request.data.get("PID")
         email = request.data.get("Email")
+        # pid = request.query_params.get("PID")
+        # email = request.query_params.get("Email")
         print(pid, email)
 
         User_Data.delete_user_data(pid, email)

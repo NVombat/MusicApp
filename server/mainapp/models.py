@@ -33,7 +33,7 @@ class MusicData:
         """
         pid = uuid.uuid4().hex
 
-        if self.db.find_one({"ID": pid}):
+        if self.db.find_one({"PID": pid}):
             pid = self.generate_id()
         return pid
 
@@ -64,7 +64,7 @@ class MusicData:
             )
 
         data = {
-            "ID": self.generate_id(),
+            "PID": self.generate_id(),
             "Date": date,
             "Name": name,
             "Email": email,
