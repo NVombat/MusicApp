@@ -10,7 +10,9 @@ class TokenAuth:
     def __init__(self):
         self.signature = os.getenv("SECRET_KEY")
 
-    def generate_token(self, payload: dict, expiry: int=1, get_refresh: bool=False, **kwargs):
+    def generate_token(
+        self, payload: dict, expiry: int = 1, get_refresh: bool = False, **kwargs
+    ):
         current_time = datetime.utcnow()
         payload["exp"] = current_time + timedelta(hours=expiry)
         access_token = jwt.encode(payload, key=self.signature)
