@@ -17,7 +17,8 @@ def send_profile_data(request, **kwargs) -> response.JsonResponse:
     """
     try:
         print("USER DATA GET REQUEST")
-        email = request.data.get("Email")
+
+        email = request.query_params.get("Email")
         print(email)
 
         user_data = User_Data.fetch_user_data(email)
@@ -48,10 +49,8 @@ def delete_profile_data(request, **kwargs) -> response.JsonResponse:
     try:
         print("USER DATA DELETE REQUEST")
 
-        pid = request.data.get("PID")
-        email = request.data.get("Email")
-        # pid = request.query_params.get("PID")
-        # email = request.query_params.get("Email")
+        pid = request.query_params.get("PID")
+        email = request.query_params.get("Email")
         print(pid, email)
 
         User_Data.delete_user_data(pid, email)
