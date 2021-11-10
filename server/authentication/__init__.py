@@ -1,5 +1,5 @@
-from .models import UserAuth
 from .issue_jwt import TokenAuth
+from .models import UserAuth
 
-User_Auth = UserAuth()
 Token_Auth = TokenAuth()
+User_Auth = UserAuth()

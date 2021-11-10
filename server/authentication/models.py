@@ -42,7 +42,7 @@ class UserAuth:
             for _ in range(16)
         )
 
-        if self.db.find_one({"UID": uid}):
+        if self.db.find_one({"user_id": uid}):
             uid = self.generate_uid()
         return uid
 
@@ -56,7 +56,7 @@ class UserAuth:
             str
         """
         if value := self.db.find_one({"Email": email}):
-            uid = value["UID"]
+            uid = value["user_id"]
             return uid
 
         raise UserDoesNotExistError(f"User {email} Does Not Exist")
@@ -70,11 +70,11 @@ class UserAuth:
         Returns:
             bool
         """
-        value = self.db.find_one({"UID": uid})
+        value = self.db.find_one({"user_id": uid})
         if value:
             return True
 
-        raise InvalidUIDError(f"User With UID {uid} NOT Found")
+        raise InvalidUIDError(f"User With user_id {uid} NOT Found")
 
     def insert_user(self, name: str, email: str, pwd: str) -> None:
         """Insert user into collection
@@ -92,7 +92,7 @@ class UserAuth:
         else:
             pwd = self.hash_password(pwd)
             rec = {
-                "UID": self.generate_uid(),
+                "user_id": self.generate_uid(),
                 "Username": name,
                 "Email": email,
                 "Password": pwd,

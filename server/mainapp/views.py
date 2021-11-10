@@ -1,13 +1,13 @@
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.http import response
 
 from .utils import recv_music_data, send_music_data
+from authentication import validate
 from core.throttle import throttle
 
 
 class Uploads(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [validate.ValidateUser]
     throttle_classes = [throttle]
 
     def post(self, request, **kwargs) -> response.JsonResponse:
@@ -28,7 +28,7 @@ class Uploads(APIView):
 
 
 class Posts(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [validate.ValidateUser]
     throttle_classes = [throttle]
 
     def get(self, request, **kwargs) -> response.JsonResponse:
