@@ -32,6 +32,8 @@ def register_user(request, **kwargs) -> response.JsonResponse:
         token = Token_Auth.generate_token(
             payload=payload, expiry=1, get_refresh=True, refresh_exipry=12
         )
+        User_Auth.add_token(email, token["refresh_token"], token["access_token"])
+
         return response.JsonResponse(
             data={
                 "access_token": token["access_token"],
@@ -87,6 +89,8 @@ def login_user(request, **kwargs) -> response.JsonResponse:
             token = Token_Auth.generate_token(
                 payload=payload, expiry=1, get_refresh=True, refresh_exipry=12
             )
+            User_Auth.add_token(email, token["refresh_token"], token["access_token"])
+
             return response.JsonResponse(
                 data={
                     "access_token": token["access_token"],

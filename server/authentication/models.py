@@ -11,6 +11,7 @@ from .errors import (
     InvalidUserCredentialsError,
     InvalidVerificationError,
     UserDoesNotExistError,
+    InvalidTokenError,
     UserExistsError,
     InvalidUIDError,
 )
@@ -75,6 +76,74 @@ class UserAuth:
             return True
 
         raise InvalidUIDError(f"User With user_id {uid} NOT Found")
+
+    def add_token(self, email: str, ref_tok: str, acc_tok: str) -> bool:
+        """Add Tokens To User Details
+
+        Args:
+            email: User Email ID
+            ref_tok: Refresh Token
+            acc_tok: Access Token
+
+        Returns:
+            bool
+        """
+        if self.db.find_one({"Email": email}):
+            self.db.update_one(
+                {"Email": email},
+                {
+                    "$set": {
+                        "refresh_token": ref_tok,
+                        "access_token": acc_tok,
+                    }
+                },
+            )
+            return True
+        else:
+            raise UserDoesNotExistError(f"User {email} Does Not Exist")
+
+    def remove_token(self, email: str):
+        """Removes Tokens From User Details
+
+        Args:
+            email: User Email ID
+
+        Returns:
+            bool
+        """
+        if self.db.find_one({"Email": email}):
+            self.db.update_one(
+                {"Email": email},
+                {
+                    "$unset": {
+                        "refresh_token": "",
+                        "access_token": ""
+                        }
+                },
+            )
+            return True
+        else:
+            raise UserDoesNotExistError(f"User {email} Does Not Exist")
+
+    def validate_token(self, token: str) -> dict:
+        """Validates token for particular user
+
+        Args:
+            token: access_token
+
+        Returns:
+            dict
+        """
+        value = self.db.find_one({"access_token": token})
+        if value:
+            data = {
+                "refresh_token": value["refresh_token"],
+                "access_token":  value["access_token"],
+
+            }
+            return data
+
+        raise InvalidTokenError("Access Token Does Not Exist")
 
     def insert_user(self, name: str, email: str, pwd: str) -> None:
         """Insert user into collection

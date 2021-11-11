@@ -1,6 +1,6 @@
 from rest_framework.permissions import BasePermission
 
-from .errors import InvalidUIDError
+from .errors import InvalidTokenError
 from . import User_Auth
 
 
@@ -16,10 +16,10 @@ class ValidateUser(BasePermission):
             return False
 
         try:
-            User_Auth.validate_uid(token)
+            User_Auth.validate_token(token)
 
-        except InvalidUIDError as iue:
-            print("Error:", str(iue))
+        except InvalidTokenError as ite:
+            print("Error:", str(ite))
             return False
 
         setattr(request, "user_id", token)
