@@ -114,12 +114,7 @@ class UserAuth:
         if self.db.find_one({"Email": email}):
             self.db.update_one(
                 {"Email": email},
-                {
-                    "$unset": {
-                        "refresh_token": "",
-                        "access_token": ""
-                        }
-                },
+                {"$unset": {"refresh_token": "", "access_token": ""}},
             )
             return True
         else:
@@ -138,8 +133,7 @@ class UserAuth:
         if value:
             data = {
                 "refresh_token": value["refresh_token"],
-                "access_token":  value["access_token"],
-
+                "access_token": value["access_token"],
             }
             return data
 
