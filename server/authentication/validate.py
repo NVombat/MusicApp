@@ -1,7 +1,9 @@
+import jwt
 from rest_framework.permissions import BasePermission
+import jwt
 
-from .errors import InvalidTokenError
-from . import User_Auth
+from .errors import InvalidTokenError, InvalidUIDError
+from . import User_Auth, Token_Auth
 
 
 class ValidateUser(BasePermission):
@@ -16,10 +18,18 @@ class ValidateUser(BasePermission):
             return False
 
         try:
-            User_Auth.validate_uid()
+            data = Token_Auth.decode_token(token)
 
         except InvalidTokenError as ite:
             print("Error:", str(ite))
+            return False
+
+        try:
+            user_id = data[1]["id"]
+            User_Auth.validate_uid(user_id)
+
+        except InvalidUIDError as iue:
+            print("Error:", str(iue))
             return False
 
         setattr(request, "user_id", token)

@@ -5,7 +5,17 @@ import os
 load_dotenv()
 
 
-def send_feedback_mail(email: str, name: str, message: str):
+def send_feedback_mail(email: str, name: str, message: str) -> None:
+    """Sends Feedback Mail To User & Admin
+
+    Args:
+        Email: User Email ID
+        Name: Name Of User
+        Message: User Feedback Message
+
+    Returns:
+        None
+    """
     backemail_add = os.getenv("BACKEND_MAIL_ADDR")
     backemail_pwd = os.getenv("BACKEND_MAIL_PWD")
 
@@ -24,5 +34,4 @@ def send_feedback_mail(email: str, name: str, message: str):
 
     server.sendmail(backemail_add, email, msg1)
     server.sendmail(email, backemail_add, msg2)
-    print("MAIL SENT SUCCESSFULLY")
     server.quit()

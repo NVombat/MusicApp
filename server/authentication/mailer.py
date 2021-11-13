@@ -7,7 +7,15 @@ from . import UserAuth
 load_dotenv()
 
 
-def send_reset_pwd_mail(email: str):
+def send_reset_pwd_mail(email: str) -> None:
+    """Sends User Reset Password Mail
+
+    Args:
+        Email: User Email ID
+
+    Returns:
+        None
+    """
     backemail_add = os.getenv("BACKEND_MAIL_ADDR")
     backemail_pwd = os.getenv("BACKEND_MAIL_PWD")
 
@@ -25,5 +33,4 @@ def send_reset_pwd_mail(email: str):
 
     # Sends the mail with the data and quits the server
     server.sendmail(backemail_add, email, msg)
-    print("MAIL SENT SUCCESSFULLY")
     server.quit()
