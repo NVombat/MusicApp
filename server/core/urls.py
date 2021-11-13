@@ -23,8 +23,9 @@ from django.contrib import admin
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include("mainapp.urls")),
-    path("api/", include("userprofile.urls")),
+    path("api/app/", include("mainapp.urls")),
+    path("api/user/", include("userprofile.urls")),
+    path("api/auth/", include("authentication.urls")),
     path("docs/", include_docs_urls(title="MusicApp")),
     path(
         "schema/",

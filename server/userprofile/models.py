@@ -44,11 +44,11 @@ class UserData:
 
         raise ProfileDataUnavailableError(f"The User, {email}, Does Not Have Any Posts")
 
-    def delete_user_data(self, id: str, email: str) -> None:
+    def delete_user_data(self, pid: str, email: str) -> None:
         """Delete specific user file from db
 
         Args:
-            id: Object id
+            pid: Object ID
             email: User Email ID
 
         Returns:
@@ -56,17 +56,17 @@ class UserData:
         """
         if self.db.find_one(
             {
-                "ID": id,
+                "PID": pid,
                 "Email": email,
             }
         ):
             self.db.delete_one(
                 {
-                    "ID": id,
+                    "PID": pid,
                     "Email": email,
                 },
             )
         else:
             raise FileDoesNotExistForCurrentUserError(
-                f"File With ID {id} Does Not Exist For The User {email}"
+                f"File With ID {pid} Does Not Exist For The User {email}"
             )

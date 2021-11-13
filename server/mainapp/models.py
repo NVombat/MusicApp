@@ -31,11 +31,11 @@ class MusicData:
         Returns:
             str
         """
-        uid = uuid.uuid4()
-        obj_id = uid.hex
-        if self.db.find_one({"ID": obj_id}):
-            self.generate_id()
-        return obj_id
+        pid = uuid.uuid4().hex
+
+        if self.db.find_one({"PID": pid}):
+            pid = self.generate_id()
+        return pid
 
     def insert_data(
         self,
@@ -64,7 +64,7 @@ class MusicData:
             )
 
         data = {
-            "ID": self.generate_id(),
+            "PID": self.generate_id(),
             "Date": date,
             "Name": name,
             "Email": email,

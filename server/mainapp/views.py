@@ -2,10 +2,12 @@ from rest_framework.views import APIView
 from django.http import response
 
 from .utils import recv_music_data, send_music_data
+from authentication import validate
 from core.throttle import throttle
 
 
 class Uploads(APIView):
+    permission_classes = [validate.ValidateUser]
     throttle_classes = [throttle]
 
     def post(self, request, **kwargs) -> response.JsonResponse:
@@ -20,12 +22,13 @@ class Uploads(APIView):
 
         print("Receiving Data API")
 
-        data = recv_music_data(request, **kwargs)
+        upload_data = recv_music_data(request, **kwargs)
 
-        return data
+        return upload_data
 
 
 class Posts(APIView):
+    permission_classes = [validate.ValidateUser]
     throttle_classes = [throttle]
 
     def get(self, request, **kwargs) -> response.JsonResponse:
@@ -40,6 +43,6 @@ class Posts(APIView):
 
         print("Sending Data API")
 
-        data = send_music_data(request, **kwargs)
+        post_data = send_music_data(request, **kwargs)
 
-        return data
+        return post_data

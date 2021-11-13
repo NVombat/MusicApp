@@ -89,7 +89,7 @@ def send_music_data(request, **kwargs) -> response.JsonResponse:
     except DataFetchingError as dfe:
         return response.JsonResponse(
             {"error": str(dfe), "success_status": False},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status=status.HTTP_404_NOT_FOUND,
         )
     except Exception as e:
         return response.JsonResponse(
