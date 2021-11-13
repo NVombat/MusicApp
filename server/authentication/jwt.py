@@ -15,16 +15,19 @@ class TokenAuth:
     ):
         current_time = datetime.utcnow()
         payload["exp"] = current_time + timedelta(hours=expiry)
-        access_token = jwt.encode(payload, key=self.signature)
+        access_token = jwt.encode(payload, key=self.signature, algorithm="HS256")
 
         if get_refresh:
             if value := kwargs.get("refresh_exipry"):
                 payload["exp"] = current_time + timedelta(seconds=value)
             refresh_payload = {**{"refresh": True}, **payload}
-            refresh_token = jwt.encode(refresh_payload, key=self.signature)
+            refresh_token = jwt.encode(refresh_payload, key=self.signature, algorithm="HS256")
             return {"access_token": access_token, "refresh_token": refresh_token}
 
         return access_token
+
+    def decode_token(self, ):
+        pass
 
     def verify_token(self, token: str):
         try:

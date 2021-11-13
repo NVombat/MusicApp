@@ -16,12 +16,11 @@ class ValidateUser(BasePermission):
             return False
 
         try:
-            User_Auth.validate_token(token)
+            User_Auth.validate_uid()
 
         except InvalidTokenError as ite:
             print("Error:", str(ite))
             return False
 
         setattr(request, "user_id", token)
-        print(request.user_id)
         return True
