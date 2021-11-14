@@ -1,7 +1,13 @@
 from rest_framework import status
 from django.http import response
 
-from .errors import InvalidUserCredentialsError, UserDoesNotExistError, UserExistsError
+from .errors import (
+    InvalidUserCredentialsError,
+    InvalidVerificationError,
+    UserDoesNotExistError,
+    UserExistsError,
+)
+from mailer import send_reset_pwd_mail
 from . import Token_Auth, User_Auth
 
 
@@ -111,7 +117,7 @@ def login_user(request, **kwargs) -> response.JsonResponse:
         print(e)
         return response.JsonResponse(
             {
-                "error": "Error Occured While Receiving Registration Data",
+                "error": "Error Occured While Receiving Login Data",
                 "auth_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -130,3 +136,65 @@ def reset_pwd(request, **kwargs) -> response.JsonResponse:
     """
     print("POST REQUEST RESET PASSWORD")
     print("Request Object DATA:", request.data)
+
+    try:
+        email = request.data.get("Email")
+        link = request.data.get("Link")
+        send_reset_pwd_mail(email, link)
+
+        return response.JsonResponse(
+            data={"success_status": True},
+            status=status.HTTP_200_OK,
+        )
+
+    except Exception as e:
+        print(e)
+        return response.JsonResponse(
+            {
+                "error": "Error Occured While Receiving Reset Password Data",
+                "success_status": False,
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+def reset_pwd_data(request, **kwargs) -> response.JsonResponse:
+    """Handles data when user resets password through POST request ON THE LINK
+
+    Args:
+        request
+        **kwargs
+
+    Returns:
+        response.JsonResponse
+    """
+    print("POST REQUEST RESET PASSWORD LINK")
+    print("Request Object DATA:", request.data)
+
+    try:
+        pwd = request.data.get("Password")
+        verif_code = request.data.get("Code")
+
+        if User_Auth.check_verif_code(verif_code):
+            hashed_pwd = User_Auth.hash_password(pwd)
+            User_Auth.reset_password(hashed_pwd, verif_code)
+
+        return response.JsonResponse(
+            data={"success_status": True},
+            status=status.HTTP_200_OK,
+        )
+
+    except InvalidVerificationError as ive:
+        return response.JsonResponse(
+            {"error": str(ive), "success_status": False},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+    except Exception as e:
+        print(e)
+        return response.JsonResponse(
+            {
+                "error": "Error Occured While Receiving Reset Password Data From Link",
+                "success_status": False,
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )

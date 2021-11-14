@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from django.http import response
 
-from .utils import recv_music_data, send_music_data
+from .utils import recv_music_data, send_music_data, recv_contact_us_data
 from authentication import validate
 from core.throttle import throttle
 
@@ -46,3 +46,24 @@ class Posts(APIView):
         post_data = send_music_data(request, **kwargs)
 
         return post_data
+
+
+class Contact_Us(APIView):
+    permission_classes = [validate.ValidateUser]
+    throttle_classes = [throttle]
+
+    def post(self, request, **kwargs) -> response.JsonResponse:
+        """Sending Contact Us data when hit with POST requests
+
+        Args:
+            request ([type])
+
+        Returns:
+            JsonResponse
+        """
+
+        print("Sending Contact Us Data API")
+
+        contact_us_data = recv_contact_us_data(request, **kwargs)
+
+        return contact_us_data

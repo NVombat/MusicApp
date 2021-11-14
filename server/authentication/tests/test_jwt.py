@@ -4,7 +4,6 @@ from authentication import Token_Auth
 
 
 class Test_JWT(unittest.TestCase):
-
     def test_jwt_generation(self):
         token = Token_Auth.generate_token(
             payload={"ID": "ABC"}, expiry=1, get_refresh=False

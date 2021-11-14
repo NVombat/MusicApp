@@ -9,9 +9,11 @@ from tests import (
     test_apis,
 )
 
+
 def get_unittests(suite):
     suite.addTest(unittest.makeSuite(test_jwt.Test_JWT))
     suite.addTest(unittest.makeSuite(test_model.Test_Auth_Model))
+
 
 def get_server_tests(suite):
     suite.addTest(unittest.makeSuite(test_models.TestModels))

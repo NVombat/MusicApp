@@ -1,6 +1,4 @@
-import jwt
 from rest_framework.permissions import BasePermission
-import jwt
 
 from .errors import InvalidTokenError, InvalidUIDError
 from . import User_Auth, Token_Auth
