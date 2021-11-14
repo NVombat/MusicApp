@@ -9,6 +9,7 @@ from .errors import (
     AWSDownloadError,
 )
 from . import S3_Functions, Music_Data
+from mailer import send_feedback_mail
 
 
 def recv_music_data(request, **kwargs) -> response.JsonResponse:
@@ -94,5 +95,40 @@ def send_music_data(request, **kwargs) -> response.JsonResponse:
     except Exception as e:
         return response.JsonResponse(
             {"error": "Error Occured While Sending Data", "success_status": False},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
+    """Handles data when user sends feedback via contact us through POST requests
+
+    Args:
+        request
+        **kwargs
+
+    Returns:
+        response.JsonResponse
+    """
+    try:
+        print("CONTACT US POST REQUEST")
+        print("Request Object DATA:", request.data)
+
+        name = request.data.get("Name")
+        email = request.data.get("Email")
+        message = request.data.get("Message")
+
+        send_feedback_mail(email, name, message)
+
+        return response.JsonResponse(
+            {"success_status": True},
+            status=status.HTTP_200_OK,
+        )
+
+    except Exception as e:
+        return response.JsonResponse(
+            {
+                "error": "Error Occured While Receiving Contact Us Data",
+                "success_status": False,
+            },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
