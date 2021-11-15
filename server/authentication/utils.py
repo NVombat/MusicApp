@@ -7,7 +7,7 @@ from .errors import (
     UserDoesNotExistError,
     UserExistsError,
 )
-from mailer import send_reset_pwd_mail
+from .mailer import send_reset_pwd_mail
 from . import Token_Auth, User_Auth
 
 
@@ -134,10 +134,10 @@ def reset_pwd(request, **kwargs) -> response.JsonResponse:
     Returns:
         response.JsonResponse
     """
-    print("POST REQUEST RESET PASSWORD")
-    print("Request Object DATA:", request.data)
-
     try:
+        print("POST REQUEST RESET PASSWORD")
+        print("Request Object DATA:", request.data)
+
         email = request.data.get("Email")
         link = request.data.get("Link")
         send_reset_pwd_mail(email, link)
@@ -168,10 +168,10 @@ def reset_pwd_data(request, **kwargs) -> response.JsonResponse:
     Returns:
         response.JsonResponse
     """
-    print("POST REQUEST RESET PASSWORD LINK")
-    print("Request Object DATA:", request.data)
-
     try:
+        print("POST REQUEST RESET PASSWORD LINK")
+        print("Request Object DATA:", request.data)
+
         pwd = request.data.get("Password")
         verif_code = request.data.get("Code")
 

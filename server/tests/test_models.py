@@ -31,8 +31,8 @@ class TestModels(unittest.TestCase):
         cls.client = requests.Session()
         cls.pymongo_client = pymongo.MongoClient(DATABASE["mongo_uri"])
         cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
-        cls.api_upload_url = "http://localhost:8000/api/uploads"
-        cls.api_posts_url = "http://localhost:8000/api/posts"
+        cls.api_upload_url = "http://localhost:8000/api/app/uploads"
+        cls.api_posts_url = "http://localhost:8000/api/app/posts"
 
     def test_file_exists(self):
         response = self.client.post(
@@ -44,10 +44,12 @@ class TestModels(unittest.TestCase):
 
         with self.assertRaises(FileAlreadyExistsForCurrentUserError):
             Music_Data.insert_data(
+                data.test_data["Date"],
                 data.test_data["Name"],
                 data.test_data["Email"],
                 data.test_data["Filename"],
                 data.test_data["CloudFilename"],
+                data.test_data["ObjectURL"],
             )
 
     def test_file_not_exists(self):

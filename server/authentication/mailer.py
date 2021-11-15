@@ -12,6 +12,7 @@ def send_reset_pwd_mail(email: str, link: str) -> None:
 
     Args:
         Email: User Email ID
+        Link: Link to reset password
 
     Returns:
         None
