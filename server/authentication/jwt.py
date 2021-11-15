@@ -62,7 +62,6 @@ class TokenAuth:
             )
 
             if data:
-                print(data)
                 return (True, data)
             return (False, None)
 

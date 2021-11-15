@@ -16,14 +16,19 @@ class ValidateUser(BasePermission):
             return False
 
         try:
-            data = Token_Auth.decode_token(token)
+            bool_val, data = Token_Auth.decode_token(token)
+            print(bool_val, data)
+            assert bool_val == True
 
         except InvalidTokenError as ite:
             print("Error:", str(ite))
             return False
+        except Exception:
+            print("Error In Decoding Token")
+            return False
 
         try:
-            user_id = data[1]["id"]
+            user_id = data["id"]
             User_Auth.validate_uid(user_id)
 
         except InvalidUIDError as iue:

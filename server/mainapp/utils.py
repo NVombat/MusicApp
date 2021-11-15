@@ -9,7 +9,7 @@ from .errors import (
     AWSDownloadError,
 )
 from . import S3_Functions, Music_Data
-from mailer import send_feedback_mail
+from .mailer import send_feedback_mail
 
 
 def recv_music_data(request, **kwargs) -> response.JsonResponse:
@@ -34,7 +34,7 @@ def recv_music_data(request, **kwargs) -> response.JsonResponse:
         print(name, email, filename, uploadedFile)
 
         date = d.datetime.now()
-        date = date.strftime("%m/%d/%Y, %H:%M:%S")
+        date = date.strftime("%d/%m/%Y, %H:%M:%S")
         filename = filename.lower()
         subfolder = email.split("@")[0]
         cloudFilename = AWS_BUCKET_FOLDER + subfolder + "/" + filename

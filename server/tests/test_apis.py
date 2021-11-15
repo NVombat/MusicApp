@@ -24,9 +24,9 @@ class TestAPI(unittest.TestCase):
         cls.client = requests.Session()
         cls.pymongo_client = pymongo.MongoClient(DATABASE["mongo_uri"])
         cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
-        cls.api_upload_url = "http://localhost:8000/api/uploads"
-        cls.api_posts_url = "http://localhost:8000/api/posts"
-        cls.api_profile_url = "http://localhost:8000/api/profile"
+        cls.api_upload_url = "http://localhost:8000/api/app/uploads"
+        cls.api_posts_url = "http://localhost:8000/api/app/posts"
+        cls.api_profile_url = "http://localhost:8000/api/user/profile"
 
     def test_data_recv(self):
         response = self.client.post(
