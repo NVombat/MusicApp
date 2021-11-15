@@ -49,7 +49,7 @@ class TestModels(unittest.TestCase):
                 data.test_data["Email"],
                 data.test_data["Filename"],
                 data.test_data["CloudFilename"],
-                data.test_data["ObjectURL"]
+                data.test_data["ObjectURL"],
             )
 
     def test_file_not_exists(self):
