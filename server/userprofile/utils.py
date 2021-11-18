@@ -2,6 +2,7 @@ from rest_framework import status
 from django.http import response
 
 from .errors import FileDoesNotExistForCurrentUserError, ProfileDataUnavailableError
+from mainapp.aws import AWSFunctionsS3
 from . import User_Data
 
 
@@ -52,6 +53,10 @@ def delete_profile_data(request, **kwargs) -> response.JsonResponse:
         pid = request.query_params.get("PID")
         email = request.query_params.get("Email")
         print(pid, email)
+
+        aws_s3_func = AWSFunctionsS3()
+        cloud_filename = User_Data.get_cloud_filename(pid, email)
+        aws_s3_func.delete_file_from_s3(cloud_filename)
 
         User_Data.delete_user_data(pid, email)
 

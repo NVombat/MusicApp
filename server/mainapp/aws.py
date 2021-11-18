@@ -61,8 +61,17 @@ class AWSFunctionsS3:
         try:
             print("Deleting File from AWS S3")
 
-            client = boto3.client("s3")
-            client.delete_object(Bucket=AWS_STORAGE_BUCKET_NAME, Key=cloudFilename)
+            session = Session(
+                aws_access_key_id=AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+            )
+
+            s3 = session.resource("s3")
+            bucket = s3.Bucket(AWS_STORAGE_BUCKET_NAME)
+
+            response = bucket.delete_objects(
+                Delete={"Objects": [{"Key": cloudFilename}]}
+            )
 
             print("File Deleted Successfully")
 

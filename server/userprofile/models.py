@@ -21,7 +21,30 @@ class UserData:
         client = pymongo.MongoClient(DATABASE["mongo_uri"])
         self.db = client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
 
-    def fetch_user_data(self, email) -> response.JsonResponse:
+    def get_cloud_filename(self, pid: str, email: str) -> str:
+        """Fetches cloud filename
+
+        Args:
+            pid: PID of File
+            email: Email of user
+
+        Returns:
+            str
+        """
+        if value := self.db.find_one(
+            {
+                "PID": pid,
+                "Email": email,
+            }
+        ):
+            cloudfilename = value["CloudFilename"]
+            return cloudfilename
+        else:
+            raise FileDoesNotExistForCurrentUserError(
+                f"File With ID {pid} Does Not Exist For The User {email}"
+            )
+
+    def fetch_user_data(self, email: str) -> response.JsonResponse:
         """Fetches specific user data from db
 
         Args:
