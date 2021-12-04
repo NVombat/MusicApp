@@ -9,6 +9,7 @@ import {
   PageNotFound,
   Posts,
   Record,
+  ContactUs,
 } from './pages/Index';
 import Layout from './components/shared/Layout';
 import AuthContext from './context/auth-context';
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/about" exact component={About} />
         <Route path="/posts" exact component={Posts} />
         <Route path="/forgetpassword" exact component={ForgetPassword} />
+        <Route path="/contact-us" exact component={ContactUs} />
 
         <Route path="/profile">
           {authCtx.isLoggedIn && <Profile />}
