@@ -5,6 +5,10 @@ import pymongo
 import os
 
 from core.settings import DATABASE
+from authentication import(
+    Token_Auth,
+    User_Auth
+)
 
 
 class Test_Auth_Model(unittest.TestCase):

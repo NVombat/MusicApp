@@ -226,3 +226,24 @@ class UserAuth:
             return True
 
         raise InvalidVerificationError("Incorrect Verification Code")
+
+    def insert_contact_us_data(self, email: str, message: str) -> bool:
+        """Inserts Contact Us Data for User
+
+        Args:
+            email: User Email ID
+            message: Contact Us Message
+
+        Returns:
+            bool
+        """
+        if self.db.find_one({"Email": email}):
+            self.db.find_one_and_update(
+                {"Email": email},
+                update={
+                    "$set": {"ContactUsData": message},
+                },
+            )
+            return True
+
+        raise UserDoesNotExistError("This User Doesn't Exist But We Will Have A Look At Your Query")
