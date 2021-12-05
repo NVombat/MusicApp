@@ -3,6 +3,8 @@ from django.http import response
 import datetime as d
 
 from core.settings import AWS_BUCKET_FOLDER, AWS_OBJECT_URL_PREFIX
+from authentication.errors import UserDoesNotExistError
+from authentication.models import UserAuth
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     DataFetchingError,
@@ -10,6 +12,8 @@ from .errors import (
 )
 from . import S3_Functions, Music_Data
 from .mailer import send_feedback_mail
+
+User_Auth = UserAuth()
 
 
 def recv_music_data(request, **kwargs) -> response.JsonResponse:
@@ -92,7 +96,7 @@ def send_music_data(request, **kwargs) -> response.JsonResponse:
             {"error": str(dfe), "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except Exception as e:
+    except Exception:
         return response.JsonResponse(
             {"error": "Error Occured While Sending Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -117,6 +121,8 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
         email = request.data.get("Email")
         message = request.data.get("Message")
 
+        User_Auth.insert_contact_us_data(email, message)
+
         send_feedback_mail(email, name, message)
 
         return response.JsonResponse(
@@ -124,11 +130,20 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_200_OK,
         )
 
-    except Exception as e:
+    except Exception:
         return response.JsonResponse(
             {
                 "error": "Error Occured While Receiving Contact Us Data",
                 "success_status": False,
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+    except UserDoesNotExistError as udne:
+        send_feedback_mail(email, name, message)
+        return response.JsonResponse(
+            {
+                "error": str(udne),
+                "success_status": True,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )

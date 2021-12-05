@@ -4,6 +4,7 @@ import unittest
 import pymongo
 import os
 
+from authentication import Token_Auth, User_Auth
 from core.settings import DATABASE
 
 

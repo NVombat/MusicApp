@@ -35,5 +35,5 @@ class ValidateUser(BasePermission):
             print("Error:", str(iue))
             return False
 
-        setattr(request, "user_id", token)
+        setattr(request, "user_id", user_id)
         return True

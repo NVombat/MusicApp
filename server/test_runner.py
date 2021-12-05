@@ -1,7 +1,7 @@
 import unittest
 
 from authentication.tests import (
-    test_model,
+    test_models,
     test_jwt,
 )
 from tests import (
@@ -12,7 +12,7 @@ from tests import (
 
 def get_unittests(suite):
     suite.addTest(unittest.makeSuite(test_jwt.Test_JWT))
-    suite.addTest(unittest.makeSuite(test_model.Test_Auth_Model))
+    suite.addTest(unittest.makeSuite(test_models.Test_Auth_Model))
 
 
 def get_server_tests(suite):
