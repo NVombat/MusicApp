@@ -1,26 +1,34 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router';
+import axios from 'axios';
 
 const Form = () => {
   const [name, setName] = useState<String>('');
   const [email, setEmail] = useState<String>('');
   const [message, setMessage] = useState<String>('');
 
+  const history = useHistory();
+
+  const formSubmitHandler = () => {
+    axios
+      .post(`${process.env.REACT_APP_POST_CONTACTUS_DATA}`, {
+        name: name,
+        email: email,
+        message: message,
+      })
+      .then((res) => {
+        history.push('/');
+      })
+      .catch((err) => alert('Something went wrong, please try again'));
+  };
+
   return (
     <div>
-      <section className="text-gray-700 body-font relative">
-        <div className="container px-5 py-24 mx-auto">
-          <div className="flex flex-col text-center w-full mb-12">
-            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">
-              Contact Us
-            </h1>
-            <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
-              Hate forms? Send us an{' '}
-              <a href="mailto:jtvfoundation@gmail.com" className="underline">
-                email
-              </a>{' '}
-              instead.
-            </p>
-          </div>
+      <form
+        className="text-gray-700 body-font relative"
+        onSubmit={formSubmitHandler}
+      >
+        <div className="container px-5 pb-24 mx-auto">
           <div className="lg:w-1/2 md:w-2/3 mx-auto">
             <div className="flex flex-wrap -m-2">
               <div className="p-2 w-1/2">
@@ -33,6 +41,8 @@ const Form = () => {
                     id="name"
                     name="name"
                     className="w-full bg-gray-100 rounded border border-gray-300 focus:border-blue-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    onChange={(e) => setName(e.target.value)}
+                    required
                   />
                 </div>
               </div>
@@ -46,6 +56,8 @@ const Form = () => {
                     id="email"
                     name="email"
                     className="w-full bg-gray-100 rounded border border-gray-300 focus:border-blue-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
               </div>
@@ -58,6 +70,8 @@ const Form = () => {
                     id="message"
                     name="message"
                     className="w-full bg-gray-100 rounded border border-gray-300 focus:border-blue-400 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
                   ></textarea>
                 </div>
               </div>
@@ -69,7 +83,7 @@ const Form = () => {
             </div>
           </div>
         </div>
-      </section>
+      </form>
     </div>
   );
 };

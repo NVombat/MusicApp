@@ -3,7 +3,7 @@ import { Hero, Form } from '..//components/ContactUs/index';
 const ContactUs = () => {
   return (
     <div>
-      {/* <Hero /> */}
+      <Hero />
       <Form />
     </div>
   );
