@@ -246,4 +246,6 @@ class UserAuth:
             )
             return True
 
-        raise UserDoesNotExistError("This User Doesn't Exist But We Will Have A Look At Your Query")
+        raise UserDoesNotExistError(
+            "This User Doesn't Exist But We Will Have A Look At Your Query"
+        )
