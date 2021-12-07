@@ -35,7 +35,7 @@ class TokenAuth:
 
         if get_refresh:
             if value := kwargs.get("refresh_exipry"):
-                payload["exp"] = current_time + timedelta(seconds=value)
+                payload["exp"] = current_time + timedelta(hours=value)
             refresh_payload = {**{"refresh": True}, **payload}
             refresh_token = jwt.encode(
                 refresh_payload, key=self.signature, algorithm="HS256"
@@ -65,8 +65,39 @@ class TokenAuth:
                 return (True, data)
             return (False, None)
 
-        except jwt.ExpiredSignatureError:
+        except jwt.exceptions.InvalidTokenError:
             raise InvalidTokenError("JWT Token Is Invalid")
+        except jwt.exceptions.ExpiredSignatureError:
+            raise InvalidTokenError("JWT Token Is Invalid")
+        except jwt.exceptions.DecodeError:
+            raise InvalidTokenError("JWT Token Decode Failed")
+
+    def decode_refresh_token(self, token: str) -> dict:
+        """Decodes Refresh Token To Give Encoded Data
+
+        Args:
+            token: Encoded Refresh Token
+
+        Returns:
+            dict
+        """
+        try:
+            data = jwt.decode(
+                token,
+                key=self.signature,
+                options={"verify_exp": False, "verify_signature": True},
+                algorithms=["HS256"],
+            )
+
+            print("Decoded Token Data:", data)
+
+            if data["refresh"] == True:
+                return data
+            print("NOT A REFRESH TOKEN")
+            return None
+
+        except Exception:
+            raise InvalidTokenError("Error Decoding Refresh Token - Token Invalid")
 
     def verify_token(self, token: str):
         try:
