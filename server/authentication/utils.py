@@ -228,7 +228,7 @@ def get_tokens(request, **kwargs) -> response.JsonResponse:
         if User_Auth.validate_uid(user_id):
             payload = {"id": user_id}
 
-            if refresh_status=="True":
+            if refresh_status == "True":
                 acc_token = Token_Auth.generate_token(
                     payload=payload, expiry=1, get_refresh=False
                 )
@@ -240,7 +240,7 @@ def get_tokens(request, **kwargs) -> response.JsonResponse:
                     status=status.HTTP_200_OK,
                 )
 
-            elif refresh_status=="False":
+            elif refresh_status == "False":
                 token = Token_Auth.generate_token(
                     payload=payload, expiry=1, get_refresh=True, refresh_exipry=48
                 )
