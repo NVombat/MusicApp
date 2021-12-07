@@ -5,7 +5,9 @@ from .errors import (
     InvalidUserCredentialsError,
     InvalidVerificationError,
     UserDoesNotExistError,
+    InvalidTokenError,
     UserExistsError,
+    InvalidUIDError,
 )
 from .mailer import send_reset_pwd_mail
 from . import Token_Auth, User_Auth
@@ -36,7 +38,7 @@ def register_user(request, **kwargs) -> response.JsonResponse:
         payload = {"id": uid}
 
         token = Token_Auth.generate_token(
-            payload=payload, expiry=1, get_refresh=True, refresh_exipry=12
+            payload=payload, expiry=1, get_refresh=True, refresh_exipry=48
         )
 
         return response.JsonResponse(
@@ -92,7 +94,7 @@ def login_user(request, **kwargs) -> response.JsonResponse:
             payload = {"id": uid}
 
             token = Token_Auth.generate_token(
-                payload=payload, expiry=1, get_refresh=True, refresh_exipry=12
+                payload=payload, expiry=1, get_refresh=True, refresh_exipry=48
             )
 
             return response.JsonResponse(
@@ -197,4 +199,75 @@ def reset_pwd_data(request, **kwargs) -> response.JsonResponse:
                 "success_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+def get_tokens(request, **kwargs) -> response.JsonResponse:
+    """Verifies refresh token and generates new tokens
+
+    Args:
+        request
+        **kwargs
+
+    Returns:
+        response.JsonResponse
+    """
+    try:
+        print("POST REQUEST GET TOKENS")
+        print("Request Object DATA:", request.data)
+
+        refresh_token = request.data.get("RefreshToken")
+        refresh_status = request.data.get("RefreshStatus")
+        print(refresh_token, refresh_status)
+
+        data = Token_Auth.decode_refresh_token(refresh_token)
+        print(data)
+
+        user_id = data["id"]
+        print(user_id)
+        if User_Auth.validate_uid(user_id):
+            payload = {"id": user_id}
+
+            if refresh_status == "True":
+                acc_token = Token_Auth.generate_token(
+                    payload=payload, expiry=1, get_refresh=False
+                )
+
+                return response.JsonResponse(
+                    data={
+                        "access_token": acc_token,
+                    },
+                    status=status.HTTP_200_OK,
+                )
+
+            elif refresh_status == "False":
+                token = Token_Auth.generate_token(
+                    payload=payload, expiry=1, get_refresh=True, refresh_exipry=48
+                )
+
+            return response.JsonResponse(
+                data={
+                    "access_token": token["access_token"],
+                    "refresh_token": token["refresh_token"],
+                },
+                status=status.HTTP_200_OK,
+            )
+
+    except Exception:
+        return response.JsonResponse(
+            {
+                "error": "Error Occured While Receiving Refresh Token",
+                "success_status": False,
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+    except InvalidTokenError as ite:
+        return response.JsonResponse(
+            {"error": str(ite), "success_status": False},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+    except InvalidUIDError as iue:
+        return response.JsonResponse(
+            {"error": str(iue), "success_status": False},
+            status=status.HTTP_404_NOT_FOUND,
         )

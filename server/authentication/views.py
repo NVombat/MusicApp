@@ -2,7 +2,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from django.http import response
 
-from .utils import register_user, login_user, reset_pwd, reset_pwd_data
+from .utils import register_user, login_user, reset_pwd, reset_pwd_data, get_tokens
 from core.throttle import throttle
 
 
@@ -84,3 +84,23 @@ class ResetPasswordLink(APIView):
         reset_link_data = reset_pwd_data(request, **kwargs)
 
         return reset_link_data
+
+
+class GenerateTokens(APIView):
+    permission_classes = (AllowAny,)
+    throttle_classes = [throttle]
+
+    def post(self, request, **kwargs) -> response.JsonResponse:
+        """Receiving POST request to send new tokens
+
+        Args:
+            request ([type])
+
+        Returns:
+            JsonResponse
+        """
+        print("Send Fresh Tokens Post Request")
+
+        tokens = get_tokens(request, **kwargs)
+
+        return tokens

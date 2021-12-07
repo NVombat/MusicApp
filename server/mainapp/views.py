@@ -1,3 +1,4 @@
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from django.http import response
 
@@ -28,6 +29,7 @@ class Uploads(APIView):
 
 
 class Posts(APIView):
+    permission_classes = (AllowAny,)
     throttle_classes = [throttle]
 
     def get(self, request, **kwargs) -> response.JsonResponse:
@@ -48,6 +50,7 @@ class Posts(APIView):
 
 
 class Contact_Us(APIView):
+    permission_classes = (AllowAny,)
     throttle_classes = [throttle]
 
     def post(self, request, **kwargs) -> response.JsonResponse:
