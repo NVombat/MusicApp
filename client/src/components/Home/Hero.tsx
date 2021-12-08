@@ -8,11 +8,9 @@ const Hero = () => {
       </figure>
       <div className="flex flex-col justify-center items-center my-5">
         <h1 className="font-bold text-2xl uppercase py-1">VR1 Movement</h1>
+        <h1 className="font-bold text-2xl uppercase py-1">WE ARE ALL ONE</h1>
         <h1 className="font-bold text-2xl uppercase py-1">
-          WE ARE ALL ONE
-        </h1>
-        <h1 className="font-bold text-2xl uppercase py-1">
-          LET US SING, DANCE AND UNITE THE GLOBE TOGETHER
+          LET US SING, SAY, DANCE AND UNITE THE GLOBE TOGETHER
         </h1>
       </div>
       <figure className="flex justify-center py-5">
