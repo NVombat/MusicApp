@@ -1,6 +1,12 @@
+import { useState } from 'react';
+
 import logo from '../../utils/images/jvt-logo.jpg';
 import group from '../../utils/images/group.jpg';
+import { EnglishSong } from './index';
+
 const Hero = () => {
+  const [englishSong, setEnglishSong] = useState<boolean>(true);
+
   return (
     <div>
       <figure className="w-96 mx-auto mt-4">
@@ -13,6 +19,10 @@ const Hero = () => {
           LET US SING, SAY, DANCE AND UNITE THE GLOBE TOGETHER
         </h1>
       </div>
+      <div className="flex justify-center items-center font-semibold text-3xl">
+        Listen to the song
+      </div>
+      {englishSong ? <EnglishSong /> : ''}
       <figure className="flex justify-center py-5">
         <img src={group} alt="group of people" />
       </figure>
