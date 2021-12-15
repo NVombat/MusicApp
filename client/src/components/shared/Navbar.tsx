@@ -16,7 +16,7 @@ const Navbar = () => {
     history.replace('/');
   };
 
-  const [navbarOpen, setNavbarOpen] = useState(false);
+  const [navbarOpen, setNavbarOpen] = useState<boolean>(false);
   return (
     <div>
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-blue-400">
