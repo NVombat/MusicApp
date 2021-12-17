@@ -1,12 +1,8 @@
-import { useState } from 'react';
-
 import logo from '../../utils/images/jvt-logo.jpg';
 import group from '../../utils/images/group.jpg';
 import { EnglishSong } from './index';
 
 const Hero = () => {
-  const [englishSong, setEnglishSong] = useState<boolean>(true);
-
   return (
     <div>
       <div className="flex px-10 py-20 ">
@@ -27,7 +23,7 @@ const Hero = () => {
       <div className="flex justify-center items-center font-semibold text-3xl">
         Listen to the song
       </div>
-      {englishSong ? <EnglishSong /> : ''}
+      <EnglishSong />
     </div>
   );
 };
