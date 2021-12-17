@@ -45,8 +45,10 @@ const Video = () => {
         <Hindi />
       ) : tamil ? (
         <Tamil />
-      ) : (
+      ) : malyalam ? (
         <Malyalam />
+      ) : (
+        'OOPS! Something went wrong here!'
       )}
 
       <h3 className="mt-5">Record in More Languages</h3>
