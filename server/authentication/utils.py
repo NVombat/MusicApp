@@ -4,6 +4,7 @@ from django.http import response
 from .errors import (
     InvalidUserCredentialsError,
     InvalidVerificationError,
+    TokenGenerationError,
     UserDoesNotExistError,
     InvalidTokenError,
     UserExistsError,
@@ -59,6 +60,11 @@ def register_user(request, **kwargs) -> response.JsonResponse:
             {"error": str(udne), "auth_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
+    except TokenGenerationError as tge:
+        return response.JsonResponse(
+            {"error": str(tge), "auth_status": False},
+            status=status.HTTP_503_SERVICE_UNAVAILABLE,
+        )
     except Exception as e:
         print(e)
         return response.JsonResponse(
@@ -113,7 +119,12 @@ def login_user(request, **kwargs) -> response.JsonResponse:
     except InvalidUserCredentialsError as ice:
         return response.JsonResponse(
             {"error": str(ice), "auth_status": False},
-            status=status.HTTP_400_BAD_REQUEST,
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+    except TokenGenerationError as tge:
+        return response.JsonResponse(
+            {"error": str(tge), "auth_status": False},
+            status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
     except Exception as e:
         print(e)
@@ -141,14 +152,22 @@ def reset_pwd(request, **kwargs) -> response.JsonResponse:
         print("Request Object DATA:", request.data)
 
         email = request.data.get("Email")
-        link = request.data.get("Link")
-        send_reset_pwd_mail(email, link)
+        user_id = User_Auth.get_uid(email)
+
+        base_url = "https://www.vr1music.com"
+        reset_url = base_url + "?reset=True&uid=" + user_id
+        send_reset_pwd_mail(email, reset_url)
 
         return response.JsonResponse(
             data={"success_status": True},
             status=status.HTTP_200_OK,
         )
 
+    except UserDoesNotExistError as udne:
+        return response.JsonResponse(
+            {"error": str(udne), "auth_status": False},
+            status=status.HTTP_404_NOT_FOUND,
+        )
     except Exception as e:
         print(e)
         return response.JsonResponse(
@@ -253,14 +272,6 @@ def get_tokens(request, **kwargs) -> response.JsonResponse:
                 status=status.HTTP_200_OK,
             )
 
-    except Exception:
-        return response.JsonResponse(
-            {
-                "error": "Error Occured While Receiving Refresh Token",
-                "success_status": False,
-            },
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
     except InvalidTokenError as ite:
         return response.JsonResponse(
             {"error": str(ite), "success_status": False},
@@ -270,4 +281,12 @@ def get_tokens(request, **kwargs) -> response.JsonResponse:
         return response.JsonResponse(
             {"error": str(iue), "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
+        )
+    except Exception:
+        return response.JsonResponse(
+            {
+                "error": "Error Occured While Receiving Refresh Token",
+                "success_status": False,
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )

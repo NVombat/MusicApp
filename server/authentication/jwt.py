@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import jwt
 import os
 
-from .errors import InvalidTokenError
+from .errors import InvalidTokenError, TokenGenerationError
 
 load_dotenv()
 
@@ -29,20 +29,23 @@ class TokenAuth:
         Returns:
             dict/str -> token
         """
-        current_time = datetime.utcnow()
-        payload["exp"] = current_time + timedelta(hours=expiry)
-        access_token = jwt.encode(payload, key=self.signature, algorithm="HS256")
+        try:
+            current_time = datetime.utcnow()
+            payload["exp"] = current_time + timedelta(hours=expiry)
+            access_token = jwt.encode(payload, key=self.signature, algorithm="HS256")
 
-        if get_refresh:
-            if value := kwargs.get("refresh_exipry"):
-                payload["exp"] = current_time + timedelta(hours=value)
-            refresh_payload = {**{"refresh": True}, **payload}
-            refresh_token = jwt.encode(
-                refresh_payload, key=self.signature, algorithm="HS256"
-            )
-            return {"access_token": access_token, "refresh_token": refresh_token}
+            if get_refresh:
+                if value := kwargs.get("refresh_exipry"):
+                    payload["exp"] = current_time + timedelta(hours=value)
+                refresh_payload = {**{"refresh": True}, **payload}
+                refresh_token = jwt.encode(
+                    refresh_payload, key=self.signature, algorithm="HS256"
+                )
+                return {"access_token": access_token, "refresh_token": refresh_token}
 
-        return access_token
+            return access_token
+        except Exception:
+            raise TokenGenerationError("Error While Generating JWT Tokens")
 
     def decode_token(self, token: str) -> tuple:
         """Decodes Token To Give Encoded Data

@@ -13,6 +13,10 @@ class UserDoesNotExistError(AuthenticationErrors):
     ...
 
 
+class TokenGenerationError(AuthenticationErrors):
+    ...
+
+
 class InvalidTokenError(AuthenticationErrors):
     ...
 
