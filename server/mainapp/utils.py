@@ -130,20 +130,20 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_200_OK,
         )
 
-    except Exception:
-        return response.JsonResponse(
-            {
-                "error": "Error Occured While Receiving Contact Us Data",
-                "success_status": False,
-            },
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
     except UserDoesNotExistError as udne:
         send_feedback_mail(email, name, message)
         return response.JsonResponse(
             {
                 "error": str(udne),
                 "success_status": True,
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+    except Exception:
+        return response.JsonResponse(
+            {
+                "error": "Error Occured While Receiving Contact Us Data",
+                "success_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "mainapp.apps.MainappConfig",
     "userprofile.apps.UserprofileConfig",
     "authentication.apps.AuthenticationConfig",
+    "admins.apps.AdminsConfig",
     "rest_framework",
     "corsheaders",
     "storages",
