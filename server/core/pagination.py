@@ -1,44 +1,41 @@
-from rest_framework.response import Response
-from rest_framework import pagination
-from collections import OrderedDict
+from rest_framework import status
+from django.http import response
+from math import ceil
+
+from mainapp.errors import DataFetchingError
+from .errors import PageDoesNotExistError
+
+ITEMS_PER_PAGE = 1
 
 
-class CustomPagination(pagination.PageNumberPagination):
-    page_size = 5
-    page_size_query_param = "page_size"
-    max_page_size = 20
-    page_query_param = "page"
+class CustomPagination:
+    def get_paginated_data(self, page: int, data: list):
+        total_docs = len(data)
+        print(len(data))
 
-    def get_paginated_response(self, data):
-        next = None
-        previous = None
+        # If Page Number Does Not Exist
+        if page <= 0 or page > ceil(total_docs / ITEMS_PER_PAGE):
+            raise PageDoesNotExistError("This Page Does Not Exist")
+        # If No Page Is Specified
+        elif page == None:
+            page = 1
 
-        if self.page.has_next():
-            next = self.page.next_page_number()
-        if self.page.has_previous():
-            previous = self.page.previous_page_number()
+        left_lim = (page - 1) * ITEMS_PER_PAGE
+        right_lim = left_lim + ITEMS_PER_PAGE
+        print(left_lim, right_lim)
 
-        return Response(
-            {
-                "results": data,
-                "meta": {
-                    "pagination": OrderedDict(
-                        [
-                            ("page", self.page.number),
-                            ("pages", self.page.paginator.num_pages),
-                            ("count", self.page.paginator.count),
-                        ]
-                    )
+        if total_docs != 0:
+            return response.JsonResponse(
+                {
+                    "currentPage": page,
+                    "hasNextPage": ITEMS_PER_PAGE * page < total_docs,
+                    "hasPreviousPage": page > 1,
+                    "nextPage": page + 1,
+                    "previousPage": page - 1,
+                    "lastPage": ceil(total_docs / ITEMS_PER_PAGE),
+                    "data": data[left_lim:right_lim],
                 },
-                "links": OrderedDict(
-                    [
-                        ("first", self.build_link(1)),
-                        ("last", self.build_link(self.page.paginator.num_pages)),
-                        ("next", self.build_link(next)),
-                        ("prev", self.build_link(previous)),
-                    ]
-                ),
-            }
-        )
-        # response['next'] = self.get_next_link()
-        # response['previous'] = self.get_previous_link()
+                status=status.HTTP_200_OK,
+            )
+        else:
+            raise DataFetchingError("Data Not Found In Database - Please Try Again")

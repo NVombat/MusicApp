@@ -2,8 +2,9 @@ from rest_framework import status
 from django.http import response
 
 from .errors import FileDoesNotExistForCurrentUserError, ProfileDataUnavailableError
+from core.errors import PageDoesNotExistError
 from mainapp.aws import AWSFunctionsS3
-from . import User_Data
+from . import User_Data, Paginate
 
 
 def send_profile_data(request, **kwargs) -> response.JsonResponse:
@@ -19,15 +20,22 @@ def send_profile_data(request, **kwargs) -> response.JsonResponse:
     try:
         print("USER DATA GET REQUEST")
 
+        page = int(request.query_params.get("Page"))
         email = request.query_params.get("Email")
-        print(email)
+        print(page, email)
 
         user_data = User_Data.fetch_user_data(email)
-        return user_data
+        # return user_data
+        return Paginate.get_paginated_data(page, user_data)
 
     except ProfileDataUnavailableError as pde:
         return response.JsonResponse(
             {"error": str(pde), "success_status": False},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    except PageDoesNotExistError as pdne:
+        return response.JsonResponse(
+            {"error": str(pdne), "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception as e:

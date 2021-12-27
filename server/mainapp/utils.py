@@ -4,13 +4,14 @@ import datetime as d
 
 from core.settings import AWS_BUCKET_FOLDER, AWS_OBJECT_URL_PREFIX
 from authentication.errors import UserDoesNotExistError
+from core.errors import PageDoesNotExistError
 from authentication.models import UserAuth
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     DataFetchingError,
     AWSDownloadError,
 )
-from . import S3_Functions, Music_Data
+from . import S3_Functions, Music_Data, Paginate
 from .mailer import send_feedback_mail
 
 User_Auth = UserAuth()
@@ -84,16 +85,23 @@ def send_music_data(request, **kwargs) -> response.JsonResponse:
     try:
         print("GET REQUEST")
 
+        page = int(request.query_params.get("Page"))
         record = Music_Data.fetch_data()
         # record["success_status"] = True
         # print(record)
+        return Paginate.get_paginated_data(page, record)
 
         # return response.JsonResponse(record, status=status.HTTP_200_OK)
-        return record
+        # return record
 
     except DataFetchingError as dfe:
         return response.JsonResponse(
             {"error": str(dfe), "success_status": False},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+    except PageDoesNotExistError as pdne:
+        return response.JsonResponse(
+            {"error": str(pdne), "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception:
