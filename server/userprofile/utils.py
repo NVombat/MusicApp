@@ -8,7 +8,7 @@ from . import User_Data, Paginate
 
 
 def send_profile_data(request, **kwargs) -> response.JsonResponse:
-    """Sends profile data when user requests through GET requests
+    """Sends paginated profile data when user requests through GET requests
 
     Args:
         request

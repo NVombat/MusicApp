@@ -73,7 +73,7 @@ def recv_music_data(request, **kwargs) -> response.JsonResponse:
 
 
 def send_music_data(request, **kwargs) -> response.JsonResponse:
-    """Sends data when user requests through GET requests
+    """Sends paginated data when user requests through GET requests
 
     Args:
         request
