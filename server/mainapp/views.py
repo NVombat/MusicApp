@@ -3,7 +3,6 @@ from rest_framework.views import APIView
 from django.http import response
 
 from .utils import recv_music_data, send_music_data, recv_contact_us_data
-from core.pagination import CustomPagination
 from authentication import validate
 from core.throttle import throttle
 
@@ -30,7 +29,6 @@ class Uploads(APIView):
 
 
 class Posts(APIView):
-    pagination_class = CustomPagination
     permission_classes = (AllowAny,)
     throttle_classes = [throttle]
 
