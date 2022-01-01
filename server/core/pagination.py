@@ -5,13 +5,22 @@ from math import ceil
 from mainapp.errors import DataFetchingError
 from .errors import PageDoesNotExistError
 
-ITEMS_PER_PAGE = 1
+ITEMS_PER_PAGE = 10
 
 
 class CustomPagination:
-    def get_paginated_data(self, page: int, data: list):
+    def get_paginated_data(self, page: int, data: list) -> response.JsonResponse:
+        """
+        Paginates Data & Adds Page Related Meta Data
+
+        Args:
+            page: Page Number
+            data: Data To Be Paginated
+
+        Returns:
+            response.JsonResponse
+        """
         total_docs = len(data)
-        print(len(data))
 
         # If Page Number Does Not Exist
         if page <= 0 or page > ceil(total_docs / ITEMS_PER_PAGE):
@@ -22,7 +31,6 @@ class CustomPagination:
 
         left_lim = (page - 1) * ITEMS_PER_PAGE
         right_lim = left_lim + ITEMS_PER_PAGE
-        print(left_lim, right_lim)
 
         if total_docs != 0:
             return response.JsonResponse(
