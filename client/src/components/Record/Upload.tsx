@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,7 +11,7 @@ enum Inputs {
 const Upload = () => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const getUserDataURL = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
 
@@ -51,7 +51,7 @@ const Upload = () => {
       .then((res) => {
         toast.success('Song uploaded successfully');
         console.log(res);
-        history.replace('/posts');
+        navigate('/posts');
       })
       .catch((err) => {
         toast.error('Something went wrong, please try again');

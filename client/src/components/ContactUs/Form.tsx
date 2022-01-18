@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,7 +9,7 @@ const Form = () => {
   const [email, setEmail] = useState<String>('');
   const [message, setMessage] = useState<String>('');
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const formSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ const Form = () => {
       })
       .then((res) => {
         toast.success('Form submitted successfully');
-        history.push('/');
+        navigate('/');
       })
       .catch((err) => {
         console.error(err);
