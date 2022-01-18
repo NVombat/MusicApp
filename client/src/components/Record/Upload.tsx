@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 enum Inputs {
   File = 'File',
@@ -47,12 +49,13 @@ const Upload = () => {
     axios
       .post(`${process.env.REACT_APP_POST_API}`, finalFormData)
       .then((res) => {
+        toast.success('Song uploaded successfully');
         console.log(res);
         history.replace('/posts');
       })
       .catch((err) => {
+        toast.error('Something went wrong, please try again');
         console.log(err, err?.response);
-        console.log('in catch block');
       });
   };
 
@@ -91,6 +94,7 @@ const Upload = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
