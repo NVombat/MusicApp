@@ -1,6 +1,8 @@
 import { useContext, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import AuthContext from '../../context/auth-context';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EmailAuthForm = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -51,9 +53,13 @@ const EmailAuthForm = () => {
         //@ts-ignore
         authCtx.login(data.idToken, expirationTime.toISOString());
         history.replace('/profile');
-        alert('Make Sure you update your name in Update Profile Section');
+        toast.success('Login successful');
+        toast.success(
+          'Make Sure you update your name in Update Profile Section'
+        );
       })
       .catch((err) => {
+        toast.error('Authentication error, please try again');
         setAuthError(true);
         setEmail('');
         setPassword('');
@@ -132,6 +138,7 @@ const EmailAuthForm = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

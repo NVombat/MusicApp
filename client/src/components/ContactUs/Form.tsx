@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Form = () => {
   const [name, setName] = useState<String>('');
@@ -9,7 +11,8 @@ const Form = () => {
 
   const history = useHistory();
 
-  const formSubmitHandler = () => {
+  const formSubmitHandler = (e: React.FormEvent) => {
+    e.preventDefault();
     axios
       .post(`${process.env.REACT_APP_POST_CONTACTUS_DATA}`, {
         name: name,
@@ -17,9 +20,13 @@ const Form = () => {
         message: message,
       })
       .then((res) => {
+        toast.success('Form submitted successfully');
         history.push('/');
       })
-      .catch((err) => alert('Something went wrong, please try again'));
+      .catch((err) => {
+        console.error(err);
+        toast.error('Something went wrong, please try again');
+      });
   };
 
   return (
@@ -84,6 +91,7 @@ const Form = () => {
           </div>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };

@@ -16,9 +16,13 @@ const Footer = () => {
                 <li className=" md:mr-6 cursor-pointer pt-4 lg:py-0">Posts</li>
               </ul>
             </div>
-            <div className="flex-row md:flex justify-center items-center text-sm text-color mb-10 f-f-l">
+            <div className="flex-row md:flex justify-center items-center text-sm text-center text-color mb-10 f-f-l">
               <p className="px-4"> Sponsored by JTV Foundation India</p>
-              <p className="px-4"> Developed by Shivam Shekhar & Nikhill Vombatkere, Networking & Communications Dept, SRMIST, India</p>
+              <p className="px-4">
+                {' '}
+                Developed by Shivam Shekhar & Nikhill Vombatkere, Networking &
+                Communications Dept, SRMIST, India
+              </p>
               <p className="px-4"> © 2021 JTV. All rights reserved</p>
             </div>
           </div>
