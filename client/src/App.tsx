@@ -1,4 +1,9 @@
-import { Switch, Route, Redirect } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
 import { useContext } from 'react';
 import {
   Home,
@@ -11,33 +16,35 @@ import {
   Record,
   ContactUs,
 } from './pages/Index';
-import Layout from './components/shared/Layout';
+import { Layout } from './components/shared/index';
 import AuthContext from './context/auth-context';
 
 const App = () => {
   const authCtx = useContext(AuthContext);
   return (
     <Layout>
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/about" exact component={About} />
-        <Route path="/posts" exact component={Posts} />
-        <Route path="/forgetpassword" exact component={ForgetPassword} />
-        <Route path="/contact-us" exact component={ContactUs} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/posts" element={<Posts />} />
+          <Route path="/forgetpassword" element={<ForgetPassword />} />
+          <Route path="/contact-us" element={<ContactUs />} />
 
-        <Route path="/profile">
-          {authCtx.isLoggedIn && <Profile />}
-          {!authCtx.isLoggedIn && <Redirect to="/auth" />}
-        </Route>
-        <Route path="/record">
-          {authCtx.isLoggedIn && <Record />}
-          {!authCtx.isLoggedIn && <Redirect to="/auth" />}
-        </Route>
+          <Route path="/profile">
+            {authCtx.isLoggedIn && <Profile />}
+            {!authCtx.isLoggedIn && <Navigate replace to="/auth" />}
+          </Route>
+          <Route path="/record">
+            {authCtx.isLoggedIn && <Record />}
+            {!authCtx.isLoggedIn && <Navigate replace to="/auth" />}
+          </Route>
 
-        {!authCtx.isLoggedIn && <Route path="/auth" exact component={Auth} />}
+          {!authCtx.isLoggedIn && <Route path="/auth" element={<Auth />} />}
 
-        <Route path="*" component={PageNotFound} />
-      </Switch>
+          <Route path="*" element={PageNotFound} />
+        </Routes>
+      </Router>
     </Layout>
   );
 };
