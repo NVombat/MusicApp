@@ -62,8 +62,8 @@ class UserData:
             data.sort("Date", -1)
             docs = list(data)
             # docs.append({"success_status": True})
-            json_data = response.JsonResponse(docs, safe=False)
-            return json_data
+            # json_data = response.JsonResponse(docs, safe=False)
+            # return json_data
             return docs
 
         raise ProfileDataUnavailableError(f"The User, {email}, Does Not Have Any Posts")

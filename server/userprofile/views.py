@@ -1,4 +1,3 @@
-from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from django.http import response
 
@@ -8,8 +7,7 @@ from core.throttle import throttle
 
 
 class Profile(APIView):
-    # permission_classes = [validate.ValidateUser]
-    permission_classes = (AllowAny,)
+    permission_classes = [validate.ValidateUser]
     throttle_classes = [throttle]
 
     def get(self, request, **kwargs) -> response.JsonResponse:
