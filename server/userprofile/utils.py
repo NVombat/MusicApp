@@ -20,13 +20,13 @@ def send_profile_data(request, **kwargs) -> response.JsonResponse:
     try:
         print("USER DATA GET REQUEST")
 
-        # page = int(request.query_params.get("Page"))
+        page = int(request.query_params.get("Page"))
         email = request.query_params.get("Email")
-        # print(page, email)
+        print(page, email)
 
         user_data = User_Data.fetch_user_data(email)
-        return user_data
-        # return Paginate.get_paginated_data(page, user_data)
+        # return user_data
+        return Paginate.get_paginated_data(page, user_data)
 
     except ProfileDataUnavailableError as pde:
         return response.JsonResponse(
