@@ -85,14 +85,14 @@ def send_music_data(request, **kwargs) -> response.JsonResponse:
     try:
         print("GET REQUEST")
 
-        page = int(request.query_params.get("Page"))
+        # page = int(request.query_params.get("Page"))
         record = Music_Data.fetch_data()
         # record["success_status"] = True
         # print(record)
-        return Paginate.get_paginated_data(page, record)
+        # return Paginate.get_paginated_data(page, record)
 
         # return response.JsonResponse(record, status=status.HTTP_200_OK)
-        # return record
+        return record
 
     except DataFetchingError as dfe:
         return response.JsonResponse(

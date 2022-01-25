@@ -8,7 +8,8 @@ from core.throttle import throttle
 
 
 class Uploads(APIView):
-    permission_classes = [validate.ValidateUser]
+    # permission_classes = [validate.ValidateUser]
+    permission_classes = (AllowAny,)
     throttle_classes = [throttle]
 
     def post(self, request, **kwargs) -> response.JsonResponse:
