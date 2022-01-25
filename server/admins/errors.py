@@ -15,3 +15,7 @@ class AdminDoesNotExistError(AdminErrors):
 
 class InvalidAdminIDError(AdminErrors):
     ...
+
+
+class AdminExistsError(AdminErrors):
+    ...

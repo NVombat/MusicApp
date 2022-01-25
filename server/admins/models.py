@@ -10,6 +10,7 @@ from .errors import (
     InvalidAdminCredentialsError,
     AdminDoesNotExistError,
     InvalidAdminIDError,
+    AdminExistsError,
 )
 
 load_dotenv()
@@ -116,3 +117,26 @@ class AdminAuth:
 
         else:
             raise AdminDoesNotExistError("Admin Does Not Exist")
+
+    def insert_admin(self, name: str, email: str, pwd: str) -> None:
+        """Insert Admin into collection
+
+        Args:
+            name: Admin Name
+            email: Admin Email ID
+            pwd: Admin Account Password
+
+        Returns:
+            None: inserts Admin data into db
+        """
+        if self.db.find_one({"Email": email}):
+            raise AdminExistsError("Admin Already Exists")
+        else:
+            pwd = self.hash_password(pwd)
+            rec = {
+                "user_id": self.generate_admin_id(),
+                "Username": name,
+                "Email": email,
+                "Password": pwd,
+            }
+            self.db.insert_one(rec)
