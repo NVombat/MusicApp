@@ -26,6 +26,7 @@ urlpatterns = [
     path("api/app/", include("mainapp.urls")),
     path("api/user/", include("userprofile.urls")),
     path("api/auth/", include("authentication.urls")),
+    path("api/admin/", include("admins.urls")),
     path("docs/", include_docs_urls(title="MusicApp")),
     path(
         "schema/",

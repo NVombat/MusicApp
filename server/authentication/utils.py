@@ -4,8 +4,8 @@ from django.http import response
 from .errors import (
     InvalidUserCredentialsError,
     InvalidVerificationError,
-    TokenGenerationError,
     UserDoesNotExistError,
+    TokenGenerationError,
     InvalidTokenError,
     UserExistsError,
     InvalidUIDError,
