@@ -15,9 +15,9 @@ const Form = () => {
     e.preventDefault();
     axios
       .post(`${process.env.REACT_APP_POST_CONTACTUS_DATA}`, {
-        name: name,
-        email: email,
-        message: message,
+        Name: name,
+        Email: email,
+        Message: message,
       })
       .then((res) => {
         toast.success('Form submitted successfully');
