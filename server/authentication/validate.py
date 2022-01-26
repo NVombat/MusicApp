@@ -30,10 +30,15 @@ class ValidateUser(BasePermission):
         try:
             user_id = data["id"]
             User_Auth.validate_uid(user_id)
+            assert data["role"] == "user"
 
         except InvalidUIDError as iue:
             print("Error:", str(iue))
             return False
+        except Exception:
+            print("Error In Authenticating User")
+            return False
 
         setattr(request, "user_id", user_id)
+        # request.session["user_id"] = user_id
         return True
