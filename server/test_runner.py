@@ -25,6 +25,7 @@ def get_server_tests(suite):
     suite.addTest(unittest.makeSuite(test_apis.TestAPI))
     suite.addTest(unittest.makeSuite(test_models.TestModels))
 
+
 def main():
     suite = unittest.TestSuite()
     get_unittests(suite)
