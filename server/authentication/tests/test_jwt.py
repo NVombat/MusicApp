@@ -14,6 +14,7 @@ class Test_JWT(unittest.TestCase):
         data = self.Token_Auth.verify_token(token=token)
         print("Data:", data)
         self.assertEqual("ABC", data["ID"])
+        self.assertEqual("user", data["role"])
 
     def test_refresh_generation(self):
         token = self.Token_Auth.generate_token(
@@ -30,3 +31,4 @@ class Test_JWT(unittest.TestCase):
         print("Data:", data)
         self.assertTrue(bool_val)
         self.assertEqual("ABC", data["ID"])
+        self.assertEqual("user", data["role"])

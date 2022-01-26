@@ -242,6 +242,8 @@ def get_tokens(request, **kwargs) -> response.JsonResponse:
         data = Token_Auth.decode_refresh_token(refresh_token)
         print(data)
 
+        assert data["role"] == "user"
+
         user_id = data["id"]
         print(user_id)
         if User_Auth.validate_uid(user_id):

@@ -33,6 +33,7 @@ class AdminTokenAuth:
         try:
             current_time = datetime.utcnow()
             payload["exp"] = current_time + timedelta(hours=expiry)
+            payload["role"] = "admin"
             access_token = jwt.encode(payload, key=self.signature, algorithm="HS256")
 
             if get_refresh:
@@ -97,13 +98,15 @@ class AdminTokenAuth:
 
             print("Decoded Token Data:", data)
 
-            if data["refresh"] == True:
+            if data["refresh"] == True and data["role"] == "admin":
                 return data
             print("NOT A REFRESH TOKEN")
             return None
 
         except Exception:
-            raise InvalidTokenError("Error Decoding Refresh Token - Token Invalid")
+            raise InvalidTokenError(
+                "Error Decoding Refresh Token - Token or Role Invalid"
+            )
 
     def verify_token(self, token: str):
         try:

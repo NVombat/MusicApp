@@ -2,7 +2,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from django.http import response
 
-from .utils import delete_music_data, send_music_data, login_admin
+from .utils import delete_music_data, send_music_data, login_admin, get_tokens
 from core.throttle import throttle
 from . import validate_admins
 
@@ -62,3 +62,23 @@ class AdminView(APIView):
         delete_data = delete_music_data(request, **kwargs)
 
         return delete_data
+
+
+class GenerateTokens(APIView):
+    permission_classes = (AllowAny,)
+    throttle_classes = [throttle]
+
+    def post(self, request, **kwargs) -> response.JsonResponse:
+        """Receiving POST request to send new tokens
+
+        Args:
+            request ([type])
+
+        Returns:
+            JsonResponse
+        """
+        print("Send Fresh Tokens Admin Post Request")
+
+        tokens = get_tokens(request, **kwargs)
+
+        return tokens

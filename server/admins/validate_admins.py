@@ -31,10 +31,15 @@ class ValidateAdmin(BasePermission):
         try:
             admin_id = data["aid"]
             Admin_Auth.validate_admin_id(admin_id)
+            assert data["role"] == "admin"
 
         except InvalidAdminIDError as iaie:
             print("Error:", str(iaie))
             return False
+        except Exception:
+            print("Error In Authenticating Admin")
+            return False
 
         setattr(request, "admin_id", admin_id)
+        # request.session["admin_id"] = admin_id
         return True
