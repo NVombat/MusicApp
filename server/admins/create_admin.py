@@ -89,8 +89,6 @@ def generate_admin(name: str, email: str, pwd: str) -> None:
 
 
 if __name__ == "__main__":
-    print("Creating Admin...")
-
     name = input("Enter Admin Name: ")
     email = input("Enter Admin Email ID: ")
     pwd = input("Enter Admin Password: ")
