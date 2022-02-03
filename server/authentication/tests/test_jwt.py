@@ -9,26 +9,42 @@ class Test_JWT(unittest.TestCase):
 
     def test_jwt_generation(self):
         token = self.Token_Auth.generate_token(
-            payload={"ID": "ABC"}, expiry=1, get_refresh=False
+            payload={"ID": "testuser"}, expiry=1, get_refresh=False
         )
         data = self.Token_Auth.verify_token(token=token)
         print("Data:", data)
-        self.assertEqual("ABC", data["ID"])
+        self.assertEqual("testuser", data["ID"])
         self.assertEqual("user", data["role"])
 
     def test_refresh_generation(self):
         token = self.Token_Auth.generate_token(
-            payload={"ID": "ABC"}, expiry=1, get_refresh=True
+            payload={"ID": "testuser"}, expiry=1, get_refresh=True
         )
         self.assertIn("access_token", token)
         self.assertIn("refresh_token", token)
 
     def test_decode_token(self):
-        token = self.oken_Auth.generate_token(
-            payload={"ID": "ABC"}, expiry=1, get_refresh=True
+        token = self.Token_Auth.generate_token(
+            payload={"ID": "testuser"}, expiry=1, get_refresh=True
         )
         bool_val, data = self.Token_Auth.decode_token(token=token)
         print("Data:", data)
         self.assertTrue(bool_val)
-        self.assertEqual("ABC", data["ID"])
+        self.assertEqual("testuser", data["ID"])
         self.assertEqual("user", data["role"])
+
+    def test_decode_refesh(self):
+        token = self.Token_Auth.generate_token(
+            payload={"ID": "testuser"}, expiry=1, get_refresh=True
+        )
+        data = self.Token_Auth.decode_refresh_token(token)
+
+        self.assertTrue(data["refresh"])
+        self.assertEqual("user", data["role"])
+
+        acc_token = self.Token_Auth.generate_token(
+            payload={"ID": "testuser"}, expiry=1, get_refresh=False
+        )
+        data = self.Token_Auth.decode_refresh_token(acc_token)
+
+        self.assertIsNone(data)
