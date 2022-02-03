@@ -4,10 +4,6 @@ from authentication.tests import (
     test_models,
     test_jwt,
 )
-from admins.tests import (
-    test_models,
-    test_auth,
-)
 from tests import (
     test_models,
     test_apis,
@@ -17,8 +13,6 @@ from tests import (
 def get_unittests(suite):
     suite.addTest(unittest.makeSuite(test_jwt.Test_JWT))
     suite.addTest(unittest.makeSuite(test_models.Test_Auth_Model))
-    # suite.addTest(unittest.makeSuite(test_jwt.))
-    # suite.addTest(unittest.makeSuite(test_models.))
 
 
 def get_server_tests(suite):
