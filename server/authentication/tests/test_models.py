@@ -2,12 +2,11 @@ from dotenv import load_dotenv
 import unittest
 
 from authentication.errors import (
-    InvalidUIDError,
     InvalidUserCredentialsError,
     UserDoesNotExistError,
+    InvalidUIDError,
 )
 from authentication.models import UserAuth
-from authentication.jwt import TokenAuth
 
 
 class Test_Auth_Model(unittest.TestCase):
@@ -17,7 +16,6 @@ class Test_Auth_Model(unittest.TestCase):
         load_dotenv()
 
         cls.userauth = UserAuth()
-        cls.tokenauth = TokenAuth()
 
     def setUp(self) -> None:
         self.userauth.insert_user("testuser", "testmail@gmail.com", "testpwd")

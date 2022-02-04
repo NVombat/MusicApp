@@ -11,7 +11,7 @@ from . import Base
 data = Base()
 
 
-class TestAPI(unittest.TestCase):
+class TestAppAPI(unittest.TestCase):
     """
     Integration tests
     """
