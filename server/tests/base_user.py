@@ -19,13 +19,11 @@ class CustomUserTests(TestCase):
 
     def user_data(
         self,
-        # user_id: str = "abcde12345ABCDEz",
         username: str = "testuser",
         email: str = "test@gmail.com",
         password: str = "testpwd",
     ):
         record = {
-            # "user_id": user_id,
             "Username": username,
             "Email": email,
             "Password": password,
@@ -83,3 +81,6 @@ class CustomUserTests(TestCase):
         if get_refresh:
             return tokens
         return tokens["access_token"]
+
+    def cleanup(self):
+        self.db.drop_collection("UserData")
