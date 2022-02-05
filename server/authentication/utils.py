@@ -47,7 +47,7 @@ def register_user(request, **kwargs) -> response.JsonResponse:
                 "access_token": token["access_token"],
                 "refresh_token": token["refresh_token"],
             },
-            status=status.HTTP_200_OK,
+            status=status.HTTP_201_CREATED,
         )
 
     except UserExistsError as uee:

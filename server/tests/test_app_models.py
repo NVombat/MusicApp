@@ -18,7 +18,7 @@ from . import Base
 data = Base()
 
 
-class TestModels(unittest.TestCase):
+class TestAppModels(unittest.TestCase):
     """
     Integration tests
     """

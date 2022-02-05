@@ -1,11 +1,12 @@
 from dotenv import load_dotenv
-import requests
 import unittest
-import pymongo
-import os
 
-from authentication import Token_Auth, User_Auth
-from core.settings import DATABASE
+from authentication.errors import (
+    InvalidUserCredentialsError,
+    UserDoesNotExistError,
+    InvalidUIDError,
+)
+from authentication.models import UserAuth
 
 
 class Test_Auth_Model(unittest.TestCase):
@@ -14,6 +15,42 @@ class Test_Auth_Model(unittest.TestCase):
 
         load_dotenv()
 
-        cls.client = requests.Session()
-        cls.pymongo_client = pymongo.MongoClient(DATABASE["mongo_uri"])
-        cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("USER_DATA_COLLECTION")]
+        cls.userauth = UserAuth()
+
+    def setUp(self) -> None:
+        self.userauth.insert_user("testuser", "testmail@gmail.com", "testpwd")
+
+    def test_uid_functions(self) -> None:
+        uid = self.userauth.get_uid("testmail@gmail.com")
+
+        with self.assertRaises(InvalidUIDError):
+            self.userauth.validate_uid("wronguid")
+
+        with self.assertRaises(UserDoesNotExistError):
+            self.userauth.get_uid("wrongemail@gmail.com")
+
+        self.assertTrue(self.userauth.validate_uid(uid))
+
+    def test_hash(self):
+        pwd = "testpwd"
+
+        with self.assertRaises(UserDoesNotExistError):
+            self.userauth.check_hash("wrongemail@gmail.com", pwd)
+
+        with self.assertRaises(InvalidUserCredentialsError):
+            self.userauth.check_hash("testmail@gmail.com", "wrongpwd")
+
+        self.assertTrue(self.userauth.check_hash("testmail@gmail.com", pwd))
+
+    def test_contact_us(self):
+        message = "testmessage"
+
+        with self.assertRaises(UserDoesNotExistError):
+            self.userauth.insert_contact_us_data("wrongemail@gmail.com", message)
+
+        self.assertTrue(
+            self.userauth.insert_contact_us_data("testmail.gmail.com", message)
+        )
+
+    def tearDown(self) -> None:
+        self.userauth.db.remove({"Email": "testmail@gmail.com"})

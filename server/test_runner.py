@@ -5,25 +5,27 @@ from authentication.tests import (
     test_jwt,
 )
 from admins.tests import (
-    test_models,
-    test_auth,
+    test_models_adm,
+    test_jwt_adm,
 )
 from tests import (
-    test_models,
-    test_apis,
+    test_app_models,
+    test_app_apis,
+    test_auth,
 )
 
 
 def get_unittests(suite):
+    suite.addTest(unittest.makeSuite(test_jwt_adm.Test_Admin_JWT))
+    suite.addTest(unittest.makeSuite(test_models_adm.Test_Admin_Model))
     suite.addTest(unittest.makeSuite(test_jwt.Test_JWT))
     suite.addTest(unittest.makeSuite(test_models.Test_Auth_Model))
-    # suite.addTest(unittest.makeSuite(test_jwt.))
-    # suite.addTest(unittest.makeSuite(test_models.))
 
 
 def get_server_tests(suite):
-    suite.addTest(unittest.makeSuite(test_apis.TestAPI))
-    suite.addTest(unittest.makeSuite(test_models.TestModels))
+    suite.addTest(unittest.makeSuite(test_app_models.TestAppModels))
+    suite.addTest(unittest.makeSuite(test_auth.TestAuthentication))
+    suite.addTest(unittest.makeSuite(test_app_apis.TestAppAPI))
 
 
 def main():
