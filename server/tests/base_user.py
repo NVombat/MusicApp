@@ -57,5 +57,29 @@ class CustomUserTests(TestCase):
             return tokens
         return tokens["access_token"]
 
-    def login_admin(self):
-        pass
+    def admin_data(
+        self, email: str = "testadmin@gmail.com", password: str = "adminpwd"
+    ):
+        adm_record = {
+            "Email": email,
+            "Password": password,
+        }
+
+        return adm_record
+
+    def login_admin(self, get_refresh=False):
+        adm_data = self.admin_data()
+
+        login_response = self.request.post(
+            self.base_url + "admin/login",
+            data=json.dumps(
+                {"Email": adm_data["Email"], "Password": adm_data["Password"]}
+            ),
+            headers=self.headers,
+        )
+        self.assertEqual(login_response.status_code, 200)
+
+        tokens = login_response.json()
+        if get_refresh:
+            return tokens
+        return tokens["access_token"]
