@@ -161,3 +161,6 @@ class TestAppAPI(unittest.TestCase):
             S3_Functions.delete_file_from_s3(data.test_data["CloudFilename"])
         except Exception as e:
             print("Deletion Error")
+
+    def tearDown(self) -> None:
+        user.cleanup()
