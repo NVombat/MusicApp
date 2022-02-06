@@ -84,3 +84,4 @@ class CustomUserTests(TestCase):
 
     def cleanup(self):
         self.db.drop_collection("UserData")
+        self.db.drop_collection("MusicData")
