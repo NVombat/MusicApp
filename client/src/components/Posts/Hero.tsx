@@ -6,17 +6,29 @@ import { Downlaod } from '../../utils/icons/Index';
 
 const Hero = () => {
   const [posts, setPosts] = useState<any>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
+  const [hasPreviousPage, setHasPreviousPage] = useState<boolean>(false);
 
   useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_GET_API}`)
-      .then((res) => {
-        console.log('axios response', res.data);
-        console.log('type of axios data', typeof res.data);
-        setPosts(res.data);
+    axios({
+      method: 'GET',
+      url: `${process.env.REACT_APP_GET_API}`,
+      params: {
+        Page: currentPage,
+      },
+    })
+      .then((res: any) => {
+        console.log(res);
+        setPosts(res.data.data);
+        setCurrentPage(res.data.currentPage);
+        setHasNextPage(res.data.hasNextPage);
+        setHasPreviousPage(res.data.hasPreviousPage);
       })
-      .catch((err) => console.log(err, err?.response));
-  }, []);
+      .catch((err: any) => {
+        console.log(err);
+      });
+  }, [currentPage, hasNextPage, hasPreviousPage]);
 
   return (
     <div>
@@ -37,12 +49,29 @@ const Hero = () => {
               key={index}
               link={item.ObjectURL}
               downloadIcon={<Downlaod />}
-              name={item.Name}
               filename={item.Filename}
             />
           </div>
         ))
       }
+      <div className="flex justify-center items-center">
+        {hasPreviousPage && (
+          <button
+            onClick={() => setCurrentPage(currentPage - 1)}
+            className="bg-blue-400 text-white text-2xl font-semibold text-center px-2 py-1 mx-3 my-3 rounded-lg"
+          >
+            Prev
+          </button>
+        )}
+        {hasNextPage && (
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            className="bg-blue-400 text-white text-2xl font-semibold text-center px-2 py-1 mx-3 rounded-lg"
+          >
+            Next
+          </button>
+        )}
+      </div>
     </div>
   );
 };
