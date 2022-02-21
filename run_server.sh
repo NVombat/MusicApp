@@ -1,3 +1,5 @@
+#structure from https://github.com/Aradhya-Tripathi
+
 #!/bin/bash
 echo "[STARTING-SERVER] [PORT] 8000"
 
