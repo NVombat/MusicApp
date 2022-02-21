@@ -33,7 +33,7 @@ print("DEBUG VALUE:", DEBUG)
 USE_DATABASE = "MONGO" if DEBUG is False else "TEST"
 print("USE_DATABASE:", USE_DATABASE)
 
-ALLOWED_HOSTS = ["8fc1-120-57-211-224.ngrok.io"] if DEBUG is True else ["musicappjtv.herokuapp.com"]
+ALLOWED_HOSTS = [] if DEBUG is True else ["musicappjtv.herokuapp.com"]
 
 
 # Application definition
@@ -70,7 +70,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5000",
     "http://localhost:8000",
-    "https://8fc1-120-57-211-224.ngrok.io:8000",
 ]
 
 

@@ -51,7 +51,9 @@ class Test_Auth_Model(unittest.TestCase):
             self.userauth.insert_contact_us_data("Test User", message)
 
         self.assertTrue(
-            self.userauth.insert_contact_us_data("Test User", "testmail.gmail.com", message)
+            self.userauth.insert_contact_us_data(
+                "Test User", "testmail.gmail.com", message
+            )
         )
 
     def tearDown(self) -> None:
