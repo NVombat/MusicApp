@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "storages",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -135,6 +136,8 @@ if DEBUG:
     }
 else:
     print("Deployment Does Not Support Caching")
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

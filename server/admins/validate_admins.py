@@ -1,10 +1,11 @@
 from rest_framework.permissions import BasePermission
 
-from .errors import InvalidTokenError, InvalidUIDError
-from . import User_Auth, Token_Auth
+from authentication.errors import InvalidTokenError
+from . import Admin_Token_Auth, Admin_Auth
+from .errors import InvalidAdminIDError
 
 
-class ValidateUser(BasePermission):
+class ValidateAdmin(BasePermission):
     def has_permission(self, request, view):
         try:
             hdrs = request.headers
@@ -16,7 +17,7 @@ class ValidateUser(BasePermission):
             return False
 
         try:
-            bool_val, data = Token_Auth.decode_token(token)
+            bool_val, data = Admin_Token_Auth.decode_token(token)
             print(bool_val, data)
             assert bool_val == True
 
@@ -28,17 +29,17 @@ class ValidateUser(BasePermission):
             return False
 
         try:
-            user_id = data["id"]
-            User_Auth.validate_uid(user_id)
-            assert data["role"] == "user"
+            admin_id = data["aid"]
+            Admin_Auth.validate_admin_id(admin_id)
+            assert data["role"] == "admin"
 
-        except InvalidUIDError as iue:
-            print("Error:", str(iue))
+        except InvalidAdminIDError as iaie:
+            print("Error:", str(iaie))
             return False
         except Exception:
-            print("Error In Authenticating User")
+            print("Error In Authenticating Admin")
             return False
 
-        setattr(request, "user_id", user_id)
-        # request.session["user_id"] = user_id
+        setattr(request, "admin_id", admin_id)
+        # request.session["admin_id"] = admin_id
         return True

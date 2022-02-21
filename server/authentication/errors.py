@@ -1,4 +1,4 @@
-from core.errorfactory import AuthenticationErrors
+from core.errorfactory import AuthenticationErrors, ContactUsErrors
 
 
 class InvalidUserCredentialsError(AuthenticationErrors):
@@ -6,6 +6,10 @@ class InvalidUserCredentialsError(AuthenticationErrors):
 
 
 class InvalidVerificationError(AuthenticationErrors):
+    ...
+
+
+class ContactUsDataInsertionError(ContactUsErrors):
     ...
 
 

@@ -3,12 +3,13 @@ from dotenv import load_dotenv
 import jwt
 import os
 
-from .errors import InvalidTokenError, TokenGenerationError
+from authentication.errors import InvalidTokenError
+from .errors import AdminTokenGenerationError
 
 load_dotenv()
 
 
-class TokenAuth:
+class AdminTokenAuth:
     def __init__(self):
         """
         Key for JWT
@@ -18,7 +19,7 @@ class TokenAuth:
     def generate_token(
         self, payload: dict, expiry: int = 1, get_refresh: bool = False, **kwargs
     ):
-        """Generates a unique JWT Token
+        """Generates a unique JWT Token for Admins
 
         Args:
             payload: Data To Be Encoded
@@ -32,7 +33,7 @@ class TokenAuth:
         try:
             current_time = datetime.utcnow()
             payload["exp"] = current_time + timedelta(hours=expiry)
-            payload["role"] = "user"
+            payload["role"] = "admin"
             access_token = jwt.encode(payload, key=self.signature, algorithm="HS256")
 
             if get_refresh:
@@ -46,7 +47,9 @@ class TokenAuth:
 
             return access_token
         except Exception:
-            raise TokenGenerationError("Error While Generating JWT Tokens")
+            raise AdminTokenGenerationError(
+                "Error While Generating JWT Tokens For Admin"
+            )
 
     def decode_token(self, token: str) -> tuple:
         """Decodes Token To Give Encoded Data
@@ -95,7 +98,7 @@ class TokenAuth:
 
             print("Decoded Token Data:", data)
 
-            if data["refresh"] == True and data["role"] == "user":
+            if data["refresh"] == True and data["role"] == "admin":
                 return data
             print("NOT A REFRESH TOKEN")
             return None
