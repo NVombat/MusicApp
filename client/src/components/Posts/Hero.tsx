@@ -19,7 +19,6 @@ const Hero = () => {
       },
     })
       .then((res: any) => {
-        console.log(res);
         setPosts(res.data.data);
         setCurrentPage(res.data.currentPage);
         setHasNextPage(res.data.hasNextPage);

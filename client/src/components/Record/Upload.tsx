@@ -21,14 +21,12 @@ const Upload = () => {
         idToken: localStorage.getItem('token'),
       })
       .then((res) => {
-        console.log(res.data);
         //@ts-ignore
         console.log(res.data.users[0].email, res.data.users[0].displayName);
         //@ts-ignore
         setEmail(res.data.users[0].email);
         //@ts-ignore
         setName(res.data.users[0].displayName);
-        // console.log('email:', email, 'name:', name);
       })
       .catch((err) => console.log(err));
   }, [email, getUserDataURL, name]);
@@ -50,7 +48,6 @@ const Upload = () => {
       .post(`${process.env.REACT_APP_POST_API}`, finalFormData)
       .then((res) => {
         toast.success('Song uploaded successfully');
-        console.log(res);
         history.replace('/posts');
       })
       .catch((err) => {

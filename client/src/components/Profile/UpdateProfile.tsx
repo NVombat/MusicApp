@@ -22,7 +22,6 @@ const UpdateProfile = () => {
       }),
     })
       .then((res) => {
-        console.log(res);
         history.replace('/');
       })
       .catch((err) => {

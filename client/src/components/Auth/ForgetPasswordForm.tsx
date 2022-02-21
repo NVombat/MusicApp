@@ -21,7 +21,7 @@ const ForgetPassword = () => {
     )
       .then((res) => {
         if (res.ok) {
-          console.log('yey');
+          console.log('password reset successful');
         }
       })
       .catch((err) => {

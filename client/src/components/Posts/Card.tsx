@@ -2,7 +2,7 @@ import React from 'react';
 
 interface CardProps {
   link: string;
-  downloadIcon: string;
+  downloadIcon: any;
   filename: string;
 }
 
