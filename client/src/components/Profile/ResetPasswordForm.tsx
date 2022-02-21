@@ -1,10 +1,10 @@
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import AuthContext from '../../context/auth-context';
 
 const ResetPasswordForm = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
   const authCtx = useContext(AuthContext);
   const [newPassword, setNewPassword] = useState<string>('');
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>('');
@@ -27,7 +27,7 @@ const ResetPasswordForm = () => {
           },
         }
       ).then((res) => {
-        navigate('/');
+        history.replace('/');
       });
     } else {
       setValidationError(true);

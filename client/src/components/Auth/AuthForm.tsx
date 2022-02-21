@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import AuthContext from '../../context/auth-context';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,7 +9,7 @@ const EmailAuthForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [authError, setAuthError] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const authCtx = useContext(AuthContext);
 
@@ -52,7 +52,7 @@ const EmailAuthForm = () => {
         );
         //@ts-ignore
         authCtx.login(data.idToken, expirationTime.toISOString());
-        navigate('/profile');
+        history.replace('/profile');
         toast.success('Login successful');
         toast.success(
           'Make Sure you update your name in Update Profile Section'

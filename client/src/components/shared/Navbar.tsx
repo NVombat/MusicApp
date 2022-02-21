@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import AuthContext from '../../context/auth-context';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,12 +11,12 @@ import NavBurger from '../../utils/icons/NavBurger';
 const Navbar = () => {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isLoggedIn;
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const logoutHandler = () => {
     toast.success('Logout Successful');
     authCtx.logout();
-    navigate('/');
+    history.replace('/');
   };
 
   const [navbarOpen, setNavbarOpen] = useState<boolean>(false);

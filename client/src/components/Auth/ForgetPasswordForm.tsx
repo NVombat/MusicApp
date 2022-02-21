@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState<string>('');
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const forgetPasswordHandler = () => {
     fetch(
@@ -25,7 +25,7 @@ const ForgetPassword = () => {
         }
       })
       .catch((err) => {
-        navigate('/');
+        history.replace('/');
       });
   };
   return (

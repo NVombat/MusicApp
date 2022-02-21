@@ -24,6 +24,11 @@ const Hero = () => {
         Posts
       </span>
 
+      {posts.length === 0 && (
+        <div className="flex justify-center items-center font-bold text-3xl md:my-4">
+          No Posts Available
+        </div>
+      )}
       {
         //@ts-ignore
         posts.map((item, index) => (
