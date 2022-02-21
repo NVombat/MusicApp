@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import AuthContext from '../../context/auth-context';
 
 const UpdateProfile = () => {
   const [name, setName] = useState<string>('');
   const authCtx = useContext(AuthContext);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const updateProfileAPI = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
 
@@ -22,8 +22,7 @@ const UpdateProfile = () => {
       }),
     })
       .then((res) => {
-        console.log(res);
-        navigate('/');
+        history.replace('/');
       })
       .catch((err) => {
         console.log(err);
