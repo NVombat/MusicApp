@@ -1,3 +1,5 @@
+#structure from https://github.com/Aradhya-Tripathi
+
 #!/bin/bash
 
 execution="\e[0;36m[INFO]\e[0m"
