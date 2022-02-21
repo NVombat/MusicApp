@@ -9,6 +9,7 @@ import os
 from core.settings import DATABASE
 from .errors import (
     InvalidUserCredentialsError,
+    ContactUsDataInsertionError,
     InvalidVerificationError,
     UserDoesNotExistError,
     UserExistsError,
@@ -96,6 +97,7 @@ class UserAuth:
                 "Username": name,
                 "Email": email,
                 "Password": pwd,
+                "ContactUs": [],
             }
             self.db.insert_one(rec)
 
@@ -227,25 +229,33 @@ class UserAuth:
 
         raise InvalidVerificationError("Incorrect Verification Code")
 
-    def insert_contact_us_data(self, email: str, message: str) -> bool:
-        """Inserts Contact Us Data for User
+
+class ContactUsData:
+    def __init__(self) -> None:
+        """
+        Connect to MongoDB
+        """
+        client = pymongo.MongoClient(DATABASE["mongo_uri"])
+        self.db = client[DATABASE["db"]][os.getenv("CONTACT_US_DATA_COLLECTION")]
+
+    def insert_contact_us_data(self, name: str, email: str, message: str) -> bool:
+        """Inserts Contact Us Data
 
         Args:
+            name: Name of User
             email: User Email ID
             message: Contact Us Message
 
         Returns:
             bool
         """
-        if self.db.find_one({"Email": email}):
-            self.db.find_one_and_update(
-                {"Email": email},
-                update={
-                    "$set": {"ContactUsData": message},
-                },
-            )
-            return True
+        data = {
+            "Name": name,
+            "Email": email,
+            "Message": message,
+        }
 
-        raise UserDoesNotExistError(
-            "This User Doesn't Exist But We Will Have A Look At Your Query"
-        )
+        try:
+            self.db.insert_one(data)
+        except Exception:
+            raise ContactUsDataInsertionError("Error Inserting Contact Us Data")

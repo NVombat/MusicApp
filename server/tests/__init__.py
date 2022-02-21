@@ -25,6 +25,5 @@ class Base:
 
         self.wrong_contact_us_data = {
             "Name": "wronguser",
-            "Email": "wrong@gmail.com",
             "Message": "testmessage",
         }
