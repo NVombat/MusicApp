@@ -3,9 +3,9 @@ from django.http import response
 import datetime as d
 
 from core.settings import AWS_BUCKET_FOLDER, AWS_OBJECT_URL_PREFIX
-from authentication.errors import UserDoesNotExistError
+from authentication.errors import ContactUsDataInsertionError
+from authentication.models import ContactUsData
 from core.errors import PageDoesNotExistError
-from authentication.models import UserAuth
 from .errors import (
     FileAlreadyExistsForCurrentUserError,
     DataFetchingError,
@@ -14,7 +14,7 @@ from .errors import (
 from . import S3_Functions, Music_Data, Paginate
 from .mailer import send_feedback_mail
 
-User_Auth = UserAuth()
+Contact_Us = ContactUsData()
 
 
 def recv_music_data(request, **kwargs) -> response.JsonResponse:
@@ -129,7 +129,9 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
         email = request.data.get("Email")
         message = request.data.get("Message")
 
-        User_Auth.insert_contact_us_data(email, message)
+        print(name, email, message)
+
+        Contact_Us.insert_contact_us_data(name, email, message)
 
         send_feedback_mail(email, name, message)
 
@@ -138,14 +140,14 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_200_OK,
         )
 
-    except UserDoesNotExistError as udne:
+    except ContactUsDataInsertionError as cdie:
         send_feedback_mail(email, name, message)
         return response.JsonResponse(
             {
-                "error": str(udne),
+                "error": str(cdie),
                 "success_status": True,
             },
-            status=status.HTTP_404_NOT_FOUND,
+            status=status.HTTP_400_BAD_REQUEST,
         )
     except Exception:
         return response.JsonResponse(

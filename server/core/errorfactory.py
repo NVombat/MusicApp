@@ -6,6 +6,10 @@ class PaginationErrors(Exception):
     ...
 
 
+class ContactUsErrors(Exception):
+    ...
+
+
 class MusicDataErrors(Exception):
     ...
 

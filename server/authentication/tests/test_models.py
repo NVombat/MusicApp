@@ -1,12 +1,13 @@
 from dotenv import load_dotenv
 import unittest
 
+from authentication.models import UserAuth, ContactUsData
 from authentication.errors import (
+    ContactUsDataInsertionError,
     InvalidUserCredentialsError,
     UserDoesNotExistError,
     InvalidUIDError,
 )
-from authentication.models import UserAuth
 
 
 class Test_Auth_Model(unittest.TestCase):
@@ -16,6 +17,7 @@ class Test_Auth_Model(unittest.TestCase):
         load_dotenv()
 
         cls.userauth = UserAuth()
+        cls.contactus = ContactUsData()
 
     def setUp(self) -> None:
         self.userauth.insert_user("testuser", "testmail@gmail.com", "testpwd")
@@ -45,12 +47,15 @@ class Test_Auth_Model(unittest.TestCase):
     def test_contact_us(self):
         message = "testmessage"
 
-        with self.assertRaises(UserDoesNotExistError):
-            self.userauth.insert_contact_us_data("wrongemail@gmail.com", message)
+        with self.assertRaises(ContactUsDataInsertionError):
+            self.userauth.insert_contact_us_data("Test User", message)
 
         self.assertTrue(
-            self.userauth.insert_contact_us_data("testmail.gmail.com", message)
+            self.userauth.insert_contact_us_data(
+                "Test User", "testmail.gmail.com", message
+            )
         )
 
     def tearDown(self) -> None:
         self.userauth.db.remove({"Email": "testmail@gmail.com"})
+        self.contactus.db.remove({"Email": "testmail@gmail.com"})

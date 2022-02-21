@@ -83,7 +83,7 @@ class TestAppAPI(unittest.TestCase):
             url=self.api_contactus_url,
             data=data.wrong_contact_us_data,
         )
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 500)
 
         response = self.client.post(
             url=self.api_contactus_url,
