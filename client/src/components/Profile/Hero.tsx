@@ -38,7 +38,7 @@ const Hero = () => {
       {
         //@ts-ignore
         userData.map((item, index) => (
-          <div>
+          <div key={index}>
             <h1 className="text-2xl font-semibold flex justify-center mt-6">
               Welcome, {item.displayName}
             </h1>

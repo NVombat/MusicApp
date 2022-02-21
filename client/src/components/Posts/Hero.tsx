@@ -43,9 +43,8 @@ const Hero = () => {
       {
         //@ts-ignore
         posts.map((item, index) => (
-          <div className="flex justify-center items-center">
+          <div key={index} className="flex justify-center items-center">
             <Card
-              key={index}
               link={item.ObjectURL}
               downloadIcon={<Downlaod />}
               filename={item.Filename}
