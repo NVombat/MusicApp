@@ -20,7 +20,7 @@ def send_reset_pwd_mail(email: str, link: str) -> None:
     backemail_add = os.getenv("BACKEND_MAIL_ADDR")
     backemail_pwd = os.getenv("BACKEND_MAIL_PWD")
 
-    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    server = smtplib.SMTP("smtp.gmail.com", 587)
     server.login(backemail_add, backemail_pwd)
 
     verif_code = UserAuth.add_verif_code(email, 0)
