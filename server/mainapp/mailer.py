@@ -5,7 +5,11 @@ import os
 load_dotenv()
 
 
-def send_feedback_mail(email: str, name: str, message: str) -> None:
+def send_feedback_mail(
+    email: str = "nv9824@srmist.edu.in",
+    name: str = "Test User",
+    message: str = "Test Message",
+) -> None:
     """Sends Feedback Mail To User & Admin
 
     Args:
@@ -19,7 +23,8 @@ def send_feedback_mail(email: str, name: str, message: str) -> None:
     backemail_add = os.getenv("BACKEND_MAIL_ADDR")
     backemail_pwd = os.getenv("BACKEND_MAIL_PWD")
 
-    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.starttls()
     server.login(backemail_add, backemail_pwd)
 
     # User mail subject, body and format of the mail - FROM ADMIN TO USER
@@ -35,3 +40,7 @@ def send_feedback_mail(email: str, name: str, message: str) -> None:
     server.sendmail(backemail_add, email, msg1)
     server.sendmail(email, backemail_add, msg2)
     server.quit()
+
+
+if __name__ == "__main__":
+    send_feedback_mail()

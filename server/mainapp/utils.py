@@ -133,7 +133,7 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
 
         Contact_Us.insert_contact_us_data(name, email, message)
 
-        send_feedback_mail(email, name, message)
+        # send_feedback_mail(email, name, message)
 
         return response.JsonResponse(
             {"success_status": True},
@@ -141,7 +141,7 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
         )
 
     except ContactUsDataInsertionError as cdie:
-        send_feedback_mail(email, name, message)
+        # send_feedback_mail(email, name, message)
         return response.JsonResponse(
             {
                 "error": str(cdie),

@@ -20,7 +20,7 @@ cd server
 
 echo "$execution [RUNNING TESTS]"
 
-python3 test_runner.py
+python3 run_tests.py
 
 echo "$execution [STOPPING AND CLEANING UP]"
 
