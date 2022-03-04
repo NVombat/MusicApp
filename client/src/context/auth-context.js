@@ -66,6 +66,20 @@ export const AuthContextProvider = (props) => {
     const remainingTime = calculateRemainingTime(expirationTime);
 
     logoutTimer = setTimeout(logoutHandler, remainingTime);
+
+    // const loginHandler = async (e) => { // this code can be used to fetch data of the referesh and access token
+  
+    //   e.preventDefault();
+    //   let response = await fetch('http://127.0.0.1:8000/api/auth/generatetokens'), {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body:JSON.stringify({'user':null, 'password': null})
+    //   let data = await response.json();
+      
+    //   }
+  
   };
 
   useEffect(() => {
