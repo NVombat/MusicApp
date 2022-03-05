@@ -48,8 +48,8 @@ const Hero = () => {
               downloadIcon={<Downlaod />}
               filename={item.Filename}
             /> */}
-            <ReactAudioPlayer
-              src={item.ObjectURL}
+            <ReactAudioPlayer            //added react audio player to preview audio files
+              src={item.ObjectURL}      // url to the audio file
               controls
             />
             

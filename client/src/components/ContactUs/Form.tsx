@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import React, { useRef } from 'react';
 import emailjs from '@emailjs/browser';
 
-
+//email response sent to filled participants from the form
 
 const Form = () => {
 
@@ -14,7 +14,7 @@ const Form = () => {
 
   const sendEmail = (e: React.FormEvent) => {
     e.preventDefault();
-
+    //My own emailjs service id and template id is given so kindly pls change it to ur own.
     emailjs.sendForm('service_z2r5z0x', 'template_zpzc0to', '#mail', '9DsetQGGMKoDo5DD1')
       .then((result) => {
           console.log(result.text);
