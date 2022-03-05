@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.2.0",
+    "@emailjs/browser": "^3.4.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -14,11 +15,14 @@
     "@types/react-router-dom": "^5.1.8",
     "axios": "^0.23.0",
     "react": "^17.0.2",
+    "react-audio-player": "^0.17.0",
     "react-dom": "^17.0.2",
     "react-media-recorder": "^1.5.0",
+    "react-player": "^2.9.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-toastify": "^7.0.4",
+    "reactjs-media": "^2.2.0",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
