@@ -26,15 +26,15 @@ const App = () => {
         <Route path="/contact-us" exact component={ContactUs} />
 
         <Route path="/profile">
-          {authCtx.isLoggedIn && <Profile />}
-          {!authCtx.isLoggedIn && <Redirect to="/auth" />}
+          {authCtx.loginUser && <Profile />}
+          {!authCtx.loginUser && <Redirect to="/auth" />}
         </Route>
         <Route path="/record">
-          {authCtx.isLoggedIn && <Record />}
-          {!authCtx.isLoggedIn && <Redirect to="/auth" />}
+          {authCtx.loginUser && <Record />}
+          {!authCtx.logiUser && <Redirect to="/auth" />}
         </Route>
 
-        {!authCtx.isLoggedIn && <Route path="/auth" exact component={Auth} />}
+          {!authCtx.loginUser && <Route path="/auth" exact component={Auth} />}
 
         <Route path="*" component={PageNotFound} />
       </Switch>

@@ -33,7 +33,7 @@ const EmailAuthForm = () => {
         returnSecureToken: true,
       }),
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
     })
       .then((res) => {
