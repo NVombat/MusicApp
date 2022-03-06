@@ -31,10 +31,10 @@ const App = () => {
         </Route>
         <Route path="/record">
           {authCtx.loginUser && <Record />}
-          {!authCtx.logiUser && <Redirect to="/auth" />}
+          {!authCtx.loginUser && <Redirect to="/auth" />}
         </Route>
 
-          {!authCtx.loginUser && <Route path="/auth" exact component={Auth} />}
+        {!authCtx.loginUser && <Route path="/auth" exact component={Auth} />}
 
         <Route path="*" component={PageNotFound} />
       </Switch>
