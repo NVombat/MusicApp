@@ -104,20 +104,17 @@ export const AuthProvider = ({ children }) => {
 
   let loginUser = async (e) => {
     e.preventDefault();
-    let response = await fetch(
-      'http://127.0.0.1:8000/api/auth/generatetokens',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + String(authTokens.access_token),
-        },
-        body: JSON.stringify({
-          email: e.target.email.value,
-          password: e.target.password.value,
-        }),
-      }
-    );
+    let response = await fetch(`${process.env.FETCH_URL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + String(authTokens.access_token),
+      },
+      body: JSON.stringify({
+        email: e.target.email.value,
+        password: e.target.password.value,
+      }),
+    });
     let data = await response.json();
 
     if (response.status === 200) {
@@ -125,7 +122,7 @@ export const AuthProvider = ({ children }) => {
       setAuthTokens(data);
       setUser(jwt_decode(data.access_token));
       localStorage.setItem('authTokens', JSON.stringify(data)); // here is the code that will be used to storedToken
-      history.push('/profile'); // this will send the user to the profile page the moment he logs in
+      history.replace('/profile'); // this will send the user to the profile page the moment he logs in
     } else {
       alert('Something went wrong!');
     }
@@ -136,21 +133,18 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem('authTokens');
-    history.push('/login');
+    history.replace('/login');
   };
 
   const updateToken = async () => {
-    let response = await fetch(
-      'http://127.0.0.1:8000/api/auth/generatetokens',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + String(authTokens.refresh_token),
-        },
-        body: JSON.stringify({ refresh_token: authTokens?.refresh_token }),
-      }
-    );
+    let response = await fetch(`${process.env.FETCH_URL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + String(authTokens.refresh_token),
+      },
+      body: JSON.stringify({ refresh_token: authTokens?.refresh_token }),
+    });
 
     let data = await response.json();
 
@@ -180,13 +174,13 @@ export const AuthProvider = ({ children }) => {
       updateToken();
     }
 
-    let onehrs = 1000 * 60 * 60;
+    let oneHrs = 1000 * 60 * 60;
 
     let interval = setInterval(() => {
       if (authTokens) {
         updateToken();
       }
-    }, onehrs);
+    }, oneHrs);
     return () => clearInterval(interval);
   });
 
