@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card from './Card';
 import { Downlaod } from '../../utils/icons/Index';
-import ReactAudioPlayer from 'react-audio-player';
+
+
 const Hero = () => {
   const [posts, setPosts] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -42,19 +43,12 @@ const Hero = () => {
       {
         //@ts-ignore
         posts.map((item, index) => (
-          <div key={index} className="flex gap-4 justify-center items-center m-3">
-            {/* <Card
+          <div key={index} className="flex gap-4 justify-center items-center ">
+            <Card
               link={item.ObjectURL}
               downloadIcon={<Downlaod />}
               filename={item.Filename}
-            /> */}
-            <ReactAudioPlayer            //added react audio player to preview audio files
-              src={item.ObjectURL}      // url to the audio file
-              controls
             />
-            
-        
-      
           </div>
         ))
       }

@@ -3,31 +3,37 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import React, { useRef } from 'react';
-import emailjs from '@emailjs/browser';
-
-//email response sent to filled participants from the form
 
 const Form = () => {
+  const [name, setName] = useState<String>('');
+  const [email, setEmail] = useState<String>('');
+  const [message, setMessage] = useState<String>('');
 
-  const form = useRef();
+  const history = useHistory();
 
-  const sendEmail = (e: React.FormEvent) => {
+  const formSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    //My own emailjs service id and template id is given so kindly pls change it to ur own.
-    emailjs.sendForm('service_z2r5z0x', 'template_zpzc0to', '#mail', '9DsetQGGMKoDo5DD1')
-      .then((result) => {
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
+    axios
+      .post(`${process.env.REACT_APP_POST_CONTACTUS_DATA}`, {
+        Name: name,
+        Email: email,
+        Message: message,
+      })
+      .then((res) => {
+        toast.success('Form submitted successfully');
+        history.push('/');
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error('Something went wrong, please try again');
       });
-    };
+  };
 
   return (
     <div>
-      <form id='mail'
+      <form
         className="text-gray-700 body-font relative"
-        onSubmit={sendEmail}
+        onSubmit={formSubmitHandler}
       >
         <div className="container px-5 pb-24 mx-auto">
           <div className="lg:w-1/2 md:w-2/3 mx-auto">
@@ -42,7 +48,7 @@ const Form = () => {
                     id="name"
                     name="name"
                     className="w-full bg-gray-100 rounded border border-gray-300 focus:border-blue-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                    
+                    onChange={(e) => setName(e.target.value)}
                     required
                   />
                 </div>
@@ -57,7 +63,7 @@ const Form = () => {
                     id="email"
                     name="email"
                     className="w-full bg-gray-100 rounded border border-gray-300 focus:border-blue-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                    
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
@@ -71,13 +77,13 @@ const Form = () => {
                     id="message"
                     name="message"
                     className="w-full bg-gray-100 rounded border border-gray-300 focus:border-blue-400 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                    
+                    onChange={(e) => setMessage(e.target.value)}
                     required
                   ></textarea>
                 </div>
               </div>
               <div className="p-2 w-full">
-                <button type="submit" className="flex mx-auto text-white bg-blue-400 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">
+                <button className="flex mx-auto text-white bg-blue-400 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">
                   Submit
                 </button>
               </div>
