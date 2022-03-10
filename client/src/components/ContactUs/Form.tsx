@@ -1,35 +1,9 @@
 import { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import emailjs from '@emailjs/browser';
 
 const Form = () => {
-  // const [name, setName] = useState<String>('');
-  // const [email, setEmail] = useState<String>('');
-  // const [message, setMessage] = useState<String>('');
-
-  // const history = useHistory();
-
-  // const formSubmitHandler = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   axios
-  //     .post(`${process.env.REACT_APP_POST_CONTACTUS_DATA}`, {
-  //       Name: name,
-  //       Email: email,
-  //       Message: message,
-  //     })
-  //     .then((res) => {
-  //       toast.success('Form submitted successfully');
-  //       history.push('/');
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       toast.error('Something went wrong, please try again');
-  //     });
-  // };
-
   const sendEmail = (e: React.FormEvent) => {
 
     e.preventDefault();
