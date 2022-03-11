@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import emailjs from 'emailjs-com';
 
 const Form = () => {
   const [name, setName] = useState<String>('');
@@ -13,6 +14,12 @@ const Form = () => {
 
   const formSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
+    emailjs.sendForm('service_ohl97gj', 'template_hos8tvj','#contactForm', '-adufJCD2tG24TRJJ')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          console.log(error.text);
+      });
     axios
       .post(`${process.env.REACT_APP_POST_CONTACTUS_DATA}`, {
         Name: name,
@@ -31,7 +38,7 @@ const Form = () => {
 
   return (
     <div>
-      <form
+      <form id="contactForm"
         className="text-gray-700 body-font relative"
         onSubmit={formSubmitHandler}
       >
