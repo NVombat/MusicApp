@@ -39,115 +39,139 @@ class TestAppAPI(unittest.TestCase):
         cls.api_profile_url = "http://localhost:8000/api/user/profile"
 
     def test_uploads(self):
-        tokens = user.login_user()
-        acc_tok = tokens["access_token"]
+        try:
+            tokens = user.login_user()
+            acc_tok = tokens["access_token"]
 
-        user.headers.update({"Authorization": f"Bearer {acc_tok}"})
-        response = self.client.post(
-            url=self.api_upload_url,
-            data=data.test_data,
-            headers=user.headers,
-        )
-        self.assertEqual(response.status_code, 200)
+            user.headers.update({"Authorization": f"Bearer {acc_tok}"})
+            response = self.client.post(
+                url=self.api_upload_url,
+                data=data.test_data,
+                headers=user.headers,
+            )
+            self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(
-            url=self.api_upload_url,
-            data=data.test_data,
-            headers=user.headers,
-        )
-        self.assertEqual(response.status_code, 400)
+            response = self.client.post(
+                url=self.api_upload_url,
+                data=data.test_data,
+                headers=user.headers,
+            )
+            self.assertEqual(response.status_code, 400)
 
-        response = self.client.post(
-            url=self.api_upload_url,
-            data=data.incomplete_data,
-            headers=user.headers,
-        )
-        self.assertEqual(response.status_code, 500)
+            response = self.client.post(
+                url=self.api_upload_url,
+                data=data.incomplete_data,
+                headers=user.headers,
+            )
+            self.assertEqual(response.status_code, 500)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error")
 
     def test_posts(self):
-        response = self.client.get(self.api_posts_url + "?Page=1")
-        self.assertEqual(response.status_code, 200)
+        try:
+            response = self.client.get(self.api_posts_url + "?Page=1")
+            self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(self.api_posts_url + "?Page=1000")
-        self.assertEqual(response.status_code, 404)
+            response = self.client.get(self.api_posts_url + "?Page=1000")
+            self.assertEqual(response.status_code, 404)
 
-        response = self.client.get(self.api_posts_url)
-        self.assertEqual(response.status_code, 500)
+            response = self.client.get(self.api_posts_url)
+            self.assertEqual(response.status_code, 500)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error")
 
     def test_contact_us(self):
-        tokens = user.login_user()
+        try:
+            tokens = user.login_user()
 
-        response = self.client.post(
-            url=self.api_contactus_url,
-            data=data.contact_us_data,
-        )
-        self.assertEqual(response.status_code, 200)
+            response = self.client.post(
+                url=self.api_contactus_url,
+                data=data.contact_us_data,
+            )
+            self.assertEqual(response.status_code, 200)
 
-        response = self.client.post(
-            url=self.api_contactus_url,
-            data=data.wrong_contact_us_data,
-        )
-        self.assertEqual(response.status_code, 500)
+            response = self.client.post(
+                url=self.api_contactus_url,
+                data=data.wrong_contact_us_data,
+            )
+            self.assertEqual(response.status_code, 500)
 
-        response = self.client.post(
-            url=self.api_contactus_url,
-            data=data.incomplete_data,
-        )
-        self.assertEqual(response.status_code, 500)
+            response = self.client.post(
+                url=self.api_contactus_url,
+                data=data.incomplete_data,
+            )
+            self.assertEqual(response.status_code, 500)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error")
 
     def test_user_profile_data(self):
-        tokens = user.login_user()
-        acc_tok = tokens["access_token"]
+        try:
+            tokens = user.login_user()
+            acc_tok = tokens["access_token"]
 
-        user.headers.update({"Authorization": f"Bearer {acc_tok}"})
-        response = self.client.get(
-            url=self.api_profile_url + "?Email=test@gmail.com&Page=1",
-            headers=user.headers,
-        )
-        self.assertEqual(response.status_code, 200)
+            user.headers.update({"Authorization": f"Bearer {acc_tok}"})
+            response = self.client.get(
+                url=self.api_profile_url + "?Email=test@gmail.com&Page=1",
+                headers=user.headers,
+            )
+            self.assertEqual(response.status_code, 200)
 
-        response = self.client.get(
-            url=self.api_profile_url + "?Email=wrong@gmail.com&Page=1",
-            headers=user.headers,
-        )
-        self.assertEqual(response.status_code, 404)
+            response = self.client.get(
+                url=self.api_profile_url + "?Email=wrong@gmail.com&Page=1",
+                headers=user.headers,
+            )
+            self.assertEqual(response.status_code, 404)
 
-        response = self.client.get(
-            url=self.api_profile_url + "?Email=test@gmail.com&Page=1000",
-            headers=user.headers,
-        )
-        self.assertEqual(response.status_code, 404)
+            response = self.client.get(
+                url=self.api_profile_url + "?Email=test@gmail.com&Page=1000",
+                headers=user.headers,
+            )
+            self.assertEqual(response.status_code, 404)
 
-        response = self.client.get(
-            url=self.api_profile_url,
-            headers=user.headers,
-        )
-        self.assertEqual(response.status_code, 500)
+            response = self.client.get(
+                url=self.api_profile_url,
+                headers=user.headers,
+            )
+            self.assertEqual(response.status_code, 500)
 
-        response = self.client.delete(
-            url=self.api_profile_url + "?Email=test@gmail.com&PID=abc",
-            headers=user.headers,
-        )
-        self.assertEqual(response.status_code, 404)
+            response = self.client.delete(
+                url=self.api_profile_url + "?Email=test@gmail.com&PID=abc",
+                headers=user.headers,
+            )
+            self.assertEqual(response.status_code, 404)
 
-        response = self.client.delete(
-            url=self.api_profile_url,
-            headers=user.headers,
-        )
-        self.assertEqual(response.status_code, 500)
+            response = self.client.delete(
+                url=self.api_profile_url,
+                headers=user.headers,
+            )
+            self.assertEqual(response.status_code, 500)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error")
 
     def test_fail_post(self):
-        response = self.client.post(
-            url=self.api_posts_url,
-            data=data.test_data,
-        )
-        # Method not allowed
-        self.assertEqual(response.status_code, 405)
+        try:
+            response = self.client.post(
+                url=self.api_posts_url,
+                data=data.test_data,
+            )
+            # Method not allowed
+            self.assertEqual(response.status_code, 405)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error")
 
     def test_fail_get(self):
-        response = self.client.get(self.api_upload_url)
-        # Method not allowed
-        self.assertEqual(response.status_code, 405)
+        try:
+            response = self.client.get(self.api_upload_url)
+            # Method not allowed
+            self.assertEqual(response.status_code, 405)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error")
 
     @classmethod
     def tearDownClass(cls) -> None:

@@ -34,20 +34,24 @@ class Test_JWT(unittest.TestCase):
         self.assertEqual("user", data["role"])
 
     def test_decode_refesh(self):
-        token = self.Token_Auth.generate_token(
-            payload={"ID": "testuser"}, expiry=1, get_refresh=True
-        )
-        data = self.Token_Auth.decode_refresh_token(token["refresh_token"])
+        try:
+            token = self.Token_Auth.generate_token(
+                payload={"ID": "testuser"}, expiry=1, get_refresh=True
+            )
+            data = self.Token_Auth.decode_refresh_token(token["refresh_token"])
 
-        self.assertTrue(data["refresh"])
-        self.assertEqual("user", data["role"])
+            self.assertTrue(data["refresh"])
+            self.assertEqual("user", data["role"])
 
-        acc_token = self.Token_Auth.generate_token(
-            payload={"ID": "testuser"}, expiry=1, get_refresh=False
-        )
-        data = self.Token_Auth.decode_refresh_token(acc_token)
+            acc_token = self.Token_Auth.generate_token(
+                payload={"ID": "testuser"}, expiry=1, get_refresh=False
+            )
+            data = self.Token_Auth.decode_refresh_token(acc_token)
 
-        self.assertIsNone(data)
+            self.assertIsNone(data)
+
+        except InvalidTokenError:
+            print("Invalid Token Error")
 
     def test_invalid_tokens(self):
         invalid_token = "invtok123"

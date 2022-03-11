@@ -256,5 +256,6 @@ class ContactUsData:
 
         try:
             self.db.insert_one(data)
+            return True
         except Exception:
             raise ContactUsDataInsertionError("Error Inserting Contact Us Data")
