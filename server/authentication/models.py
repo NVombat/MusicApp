@@ -77,7 +77,7 @@ class UserAuth:
 
         raise InvalidUIDError(f"User With user_id {uid} NOT Found")
 
-    def insert_user(self, name: str, email: str, pwd: str) -> None:
+    def insert_user(self, email: str, pwd: str) -> None:
         """Insert user into collection
 
         Args:
@@ -94,7 +94,6 @@ class UserAuth:
             pwd = self.hash_password(pwd)
             rec = {
                 "user_id": self.generate_uid(),
-                "Username": name,
                 "Email": email,
                 "Password": pwd,
                 "ContactUs": [],
@@ -118,7 +117,7 @@ class UserAuth:
         #    verif_code = random.randint(100000, 999999)
         verif_code = random.randint(100000, 999999)
 
-        if value := self.db.find_one({"verif_code": verif_code}):
+        if self.db.find_one({"verif_code": verif_code}):
             verif_code = self.add_verif_code(email, 1)
 
         else:
