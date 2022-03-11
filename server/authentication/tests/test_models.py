@@ -47,11 +47,11 @@ class Test_Auth_Model(unittest.TestCase):
     def test_contact_us(self):
         message = "testmessage"
 
-        with self.assertRaises(ContactUsDataInsertionError):
-            self.userauth.insert_contact_us_data("Test User", message)
+        with self.assertRaises(TypeError):
+            self.contactus.insert_contact_us_data("Test User", message)
 
         self.assertTrue(
-            self.userauth.insert_contact_us_data(
+            self.contactus.insert_contact_us_data(
                 "Test User", "testmail.gmail.com", message
             )
         )

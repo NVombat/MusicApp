@@ -30,7 +30,9 @@ class TestAppModels(unittest.TestCase):
 
         cls.client = requests.Session()
         cls.pymongo_client = pymongo.MongoClient(DATABASE["mongo_uri"])
-        cls.db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
+        cls.m_db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
+        cls.u_db = cls.pymongo_client[DATABASE["db"]][os.getenv("USER_DATA_COLLECTION")]
+        cls.c_db = cls.pymongo_client[DATABASE["db"]][os.getenv("CONTACT_US_DATA_COLLECTION")]
         cls.api_upload_url = "http://localhost:8000/api/app/uploads"
         cls.api_posts_url = "http://localhost:8000/api/app/posts"
 
@@ -60,7 +62,9 @@ class TestAppModels(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.db.delete_many({})
+        cls.m_db.remove({})
+        cls.u_db.remove({})
+        cls.c_db.remove({})
         cls.pymongo_client.close()
         cls.client.close()
         try:
@@ -69,7 +73,9 @@ class TestAppModels(unittest.TestCase):
             print("Deletion Error")
 
     def clean(self):
-        self.db.delete_many({})
+        self.m_db.remove({})
+        self.u_db.remove({})
+        self.c_db.remove({})
         try:
             S3_Functions.delete_file_from_s3(data.test_data["CloudFilename"])
         except Exception as e:

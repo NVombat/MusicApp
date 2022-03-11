@@ -27,3 +27,8 @@ class Base:
             "Name": "wronguser",
             "Message": "testmessage",
         }
+
+        self.wrong_data = {
+            "wrong_email": "wrong@gmail.com",
+            "wrong_file": "wrong.csv",
+        }

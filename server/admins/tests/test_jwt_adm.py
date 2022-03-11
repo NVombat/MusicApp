@@ -5,7 +5,7 @@ from admins.issue_jwt import AdminTokenAuth
 
 
 class Test_Admin_JWT(unittest.TestCase):
-    def __init__(self):
+    def setUp(self):
         self.Token_Auth = AdminTokenAuth()
 
     def test_jwt_generation(self):
@@ -28,7 +28,7 @@ class Test_Admin_JWT(unittest.TestCase):
         token = self.Token_Auth.generate_token(
             payload={"AID": "adminuser"}, expiry=1, get_refresh=True
         )
-        bool_val, data = self.Token_Auth.decode_token(token=token)
+        bool_val, data = self.Token_Auth.decode_token(token=token["access_token"])
         print("Data:", data)
         self.assertTrue(bool_val)
         self.assertEqual("adminuser", data["AID"])
@@ -38,7 +38,7 @@ class Test_Admin_JWT(unittest.TestCase):
         token = self.Token_Auth.generate_token(
             payload={"AID": "adminuser"}, expiry=1, get_refresh=True
         )
-        data = self.Token_Auth.decode_refresh_token(token)
+        data = self.Token_Auth.decode_refresh_token(token["refresh_token"])
 
         self.assertTrue(data["refresh"])
         self.assertEqual("admin", data["role"])
