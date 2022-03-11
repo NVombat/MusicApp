@@ -11,7 +11,9 @@ class TestAuthentication(CustomUserTests):
         try:
             data = self.user_data()
             response = self.request.post(
-                self.base_url + "auth/register", data=json.dumps(data), headers=self.headers
+                self.base_url + "auth/register",
+                data=json.dumps(data),
+                headers=self.headers,
             )
             self.assertEqual(response.status_code, 201)
 
@@ -20,14 +22,18 @@ class TestAuthentication(CustomUserTests):
 
             data = self.user_data()
             response = self.request.post(
-                self.base_url + "auth/register", data=json.dumps(data), headers=self.headers
+                self.base_url + "auth/register",
+                data=json.dumps(data),
+                headers=self.headers,
             )
             self.assertEqual(response.status_code, 400)
 
             data = self.user_data()
             data.pop("Email")
             response = self.request.post(
-                self.base_url + "auth/register", data=json.dumps(data), headers=self.headers
+                self.base_url + "auth/register",
+                data=json.dumps(data),
+                headers=self.headers,
             )
             self.assertEqual(response.status_code, 500)
 
@@ -38,7 +44,9 @@ class TestAuthentication(CustomUserTests):
         try:
             data = self.user_data()
             response = self.request.post(
-                self.base_url + "auth/register", data=json.dumps(data), headers=self.headers
+                self.base_url + "auth/register",
+                data=json.dumps(data),
+                headers=self.headers,
             )
             self.assertEqual(response.status_code, 201)
 
@@ -138,7 +146,10 @@ class TestAuthentication(CustomUserTests):
             )
             self.assertEqual(response.status_code, 401)
 
-            login_data = {"Password": adm_data["Password"], "Email": "wrongmail@gmail.com"}
+            login_data = {
+                "Password": adm_data["Password"],
+                "Email": "wrongmail@gmail.com",
+            }
             response = self.request.post(
                 self.base_url + "admin/login",
                 data=json.dumps(login_data),

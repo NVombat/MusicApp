@@ -12,7 +12,7 @@ class Base:
             "Filename": "test.wav",
             "File": "/home/nvombat/Desktop/Nikhill/Rap/Catatonic/Final Songs/No Oxygen/Recordings/Ricochet Rec8 Chorus.wav",
             "CloudFilename": "/tests/test/filename",
-            "ObjectURL": "url_of_object.aws"
+            "ObjectURL": "url_of_object.aws",
         }
 
         self.incomplete_data = {
