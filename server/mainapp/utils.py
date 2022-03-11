@@ -12,7 +12,6 @@ from .errors import (
     AWSDownloadError,
 )
 from . import S3_Functions, Music_Data, Paginate
-from .mailer import send_feedback_mail
 
 Contact_Us = ContactUsData()
 
@@ -133,15 +132,12 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
 
         Contact_Us.insert_contact_us_data(name, email, message)
 
-        # send_feedback_mail(email, name, message)
-
         return response.JsonResponse(
             {"success_status": True},
             status=status.HTTP_200_OK,
         )
 
     except ContactUsDataInsertionError as cdie:
-        # send_feedback_mail(email, name, message)
         return response.JsonResponse(
             {
                 "error": str(cdie),
