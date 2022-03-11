@@ -21,16 +21,15 @@ const EmailAuthForm = () => {
     event.preventDefault();
     let url;
     if (isLogin) {
-      url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+      url = `${process.env.REACT_APP_LOGIN}`
     } else {
-      url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_API_KEY}`;
+      url = `${process.env.REACT_APP_REGISTER}`
     }
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
         email: email,
         password: password,
-        returnSecureToken: true,
       }),
       headers: {
         'Content-Type': 'application/json'

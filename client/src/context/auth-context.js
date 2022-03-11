@@ -98,17 +98,23 @@ export const AuthProvider = ({ children }) => {
       ? jwt_decode(localStorage.getItem('authTokens'))
       : null
   );
-  let [loading, setLoading] = useState(true);
+  //let [loading, setLoading] = useState(true);
 
   const history = useHistory();
 
+
+// this function should take 2 arguements, access and refresh tokens
+// set these tokens in localstorage
+// check for expiration time
+// logic for logout timer
+
   let loginUser = async (e) => {
     e.preventDefault();
-    let response = await fetch(`${process.env.FETCH_URL}`, {
+    let response = await fetch(`${process.env.REACT_APP_FETCH_URL}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + String(authTokens.access_token),
+        Authorization: 'Bearer ' + toString(authTokens.access_token),
       },
       body: JSON.stringify({
         email: e.target.email.value,
@@ -120,6 +126,7 @@ export const AuthProvider = ({ children }) => {
     if (response.status === 200) {
       // this is the check code !! 🤞
       setAuthTokens(data);
+      console.log(authTokens);
       setUser(jwt_decode(data.access_token));
       localStorage.setItem('authTokens', JSON.stringify(data)); // here is the code that will be used to storedToken
       history.replace('/profile'); // this will send the user to the profile page the moment he logs in
@@ -127,6 +134,13 @@ export const AuthProvider = ({ children }) => {
       alert('Something went wrong!');
     }
   };
+
+//logout condition -
+// 1. There is no token (both refresh and access) && there is no expiration
+// 2. The expiration time is up
+
+//logic for logout
+//1. clear the localstorage on logout button press
 
   let logoutUser = () => {
     // this is for the time we are logged out
@@ -137,13 +151,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateToken = async () => {
-    let response = await fetch(`${process.env.FETCH_URL}`, {
+    let response = await fetch(`${process.env.REACT_APP_FETCH_URL}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + String(authTokens.refresh_token),
+        Authorization: 'Bearer ' + toString(authTokens.refresh_token),
       },
-      body: JSON.stringify({ refresh_token: authTokens?.refresh_token }),
+      body: JSON.stringify({ refresh_token: authTokens.refresh_token }),
     });
 
     let data = await response.json();
@@ -156,9 +170,9 @@ export const AuthProvider = ({ children }) => {
       logoutUser();
     }
 
-    if (loading) {
-      setLoading(false);
-    }
+    //   if (loading) {
+    //     setLoading(false);
+    //   }
   };
 
   let contextData = {
@@ -170,9 +184,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (loading) {
-      updateToken();
-    }
+    // if (loading) {
+    //   updateToken();
+    // }
 
     let oneHrs = 1000 * 60 * 60;
 
@@ -182,12 +196,10 @@ export const AuthProvider = ({ children }) => {
       }
     }, oneHrs);
     return () => clearInterval(interval);
-  });
+  }, [authTokens]);
 
   return (
-    <AuthContext.Provider value={contextData}>
-      {loading ? null : children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextData}>{children}</AuthContext.Provider>
   );
 };
 
