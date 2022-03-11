@@ -130,8 +130,7 @@ else:
 if DEBUG:
     CACHES = {
         "default": {
-            "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
-            "LOCATION": "/home/nvombat/Desktop/MusicApp/server/cache",
+            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
         }
     }
 else:
