@@ -85,9 +85,9 @@ class CustomUserTests(TestCase):
         return tokens["access_token"]
 
     def cleanup(self):
-        self.m_db.remove( { } )
-        self.u_db.remove( { } )
-        self.c_db.remove( { } )
+        self.m_db.remove({})
+        self.u_db.remove({})
+        self.c_db.remove({})
 
         # self.m_db.drop()
         # self.u_db.drop()

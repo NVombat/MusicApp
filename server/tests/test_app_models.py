@@ -32,7 +32,9 @@ class TestAppModels(unittest.TestCase):
         cls.pymongo_client = pymongo.MongoClient(DATABASE["mongo_uri"])
         cls.m_db = cls.pymongo_client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
         cls.u_db = cls.pymongo_client[DATABASE["db"]][os.getenv("USER_DATA_COLLECTION")]
-        cls.c_db = cls.pymongo_client[DATABASE["db"]][os.getenv("CONTACT_US_DATA_COLLECTION")]
+        cls.c_db = cls.pymongo_client[DATABASE["db"]][
+            os.getenv("CONTACT_US_DATA_COLLECTION")
+        ]
         cls.api_upload_url = "http://localhost:8000/api/app/uploads"
         cls.api_posts_url = "http://localhost:8000/api/app/posts"
 
