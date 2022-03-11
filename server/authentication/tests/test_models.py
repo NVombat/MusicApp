@@ -20,7 +20,7 @@ class Test_Auth_Model(unittest.TestCase):
         cls.contactus = ContactUsData()
 
     def setUp(self) -> None:
-        self.userauth.insert_user("testuser", "testmail@gmail.com", "testpwd")
+        self.userauth.insert_user("testmail@gmail.com", "testpwd")
 
     def test_uid_functions(self) -> None:
         uid = self.userauth.get_uid("testmail@gmail.com")
