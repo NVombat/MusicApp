@@ -3,7 +3,6 @@ import unittest
 
 from authentication.models import UserAuth, ContactUsData
 from authentication.errors import (
-    ContactUsDataInsertionError,
     InvalidUserCredentialsError,
     UserDoesNotExistError,
     InvalidUIDError,
