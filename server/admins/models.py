@@ -70,7 +70,7 @@ class AdminAuth:
             bool
         """
         value = self.db.find_one({"user_id": admin_id})
-        if value and value[0:3] == "adm":
+        if value and value["user_id"][0:3] == "adm":
             return True
 
         raise InvalidAdminIDError(f"Admin With admin_id {admin_id} NOT Found")
