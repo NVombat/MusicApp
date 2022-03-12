@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import Card from './Card';
 import { Downlaod } from '../../utils/icons/Index';
+
 
 const Hero = () => {
   const [posts, setPosts] = useState<any>([]);
@@ -43,7 +43,7 @@ const Hero = () => {
       {
         //@ts-ignore
         posts.map((item, index) => (
-          <div key={index} className="flex justify-center items-center">
+          <div key={index} className="flex gap-4 justify-center items-center ">
             <Card
               link={item.ObjectURL}
               downloadIcon={<Downlaod />}
