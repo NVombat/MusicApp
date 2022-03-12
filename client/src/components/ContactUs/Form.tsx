@@ -14,12 +14,21 @@ const Form = () => {
 
   const formSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    emailjs.sendForm('service_ohl97gj', 'template_hos8tvj','#contactForm', '-adufJCD2tG24TRJJ')
-      .then((result) => {
+    emailjs
+      .sendForm(
+        'service_ohl97gj',
+        'template_hos8tvj',
+        '#contactForm',
+        '-adufJCD2tG24TRJJ'
+      )
+      .then(
+        (result) => {
           console.log(result.text);
-      }, (error) => {
+        },
+        (error) => {
           console.log(error.text);
-      });
+        }
+      );
     axios
       .post(`${process.env.REACT_APP_POST_CONTACTUS_DATA}`, {
         Name: name,
@@ -38,7 +47,8 @@ const Form = () => {
 
   return (
     <div>
-      <form id="contactForm"
+      <form
+        id="contactForm"
         className="text-gray-700 body-font relative"
         onSubmit={formSubmitHandler}
       >
