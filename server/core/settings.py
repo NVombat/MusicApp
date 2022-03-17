@@ -129,10 +129,21 @@ else:
 
 if DEBUG:
     CACHES = {
-        "default": {
-            "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': 'redis://127.0.0.1:8058/1',
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            }
         }
     }
+
+# if DEBUG:
+#     CACHES = {
+#         "default": {
+#             "BACKEND": "django.core.cache.backends.dummy.DummyCache",
+#         }
+#     }
 else:
     print("Deployment Does Not Support Caching")
 
