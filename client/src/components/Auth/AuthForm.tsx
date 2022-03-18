@@ -46,11 +46,9 @@ const EmailAuthForm = () => {
         }
       })
       .then((data) => {
-        const expirationTime = new Date(
-          new Date().getTime() + +data.expiresIn * 1000
-        );
+        const expirationTime = 1000 * 60 * 60;
         //@ts-ignore
-        authCtx.login(data.idToken, expirationTime.toISOString());
+        authCtx.login(data.access_token, data.refresh_token, expirationTime);
         history.replace('/profile');
         toast.success('Login successful');
         toast.success(

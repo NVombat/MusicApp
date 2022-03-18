@@ -1,22 +1,11 @@
 // import React, { useState, useEffect, useCallback } from 'react';
 
-// let logoutTimer;
-
 // const AuthContext = React.createContext({
 //   token: '',
 //   isLoggedIn: false,
 //   login: (token) => {},
 //   logout: () => {},
 // });
-
-// const calculateRemainingTime = (expirationTime) => {
-//   const currentTime = new Date().getTime();
-//   const adjExpirationTime = new Date(expirationTime).getTime();
-
-//   const remainingDuration = adjExpirationTime - currentTime;
-
-//   return remainingDuration;
-// };
 
 // const retrieveStoredToken = () => {
 //   const storedToken = localStorage.getItem('token');
@@ -82,10 +71,16 @@
 //     logout: logoutHandler,
 //   };
 
-import { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import jwt_decode from 'jwt-decode'; // this package is used to decode the token and give back the object !
 import { useHistory } from 'react-router-dom';
-const AuthContext = createContext();
+
+const AuthContext = React.createContext({
+  token: 'access_token' && 'refresh_token', // check weather this is right or wrong !!!
+  loginUser: false,
+  login: (token) => {},
+  logout: () => {},
+});
 
 export const AuthProvider = ({ children }) => {
   let [authTokens, setAuthTokens] = useState(() =>
@@ -101,46 +96,65 @@ export const AuthProvider = ({ children }) => {
   //let [loading, setLoading] = useState(true);
 
   const history = useHistory();
+  let logoutTimer;
 
+  // this function should take 2 arguements, access and refresh tokens
+  // set these tokens in localstorage
+  // check for expiration time
+  // logic for logout timer
 
-// this function should take 2 arguements, access and refresh tokens
-// set these tokens in localstorage
-// check for expiration time
-// logic for logout timer
+  const calculateRemainingTime = (expirationTime) => {
+    const currentTime = new Date().getTime();
+    const adjExpirationTime = new Date(expirationTime).getTime();
 
-  let loginUser = async (e) => {
-    e.preventDefault();
-    let response = await fetch(`${process.env.REACT_APP_FETCH_URL}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + toString(authTokens.access_token),
-      },
-      body: JSON.stringify({
-        email: e.target.email.value,
-        password: e.target.password.value,
-      }),
-    });
-    let data = await response.json();
+    const remainingDuration = adjExpirationTime - currentTime;
 
-    if (response.status === 200) {
-      // this is the check code !! 🤞
-      setAuthTokens(data);
-      console.log(authTokens);
-      setUser(jwt_decode(data.access_token));
-      localStorage.setItem('authTokens', JSON.stringify(data)); // here is the code that will be used to storedToken
-      history.replace('/profile'); // this will send the user to the profile page the moment he logs in
-    } else {
-      alert('Something went wrong!');
-    }
+    return remainingDuration;
   };
 
-//logout condition -
-// 1. There is no token (both refresh and access) && there is no expiration
-// 2. The expiration time is up
+  let loginUser = (access_token, refresh_token) => {
+    setAuthTokens(access_token, refresh_token);
+    localStorage.setItem('access_token', access_token);
+    localStorage.setItem('refresh_token', refresh_token);
+    let oneHrs = 1000 * 60 * 60;
+    const remainingTime = calculateRemainingTime(oneHrs);
 
-//logic for logout
-//1. clear the localstorage on logout button press
+    logoutTimer = setTimeout(logoutUser, remainingTime);
+  };
+
+  // let loginUser = async (e) => {
+  //   e.preventDefault();
+  //   let response = await fetch(`${process.env.REACT_APP_FETCH_URL}`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: 'Bearer ' + toString(authTokens.access_token),
+  //     },
+  //     body: JSON.stringify({
+  //       email: e.target.email.value,
+  //       password: e.target.password.value,
+  //     }),
+  //   });
+  //   let data = await response.json();
+
+  //   if (response.status === 200) {
+  //     // this is the check code !! 🤞
+  //     setAuthTokens(data);
+  //     console.log(authTokens);
+  //     setUser(jwt_decode(data.access_token));
+  //     localStorage.setItem('authTokens', JSON.stringify(data)); // here is the code that will be used to storedToken
+  //     history.replace('/profile'); // this will send the user to the profile page the moment he logs in
+  //   } else {
+  //     alert('Something went wrong!');
+  //   }
+  // };
+
+  //logout condition -
+  // 1. There is no token (both refresh and access) && there is no expiration
+  // 2. The expiration time is up
+
+  //logic for logout
+  //1. clear the localstorage on logout button press
 
   let logoutUser = () => {
     // this is for the time we are logged out
