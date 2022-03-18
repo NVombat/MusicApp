@@ -46,7 +46,9 @@ const EmailAuthForm = () => {
         }
       })
       .then((data) => {
-        const expirationTime = 1000 * 60 * 60;
+        const expirationTime = new Date(
+          new Date().getTime() + +data.expiresIn * 1000
+        );
         //@ts-ignore
         authCtx.login(data.access_token, data.refresh_token, expirationTime);
         history.replace('/profile');
