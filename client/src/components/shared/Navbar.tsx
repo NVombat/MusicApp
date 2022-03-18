@@ -10,7 +10,7 @@ import NavBurger from '../../utils/icons/NavBurger';
 
 const Navbar = () => {
   const authCtx = useContext(AuthContext);
-  const isLoggedIn = authCtx.isLoggedIn;
+  const loginUser = authCtx.loginUser;
   const history = useHistory();
 
   const logoutHandler = () => {
@@ -58,7 +58,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
-              {!isLoggedIn && (
+              {!loginUser && (
                 <li>
                   <Link
                     className="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75 transform transition hover:scale-110"
@@ -69,7 +69,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
-              {isLoggedIn && (
+              {loginUser && (
                 <li>
                   <Link
                     className="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75 transform transition hover:scale-110"
@@ -80,7 +80,7 @@ const Navbar = () => {
                   </Link>
                 </li>
               )}
-              {isLoggedIn && (
+              {loginUser && (
                 <li>
                   <Link
                     className="px-3 py-2 flex items-center text-lg font-bold leading-snug text-white hover:opacity-75 transform transition hover:scale-110"
@@ -92,7 +92,7 @@ const Navbar = () => {
                 </li>
               )}
 
-              {isLoggedIn && (
+              {loginUser && (
                 <li className="flex bg-blue-500 text-white px-2 rounded-lg hover:bg-blue-600 focus:outline-none">
                   <button onClick={logoutHandler}>Logout</button>
                 </li>
