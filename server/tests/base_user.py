@@ -15,7 +15,9 @@ class CustomUserTests(TestCase):
     base_url = "http://localhost:8000/api/"
     headers = {"Content-Type": "application/json"}
     client = pymongo.MongoClient(DATABASE["mongo_uri"])
-    db = client[DATABASE["db"]][os.getenv("USER_DATA_COLLECTION")]
+    m_db = client[DATABASE["db"]][os.getenv("DATA_COLLECTION")]
+    u_db = client[DATABASE["db"]][os.getenv("USER_DATA_COLLECTION")]
+    c_db = client[DATABASE["db"]][os.getenv("CONTACT_US_DATA_COLLECTION")]
 
     def user_data(
         self,
@@ -83,5 +85,10 @@ class CustomUserTests(TestCase):
         return tokens["access_token"]
 
     def cleanup(self):
-        self.db.drop_collection("UserData")
-        self.db.drop_collection("MusicData")
+        self.m_db.remove({})
+        self.u_db.remove({})
+        self.c_db.remove({})
+
+        # self.m_db.drop()
+        # self.u_db.drop()
+        # self.c_db.drop()

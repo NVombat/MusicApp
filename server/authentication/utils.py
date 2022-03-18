@@ -28,13 +28,12 @@ def register_user(request, **kwargs) -> response.JsonResponse:
         print("POST REQUEST REGISTER")
         print("Request Object DATA:", request.data)
 
-        name = request.data.get("Name")
         email = request.data.get("Email")
         password = request.data.get("Password")
 
-        print(name, email, password)
+        print(email, password)
 
-        User_Auth.insert_user(name, email, password)
+        User_Auth.insert_user(email, password)
         uid = User_Auth.get_uid(email)
         payload = {"id": uid}
 

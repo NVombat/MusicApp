@@ -3,7 +3,6 @@ import unittest
 
 from authentication.models import UserAuth, ContactUsData
 from authentication.errors import (
-    ContactUsDataInsertionError,
     InvalidUserCredentialsError,
     UserDoesNotExistError,
     InvalidUIDError,
@@ -20,7 +19,7 @@ class Test_Auth_Model(unittest.TestCase):
         cls.contactus = ContactUsData()
 
     def setUp(self) -> None:
-        self.userauth.insert_user("testuser", "testmail@gmail.com", "testpwd")
+        self.userauth.insert_user("testmail@gmail.com", "testpwd")
 
     def test_uid_functions(self) -> None:
         uid = self.userauth.get_uid("testmail@gmail.com")
@@ -47,11 +46,11 @@ class Test_Auth_Model(unittest.TestCase):
     def test_contact_us(self):
         message = "testmessage"
 
-        with self.assertRaises(ContactUsDataInsertionError):
-            self.userauth.insert_contact_us_data("Test User", message)
+        with self.assertRaises(TypeError):
+            self.contactus.insert_contact_us_data("Test User", message)
 
         self.assertTrue(
-            self.userauth.insert_contact_us_data(
+            self.contactus.insert_contact_us_data(
                 "Test User", "testmail.gmail.com", message
             )
         )
