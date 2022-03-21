@@ -44,25 +44,25 @@ def register_user(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_201_CREATED,
         )
 
-    except UserExistsError as uee:
+    except UserExistsError:
         return response.JsonResponse(
-            {"error": str(uee), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_400_BAD_REQUEST,
         )
-    except UserDoesNotExistError as udne:
+    except UserDoesNotExistError:
         return response.JsonResponse(
-            {"error": str(udne), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except TokenGenerationError as tge:
+    except TokenGenerationError:
         return response.JsonResponse(
-            {"error": str(tge), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Receiving Registration Data",
+                "error_status": True,
                 "auth_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -99,25 +99,25 @@ def login_user(request, **kwargs) -> response.JsonResponse:
                 status=status.HTTP_200_OK,
             )
 
-    except UserDoesNotExistError as udne:
+    except UserDoesNotExistError:
         return response.JsonResponse(
-            {"error": str(udne), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except InvalidUserCredentialsError as ice:
+    except InvalidUserCredentialsError:
         return response.JsonResponse(
-            {"error": str(ice), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    except TokenGenerationError as tge:
+    except TokenGenerationError:
         return response.JsonResponse(
-            {"error": str(tge), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Receiving Login Data",
+                "error_status": True,
                 "auth_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -147,15 +147,15 @@ def reset_pwd(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_200_OK,
         )
 
-    except UserDoesNotExistError as udne:
+    except UserDoesNotExistError:
         return response.JsonResponse(
-            {"error": str(udne), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Receiving Reset Password Data",
+                "error_status": True,
                 "success_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -185,15 +185,15 @@ def reset_pwd_data(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_200_OK,
         )
 
-    except InvalidVerificationError as ive:
+    except InvalidVerificationError:
         return response.JsonResponse(
-            {"error": str(ive), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_401_UNAUTHORIZED,
         )
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Receiving Reset Password Data From Link",
+                "error_status": True,
                 "success_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -248,20 +248,20 @@ def get_tokens(request, **kwargs) -> response.JsonResponse:
                 status=status.HTTP_200_OK,
             )
 
-    except InvalidTokenError as ite:
+    except InvalidTokenError:
         return response.JsonResponse(
-            {"error": str(ite), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    except InvalidUIDError as iue:
+    except InvalidUIDError:
         return response.JsonResponse(
-            {"error": str(iue), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Receiving Refresh Token",
+                "error_status": True,
                 "success_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
