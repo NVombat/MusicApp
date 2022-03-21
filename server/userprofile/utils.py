@@ -18,14 +18,11 @@ def send_profile_data(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("USER DATA GET REQUEST")
-
         page = int(request.query_params.get("Page"))
         email = request.query_params.get("Email")
-        print(page, email)
 
         user_data = User_Data.fetch_user_data(email)
-        # return user_data
+
         return Paginate.get_paginated_data(page, user_data)
 
     except ProfileDataUnavailableError as pde:
@@ -38,7 +35,7 @@ def send_profile_data(request, **kwargs) -> response.JsonResponse:
             {"error": str(pdne), "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except Exception as e:
+    except Exception:
         return response.JsonResponse(
             {"error": "Error Occured While Sending User Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -56,11 +53,8 @@ def delete_profile_data(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("USER DATA DELETE REQUEST")
-
         pid = request.query_params.get("PID")
         email = request.query_params.get("Email")
-        print(pid, email)
 
         aws_s3_func = AWSFunctionsS3()
         cloud_filename = User_Data.get_cloud_filename(pid, email)
@@ -78,7 +72,7 @@ def delete_profile_data(request, **kwargs) -> response.JsonResponse:
             {"error": str(fdne), "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except Exception as e:
+    except Exception:
         return response.JsonResponse(
             {
                 "error": "Error Occured While Deleting User Data",

@@ -19,9 +19,6 @@ class Profile(APIView):
         Returns:
             JsonResponse
         """
-
-        print("Sending Profile Data API")
-
         profile_data = send_profile_data(request, **kwargs)
 
         return profile_data
@@ -35,9 +32,6 @@ class Profile(APIView):
         Returns:
             JsonResponse
         """
-
-        print("Deleting Profile Data API")
-
         delete_data = delete_profile_data(request, **kwargs)
 
         return delete_data
