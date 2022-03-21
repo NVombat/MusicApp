@@ -28,7 +28,6 @@ class Test_JWT(unittest.TestCase):
             payload={"ID": "testuser"}, expiry=1, get_refresh=True
         )
         bool_val, data = self.Token_Auth.decode_token(token=token["access_token"])
-        print("Data:", data)
         self.assertTrue(bool_val)
         self.assertEqual("testuser", data["ID"])
         self.assertEqual("user", data["role"])
