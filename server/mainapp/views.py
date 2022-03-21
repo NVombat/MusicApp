@@ -20,9 +20,6 @@ class Uploads(APIView):
         Returns:
             JsonResponse
         """
-
-        print("Receiving Data API")
-
         upload_data = recv_music_data(request, **kwargs)
 
         return upload_data
@@ -41,9 +38,6 @@ class Posts(APIView):
         Returns:
             JsonResponse
         """
-
-        print("Sending Data API")
-
         post_data = send_music_data(request, **kwargs)
 
         return post_data
@@ -62,9 +56,6 @@ class Contact_Us(APIView):
         Returns:
             JsonResponse
         """
-
-        print("Sending Contact Us Data API")
-
         contact_us_data = recv_contact_us_data(request, **kwargs)
 
         return contact_us_data

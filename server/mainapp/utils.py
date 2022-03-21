@@ -27,15 +27,10 @@ def recv_music_data(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("POST REQUEST")
-        print("Request Object DATA:", request.data)
-
         name = request.data.get("Name")
         email = request.data.get("Email")
         filename = request.data.get("Filename")
         uploadedFile = request.data.get("File")
-
-        print(name, email, filename, uploadedFile)
 
         date = d.datetime.now()
         date = date.strftime("%d/%m/%Y, %H:%M:%S")
@@ -63,8 +58,7 @@ def recv_music_data(request, **kwargs) -> response.JsonResponse:
             {"error": str(ade), "success_status": False},
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
-    except Exception as e:
-        print(e)
+    except Exception:
         return response.JsonResponse(
             {"error": "Error Occured While Receiving Data", "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -82,16 +76,10 @@ def send_music_data(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("GET REQUEST")
-
         page = int(request.query_params.get("Page"))
         record = Music_Data.fetch_data()
-        # record["success_status"] = True
-        # print(record)
-        return Paginate.get_paginated_data(page, record)
 
-        # return response.JsonResponse(record, status=status.HTTP_200_OK)
-        # return record
+        return Paginate.get_paginated_data(page, record)
 
     except DataFetchingError as dfe:
         return response.JsonResponse(
@@ -121,14 +109,9 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("CONTACT US POST REQUEST")
-        print("Request Object DATA:", request.data)
-
         name = request.data.get("Name")
         email = request.data.get("Email")
         message = request.data.get("Message")
-
-        print(name, email, message)
 
         Contact_Us.insert_contact_us_data(name, email, message)
 
