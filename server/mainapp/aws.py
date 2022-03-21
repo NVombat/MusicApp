@@ -28,8 +28,6 @@ class AWSFunctionsS3:
             response.JsonResponse -> Failure
         """
         try:
-            print("Uploading File to AWS S3")
-
             session = Session(
                 aws_access_key_id=AWS_ACCESS_KEY_ID,
                 aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
@@ -40,9 +38,7 @@ class AWSFunctionsS3:
                 Key=cloudFilename, Body=fileobj
             )
 
-            print("File Uploaded Successfully")
-
-        except Exception as e:
+        except Exception:
             return response.JsonResponse(
                 {"error": "AWS File Upload Error", "success_status": False},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -59,8 +55,6 @@ class AWSFunctionsS3:
             response.JsonResponse -> Failure
         """
         try:
-            print("Deleting File from AWS S3")
-
             session = Session(
                 aws_access_key_id=AWS_ACCESS_KEY_ID,
                 aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
@@ -73,9 +67,7 @@ class AWSFunctionsS3:
                 Delete={"Objects": [{"Key": cloudFilename}]}
             )
 
-            print("File Deleted Successfully")
-
-        except Exception as e:
+        except Exception:
             return response.JsonResponse(
                 {"error": "AWS File Deletion Error", "success_status": False},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -95,13 +87,9 @@ class AWSFunctionsS3:
         s3 = boto3.resource("s3")
 
         try:
-            print("Downloading File from AWS S3")
-
             s3.Bucket(AWS_STORAGE_BUCKET_NAME).download_file(
                 cloudFilename, downloadFilename
             )
-
-            print("File Downloaded Successfully")
 
         except botocore.exceptions.ClientError as e:
             if e.response["Error"]["Code"] == "404":

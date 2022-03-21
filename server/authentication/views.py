@@ -19,8 +19,6 @@ class Register(APIView):
         Returns:
             JsonResponse
         """
-        print("Register Post Request")
-
         register_data = register_user(request, **kwargs)
 
         return register_data
@@ -39,8 +37,6 @@ class Login(APIView):
         Returns:
             JsonResponse
         """
-        print("Login Post Request")
-
         login_data = login_user(request, **kwargs)
 
         return login_data
@@ -59,8 +55,6 @@ class ResetPassword(APIView):
         Returns:
             JsonResponse
         """
-        print("Reset Password Post Request")
-
         reset_data = reset_pwd(request, **kwargs)
 
         return reset_data
@@ -79,8 +73,6 @@ class ResetPasswordLink(APIView):
         Returns:
             JsonResponse
         """
-        print("Reset Password Data Post Request")
-
         reset_link_data = reset_pwd_data(request, **kwargs)
 
         return reset_link_data
@@ -99,8 +91,6 @@ class GenerateTokens(APIView):
         Returns:
             JsonResponse
         """
-        print("Send Fresh Tokens Post Request")
-
         tokens = get_tokens(request, **kwargs)
 
         return tokens

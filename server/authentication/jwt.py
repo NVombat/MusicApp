@@ -93,11 +93,9 @@ class TokenAuth:
                 algorithms=["HS256"],
             )
 
-            print("Decoded Token Data:", data)
-
             if data["refresh"] == True and data["role"] == "user":
                 return data
-            print("NOT A REFRESH TOKEN")
+
             return None
 
         except Exception:

@@ -25,13 +25,8 @@ def register_user(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("POST REQUEST REGISTER")
-        print("Request Object DATA:", request.data)
-
         email = request.data.get("Email")
         password = request.data.get("Password")
-
-        print(email, password)
 
         User_Auth.insert_user(email, password)
         uid = User_Auth.get_uid(email)
@@ -64,8 +59,7 @@ def register_user(request, **kwargs) -> response.JsonResponse:
             {"error": str(tge), "auth_status": False},
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
-    except Exception as e:
-        print(e)
+    except Exception:
         return response.JsonResponse(
             {
                 "error": "Error Occured While Receiving Registration Data",
@@ -86,13 +80,8 @@ def login_user(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("POST REQUEST LOGIN")
-        print("Request Object DATA:", request.data)
-
         email = request.data.get("Email")
         password = request.data.get("Password")
-
-        print(email, password)
 
         if User_Auth.check_hash(email, password):
             uid = User_Auth.get_uid(email)
@@ -125,8 +114,7 @@ def login_user(request, **kwargs) -> response.JsonResponse:
             {"error": str(tge), "auth_status": False},
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
-    except Exception as e:
-        print(e)
+    except Exception:
         return response.JsonResponse(
             {
                 "error": "Error Occured While Receiving Login Data",
@@ -147,9 +135,6 @@ def reset_pwd(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("POST REQUEST RESET PASSWORD")
-        print("Request Object DATA:", request.data)
-
         email = request.data.get("Email")
         user_id = User_Auth.get_uid(email)
 
@@ -167,8 +152,7 @@ def reset_pwd(request, **kwargs) -> response.JsonResponse:
             {"error": str(udne), "auth_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except Exception as e:
-        print(e)
+    except Exception:
         return response.JsonResponse(
             {
                 "error": "Error Occured While Receiving Reset Password Data",
@@ -189,9 +173,6 @@ def reset_pwd_data(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("POST REQUEST RESET PASSWORD LINK")
-        print("Request Object DATA:", request.data)
-
         pwd = request.data.get("Password")
         verif_code = request.data.get("Code")
 
@@ -209,8 +190,7 @@ def reset_pwd_data(request, **kwargs) -> response.JsonResponse:
             {"error": str(ive), "success_status": False},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    except Exception as e:
-        print(e)
+    except Exception:
         return response.JsonResponse(
             {
                 "error": "Error Occured While Receiving Reset Password Data From Link",
@@ -231,20 +211,15 @@ def get_tokens(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("POST REQUEST GET TOKENS")
-        print("Request Object DATA:", request.data)
-
         refresh_token = request.data.get("RefreshToken")
         refresh_status = request.data.get("RefreshStatus")
-        print(refresh_token, refresh_status)
 
         data = Token_Auth.decode_refresh_token(refresh_token)
-        print(data)
 
         assert data["role"] == "user"
 
         user_id = data["id"]
-        print(user_id)
+
         if User_Auth.validate_uid(user_id):
             payload = {"id": user_id}
 

@@ -96,11 +96,9 @@ class AdminTokenAuth:
                 algorithms=["HS256"],
             )
 
-            print("Decoded Token Data:", data)
-
             if data["refresh"] == True and data["role"] == "admin":
                 return data
-            print("NOT A REFRESH TOKEN")
+
             return None
 
         except Exception:
