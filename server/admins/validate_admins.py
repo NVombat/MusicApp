@@ -13,19 +13,15 @@ class ValidateAdmin(BasePermission):
             assert token_type == "Bearer"
 
         except Exception:
-            print("Error In Getting Tokens From Header")
             return False
 
         try:
             bool_val, data = Admin_Token_Auth.decode_token(token)
-            print(bool_val, data)
             assert bool_val == True
 
         except InvalidTokenError as ite:
-            print("Error:", str(ite))
             return False
         except Exception:
-            print("Error In Decoding Token")
             return False
 
         try:
@@ -34,10 +30,8 @@ class ValidateAdmin(BasePermission):
             assert data["role"] == "admin"
 
         except InvalidAdminIDError as iaie:
-            print("Error:", str(iaie))
             return False
         except Exception:
-            print("Error In Authenticating Admin")
             return False
 
         setattr(request, "admin_id", admin_id)

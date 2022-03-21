@@ -20,8 +20,6 @@ class AdminLogin(APIView):
         Returns:
             JsonResponse
         """
-        print("Login Admin Post Request")
-
         login_data = login_admin(request, **kwargs)
 
         return login_data
@@ -40,9 +38,6 @@ class AdminView(APIView):
         Returns:
             JsonResponse
         """
-
-        print("Sending Data To Admins API")
-
         post_data = send_music_data(request, **kwargs)
 
         return post_data
@@ -56,9 +51,6 @@ class AdminView(APIView):
         Returns:
             JsonResponse
         """
-
-        print("Deleting Data For Admins API")
-
         delete_data = delete_music_data(request, **kwargs)
 
         return delete_data
@@ -77,8 +69,6 @@ class GenerateTokens(APIView):
         Returns:
             JsonResponse
         """
-        print("Send Fresh Tokens Admin Post Request")
-
         tokens = get_tokens(request, **kwargs)
 
         return tokens

@@ -27,13 +27,8 @@ def login_admin(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("ADMIN POST REQUEST LOGIN")
-        print("Request Object DATA:", request.data)
-
         email = request.data.get("Email")
         password = request.data.get("Password")
-
-        print(email, password)
 
         if Admin_Auth.check_hash(email, password):
             admin_id = Admin_Auth.get_admin_id(email)
@@ -66,8 +61,7 @@ def login_admin(request, **kwargs) -> response.JsonResponse:
             {"error": str(atge), "auth_status": False},
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
-    except Exception as e:
-        print(e)
+    except Exception:
         return response.JsonResponse(
             {
                 "error": "Error Occured While Receiving Login Data",
@@ -88,16 +82,10 @@ def send_music_data(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("ADMIN GET REQUEST")
-
         page = int(request.query_params.get("Page"))
         record = Music_Data.fetch_data()
-        # record["success_status"] = True
-        # print(record)
-        return Paginate.get_paginated_data(page, record)
 
-        # return response.JsonResponse(record, status=status.HTTP_200_OK)
-        # return record
+        return Paginate.get_paginated_data(page, record)
 
     except DataFetchingError as dfe:
         return response.JsonResponse(
@@ -127,11 +115,8 @@ def delete_music_data(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("ADMIN MUSIC DATA DELETE REQUEST")
-
         pid = request.query_params.get("PID")
         email = request.query_params.get("Email")
-        print(pid, email)
 
         aws_s3_func = AWSFunctionsS3()
         cloud_filename = User_Data.get_cloud_filename(pid, email)
@@ -149,7 +134,7 @@ def delete_music_data(request, **kwargs) -> response.JsonResponse:
             {"error": str(fdne), "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except Exception as e:
+    except Exception:
         return response.JsonResponse(
             {
                 "error": "Error Occured While Deleting User Data",
@@ -170,20 +155,15 @@ def get_tokens(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        print("ADMIN POST REQUEST GET TOKENS")
-        print("Request Object DATA:", request.data)
-
         refresh_token = request.data.get("RefreshToken")
         refresh_status = request.data.get("RefreshStatus")
-        print(refresh_token, refresh_status)
 
         data = Admin_Token_Auth.decode_refresh_token(refresh_token)
-        print(data)
 
         assert data["role"] == "admin"
 
         admin_id = data["aid"]
-        print(admin_id)
+
         if Admin_Auth.validate_admin_id(admin_id):
             payload = {"aid": admin_id}
 
