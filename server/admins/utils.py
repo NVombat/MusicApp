@@ -46,25 +46,25 @@ def login_admin(request, **kwargs) -> response.JsonResponse:
                 status=status.HTTP_200_OK,
             )
 
-    except AdminDoesNotExistError as adne:
+    except AdminDoesNotExistError:
         return response.JsonResponse(
-            {"error": str(adne), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except InvalidAdminCredentialsError as iace:
+    except InvalidAdminCredentialsError:
         return response.JsonResponse(
-            {"error": str(iace), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    except AdminTokenGenerationError as atge:
+    except AdminTokenGenerationError:
         return response.JsonResponse(
-            {"error": str(atge), "auth_status": False},
+            {"error_status": True, "auth_status": False},
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Receiving Login Data",
+                "error_status": True,
                 "auth_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -87,19 +87,19 @@ def send_music_data(request, **kwargs) -> response.JsonResponse:
 
         return Paginate.get_paginated_data(page, record)
 
-    except DataFetchingError as dfe:
+    except DataFetchingError:
         return response.JsonResponse(
-            {"error": str(dfe), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except PageDoesNotExistError as pdne:
+    except PageDoesNotExistError:
         return response.JsonResponse(
-            {"error": str(pdne), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception:
         return response.JsonResponse(
-            {"error": "Error Occured While Sending Data", "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
@@ -129,15 +129,15 @@ def delete_music_data(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_200_OK,
         )
 
-    except FileDoesNotExistForCurrentUserError as fdne:
+    except FileDoesNotExistForCurrentUserError:
         return response.JsonResponse(
-            {"error": str(fdne), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Deleting User Data",
+                "error_status": True,
                 "success_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -192,20 +192,20 @@ def get_tokens(request, **kwargs) -> response.JsonResponse:
                 status=status.HTTP_200_OK,
             )
 
-    except InvalidTokenError as ite:
+    except InvalidTokenError:
         return response.JsonResponse(
-            {"error": str(ite), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_401_UNAUTHORIZED,
         )
-    except InvalidAdminIDError as iaie:
+    except InvalidAdminIDError:
         return response.JsonResponse(
-            {"error": str(iaie), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Receiving Refresh Token",
+                "error_status": True,
                 "success_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
