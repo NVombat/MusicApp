@@ -13,7 +13,6 @@ class Test_Admin_JWT(unittest.TestCase):
             payload={"AID": "adminuser"}, expiry=1, get_refresh=False
         )
         data = self.Token_Auth.verify_token(token=token)
-        print("Data:", data)
         self.assertEqual("adminuser", data["AID"])
         self.assertEqual("admin", data["role"])
 
@@ -29,7 +28,6 @@ class Test_Admin_JWT(unittest.TestCase):
             payload={"AID": "adminuser"}, expiry=1, get_refresh=True
         )
         bool_val, data = self.Token_Auth.decode_token(token=token["access_token"])
-        print("Data:", data)
         self.assertTrue(bool_val)
         self.assertEqual("adminuser", data["AID"])
         self.assertEqual("admin", data["role"])
