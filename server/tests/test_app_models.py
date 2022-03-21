@@ -75,7 +75,7 @@ class TestAppModels(unittest.TestCase):
         cls.client.close()
         try:
             S3_Functions.delete_file_from_s3(data.test_data["CloudFilename"])
-        except Exception as e:
+        except Exception:
             print("Deletion Error")
 
     def clean(self):
@@ -84,5 +84,5 @@ class TestAppModels(unittest.TestCase):
         self.c_db.remove({})
         try:
             S3_Functions.delete_file_from_s3(data.test_data["CloudFilename"])
-        except Exception as e:
+        except Exception:
             print("Deletion Error")

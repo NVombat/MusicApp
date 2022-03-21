@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 import requests
 import unittest
 import pymongo
-import json
 import os
 
 from .base_user import CustomUserTests
@@ -182,7 +181,7 @@ class TestAppAPI(unittest.TestCase):
         cls.client.close()
         try:
             S3_Functions.delete_file_from_s3(data.test_data["CloudFilename"])
-        except Exception as e:
+        except Exception:
             print("Deletion Error")
 
     def clean(self):
@@ -191,7 +190,7 @@ class TestAppAPI(unittest.TestCase):
         self.c_db.remove({})
         try:
             S3_Functions.delete_file_from_s3(data.test_data["CloudFilename"])
-        except Exception as e:
+        except Exception:
             print("Deletion Error")
 
     def tearDown(self) -> None:

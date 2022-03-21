@@ -40,7 +40,7 @@ class AWSFunctionsS3:
 
         except Exception:
             return response.JsonResponse(
-                {"error": "AWS File Upload Error", "success_status": False},
+                {"error_status": True, "success_status": False},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
@@ -69,7 +69,7 @@ class AWSFunctionsS3:
 
         except Exception:
             return response.JsonResponse(
-                {"error": "AWS File Deletion Error", "success_status": False},
+                {"error_status": True, "success_status": False},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
@@ -95,10 +95,10 @@ class AWSFunctionsS3:
             if e.response["Error"]["Code"] == "404":
                 return response.JsonResponse(
                     {
-                        "error": "Download Error! The Object Does Not Exist",
+                        "error_status": True,
                         "success_status": False,
                     },
-                    status=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    status=status.HTTP_404_NOT_FOUND,
                 )
             else:
                 raise AWSDownloadError("Download Error, Please Try Again Later")

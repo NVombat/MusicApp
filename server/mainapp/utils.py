@@ -48,19 +48,19 @@ def recv_music_data(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_200_OK,
         )
 
-    except FileAlreadyExistsForCurrentUserError as fae:
+    except FileAlreadyExistsForCurrentUserError:
         return response.JsonResponse(
-            {"error": str(fae), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_400_BAD_REQUEST,
         )
-    except AWSDownloadError as ade:
+    except AWSDownloadError:
         return response.JsonResponse(
-            {"error": str(ade), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_503_SERVICE_UNAVAILABLE,
         )
     except Exception:
         return response.JsonResponse(
-            {"error": "Error Occured While Receiving Data", "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
@@ -81,19 +81,19 @@ def send_music_data(request, **kwargs) -> response.JsonResponse:
 
         return Paginate.get_paginated_data(page, record)
 
-    except DataFetchingError as dfe:
+    except DataFetchingError:
         return response.JsonResponse(
-            {"error": str(dfe), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except PageDoesNotExistError as pdne:
+    except PageDoesNotExistError:
         return response.JsonResponse(
-            {"error": str(pdne), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception:
         return response.JsonResponse(
-            {"error": "Error Occured While Sending Data", "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
@@ -120,10 +120,10 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_200_OK,
         )
 
-    except ContactUsDataInsertionError as cdie:
+    except ContactUsDataInsertionError:
         return response.JsonResponse(
             {
-                "error": str(cdie),
+                "error_status": True,
                 "success_status": True,
             },
             status=status.HTTP_400_BAD_REQUEST,
@@ -131,7 +131,7 @@ def recv_contact_us_data(request, **kwargs) -> response.JsonResponse:
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Receiving Contact Us Data",
+                "error_status": True,
                 "success_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,

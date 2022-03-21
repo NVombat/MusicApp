@@ -25,19 +25,19 @@ def send_profile_data(request, **kwargs) -> response.JsonResponse:
 
         return Paginate.get_paginated_data(page, user_data)
 
-    except ProfileDataUnavailableError as pde:
+    except ProfileDataUnavailableError:
         return response.JsonResponse(
-            {"error": str(pde), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
-    except PageDoesNotExistError as pdne:
+    except PageDoesNotExistError:
         return response.JsonResponse(
-            {"error": str(pdne), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception:
         return response.JsonResponse(
-            {"error": "Error Occured While Sending User Data", "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
@@ -67,15 +67,15 @@ def delete_profile_data(request, **kwargs) -> response.JsonResponse:
             status=status.HTTP_200_OK,
         )
 
-    except FileDoesNotExistForCurrentUserError as fdne:
+    except FileDoesNotExistForCurrentUserError:
         return response.JsonResponse(
-            {"error": str(fdne), "success_status": False},
+            {"error_status": True, "success_status": False},
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception:
         return response.JsonResponse(
             {
-                "error": "Error Occured While Deleting User Data",
+                "error_status": True,
                 "success_status": False,
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
