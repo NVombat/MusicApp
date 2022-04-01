@@ -26,7 +26,7 @@ class AdminLogin(APIView):
 
 
 class AdminView(APIView):
-    permission_classes = [validate_admins.ValidateAdmin]
+    # permission_classes = [validate_admins.ValidateAdmin]
     throttle_classes = [throttle]
 
     def get(self, request, **kwargs) -> response.JsonResponse:
