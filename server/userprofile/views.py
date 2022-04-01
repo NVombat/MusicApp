@@ -7,7 +7,7 @@ from core.throttle import throttle
 
 
 class Profile(APIView):
-    permission_classes = [validate.ValidateUser]
+    # permission_classes = [validate.ValidateUser]
     throttle_classes = [throttle]
 
     def get(self, request, **kwargs) -> response.JsonResponse:
