@@ -15,6 +15,6 @@ if [ $var -eq 0 ];
 then
     echo "$execution All clean!"
 else
-    black server/ --diff
+    black server/ --diff --color
     exit 1
 fi
