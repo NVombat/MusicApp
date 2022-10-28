@@ -20,12 +20,11 @@ def send_feedback_mail(
     Returns:
         None
     """
-    backemail_add = os.getenv("BACKEND_MAIL_ADDR")
-    backemail_pwd = os.getenv("BACKEND_MAIL_PWD")
+    MAILGUN_EMAIL = os.getenv('MAILGUN_EMAIL')
+    MAILGUN_PWD = os.getenv('MAILGUN_PWD')
 
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
-    server.login(backemail_add, backemail_pwd)
+    server = smtplib.SMTP('smtp.mailgun.org', 587)
+    server.login(MAILGUN_EMAIL, MAILGUN_PWD)
 
     # User mail subject, body and format of the mail - FROM ADMIN TO USER
     subject1 = "JTVMusicApp: Query/Feedback Received"
@@ -37,8 +36,8 @@ def send_feedback_mail(
     body2 = f"Dear Admin \n\n{name} has generated the following query/feedback \n\nQUERY/FEEDBACK: {message}\n\nPlease get in touch with the user and respond accordingly\n\nThank you! \n\nWarm Regards, \n\nThe Help Team \nJTVMusicApp"
     msg2 = f"Subject: {subject2}\n\n{body2}"
 
-    server.sendmail(backemail_add, email, msg1)
-    server.sendmail(email, backemail_add, msg2)
+    server.sendmail(MAILGUN_EMAIL, email, msg1)
+    server.sendmail(email, MAILGUN_EMAIL, msg2)
     server.quit()
 
 
