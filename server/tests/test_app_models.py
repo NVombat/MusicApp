@@ -67,6 +67,9 @@ class TestAppModels(unittest.TestCase):
         com.insert_data(data.comment_data["music_data_pid"], data.comment_data["user_email"], data.comment_data["comment"])
         fetched_data = com.fetch_data()
         self.assertDictEqual(fetched_data[0], data.comment_data)
+        com.delete_data(data.comment_data["comment"])
+        fetched_data = com.fetch_data()
+        self.assertListEqual(fetched_data, [])
 
     def test_likes_functionality(self):
         like = Likes()
@@ -74,6 +77,9 @@ class TestAppModels(unittest.TestCase):
         like.insert_data(data.like_data["music_data_pid"], data.like_data["user_email"])
         fetched_data = like.fetch_data()
         self.assertDictEqual(fetched_data[0], data.like_data)
+        like.delete_data(data.like_data["music_data_pid"], data.like_data["user_email"])
+        fetched_data = like.fetch_data()
+        self.assertListEqual(fetched_data, [])
 
     def test_file_not_exists(self):
         with self.assertRaises(FileDoesNotExistForCurrentUserError):
