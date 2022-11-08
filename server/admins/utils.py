@@ -155,8 +155,8 @@ def delete_comments(request, **kwargs) -> response.JsonResponse:
         response.JsonResponse
     """
     try:
-        comment_id = request.query_params.get("comment_id")
-        Comments.delete_data(comment_id=comment_id)
+        comment = request.query_params.get("comment")
+        Comments.delete_data(comment=comment)
 
         return response.JsonResponse(
             {"success_status": True},

@@ -249,28 +249,28 @@ class Comments:
         }
         self.db.insert_one(data)
 
-    def delete_data(self, comment_id: str) -> None:
+    def delete_data(self, comment: str) -> None:
         """Delete comment
 
         Args:
-            comment_id: comment ID
+            comment: comment ID
 
         Returns:
             None
         """
         if self.db.find_one(
                 {
-                    "_id": comment_id,
+                    "comment": comment,
                 }
         ):
             self.db.delete_one(
                 {
-                    "_id": comment_id,
+                    "comment": comment,
                 },
             )
         else:
             raise FileDoesNotExistForCurrentUserError(
-                f"Comment with id {comment_id} does not exists."
+                f"Comment: \n{comment}\ndoes not exists."
             )
 
     def delete_all_data(self) -> None:
