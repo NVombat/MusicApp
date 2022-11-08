@@ -85,10 +85,10 @@ class MusicData:
             None
         """
         if self.db.find_one(
-            {
-                "Email": email,
-                "Filename": filename,
-            }
+                {
+                    "Email": email,
+                    "Filename": filename,
+                }
         ):
             self.db.delete_one(
                 {
@@ -111,10 +111,10 @@ class MusicData:
             response.JsonResponse
         """
         if data := self.db.find(
-            {},
-            {
-                "_id": 0,
-            },
+                {},
+                {
+                    "_id": 0,
+                },
         ).sort("Date", -1):
             docs = list(data)
             # docs.append({"success_status": True})
@@ -134,9 +134,9 @@ class Likes:
         self.db = client[DATABASE["db"]]["Likes"]
 
     def insert_data(
-        self,
-        music_data_pid: str,
-        user_email: str,
+            self,
+            music_data_pid: str,
+            user_email: str,
     ) -> None:
         """Insert file name and data into db
 
@@ -169,10 +169,10 @@ class Likes:
             None
         """
         if self.db.find_one(
-            {
-                "music_data_pid": music_data_pid,
-                "user_email": user_email,
-            }
+                {
+                    "music_data_pid": music_data_pid,
+                    "user_email": user_email,
+                }
         ):
             self.db.delete_one(
                 {
@@ -185,6 +185,17 @@ class Likes:
                 f"Like for post {music_data_pid} does not exists for user {user_email}"
             )
 
+    def delete_all_data(self) -> None:
+        """Delete all likes from db
+
+                Args:
+                    None
+
+                Returns:
+                    None
+                """
+        self.db.remove()
+
     def fetch_data(self) -> response.JsonResponse:
         """Fetches all data from db
 
@@ -195,15 +206,12 @@ class Likes:
             response.JsonResponse
         """
         if data := self.db.find(
-            {},
-            {
-                "_id": 0,
-            },
+                {},
+                {
+                    "_id": 0,
+                },
         ).sort("music_data_pid", -1):
             likes = list(data)
-            # docs.append({"success_status": True})
-            # json_data = response.JsonResponse(docs, safe=False)
-            # return json_data
             return likes
 
         raise DataFetchingError("There Are No Likes In The Database At This Moment")
@@ -218,12 +226,12 @@ class Comments:
         self.db = client[DATABASE["db"]]["Comments"]
 
     def insert_data(
-        self,
-        music_data_pid: str,
-        user_email: str,
-        comment: str,
+            self,
+            music_data_pid: str,
+            user_email: str,
+            comment: str,
     ) -> None:
-        """Insert file name and data into db
+        """Insert coments name and data into db
 
         Args:
             music_data_pid: FK for pid of the post
@@ -242,7 +250,7 @@ class Comments:
         self.db.insert_one(data)
 
     def delete_data(self, comment_id: str) -> None:
-        """Delete file and related data from db
+        """Delete comment
 
         Args:
             comment_id: comment ID
@@ -251,9 +259,9 @@ class Comments:
             None
         """
         if self.db.find_one(
-            {
-                "_id": comment_id,
-            }
+                {
+                    "_id": comment_id,
+                }
         ):
             self.db.delete_one(
                 {
@@ -265,6 +273,17 @@ class Comments:
                 f"Comment with id {comment_id} does not exists."
             )
 
+    def delete_all_data(self) -> None:
+        """Delete all comments
+
+                Args:
+                    None
+
+                Returns:
+                    None
+                """
+        self.db.remove()
+
     def fetch_data(self) -> response.JsonResponse:
         """Fetches all data from db
 
@@ -275,15 +294,12 @@ class Comments:
             response.JsonResponse
         """
         if data := self.db.find(
-            {},
-            {
-                "_id": 0,
-            },
+                {},
+                {
+                    "_id": 0,
+                },
         ).sort("music_data_pid", -1):
             comments = list(data)
-            # docs.append({"success_status": True})
-            # json_data = response.JsonResponse(docs, safe=False)
-            # return json_data
             return comments
 
         raise DataFetchingError("There Are No Likes In The Database At This Moment")
