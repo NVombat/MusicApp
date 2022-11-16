@@ -20,10 +20,10 @@ def send_feedback_mail(
     Returns:
         None
     """
-    MAILGUN_EMAIL = os.getenv('MAILGUN_EMAIL')
-    MAILGUN_PWD = os.getenv('MAILGUN_PWD')
+    MAILGUN_EMAIL = os.getenv("MAILGUN_EMAIL")
+    MAILGUN_PWD = os.getenv("MAILGUN_PWD")
 
-    server = smtplib.SMTP('smtp.mailgun.org', 587)
+    server = smtplib.SMTP("smtp.mailgun.org", 587)
     server.login(MAILGUN_EMAIL, MAILGUN_PWD)
 
     # User mail subject, body and format of the mail - FROM ADMIN TO USER
