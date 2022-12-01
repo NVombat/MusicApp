@@ -1,20 +1,18 @@
-from dotenv import load_dotenv
-from datetime import datetime
-import hashlib, binascii
-import pymongo
+import binascii
+import hashlib
+import os
 import random
 import string
-import os
+from datetime import datetime
 
+import pymongo
 from core.settings import DATABASE
-from .errors import (
-    InvalidUserCredentialsError,
-    ContactUsDataInsertionError,
-    InvalidVerificationError,
-    UserDoesNotExistError,
-    UserExistsError,
-    InvalidUIDError,
-)
+from dotenv import load_dotenv
+
+from .errors import (ContactUsDataInsertionError, InvalidQIDError,
+                     InvalidUIDError, InvalidUserCredentialsError,
+                     InvalidVerificationError, NoContactUsQueriesFoundError,
+                     UserDoesNotExistError, UserExistsError)
 
 load_dotenv()
 
@@ -96,9 +94,30 @@ class UserAuth:
                 "user_id": self.generate_uid(),
                 "Email": email,
                 "Password": pwd,
-                "ContactUs": [],
+                "ContactUs": [], # Query ID
+                "Likes": [], # Like ID
+                "Comments": [], # Comment ID
+                "Notes": [] # Notes on When Password was Last Changed - FOR ADMIN
             }
             self.db.insert_one(rec)
+
+    def get_contact_us_query_ids(self, email: str) -> list:
+        """Fetches contact us query ids for particular user
+
+        Args:
+            email: User Email ID
+
+        Returns:
+            list
+        """
+        if value := self.db.find_one({"Email": email}):
+            query_ids = value["ContactUs"]
+            if isinstance(query_ids, list) and len(query_ids)>0:
+                return query_ids
+            else:
+                raise NoContactUsQueriesFoundError(f"User {email} Has No Contact Us Queries Raised")
+
+        raise UserDoesNotExistError(f"User {email} Does Not Exist")
 
     def add_verif_code(self, email: str, check_recursive_correctness: int) -> int:
         """Adds verification code & timestamp for reset password functionality
@@ -217,11 +236,17 @@ class UserAuth:
         """
         if value := self.db.find_one({"verif_code": code}):
             email = value["Email"]
+
+            pwd_change_time = datetime.now()
+            pct_string = pwd_change_time.strftime("%d/%m/%Y %H:%M:%S")
+            msg = "Password Changed: " + pct_string
+
             self.db.find_one_and_update(
                 {"Email": email},
                 update={
                     "$set": {"Password": self.hash_password(pwd)},
                     "$unset": {"verif_code": "", "timestamp_created": ""},
+                    "$push": {"Notes": msg},
                 },
             )
             return True
@@ -237,25 +262,67 @@ class ContactUsData:
         client = pymongo.MongoClient(DATABASE["mongo_uri"])
         self.db = client[DATABASE["db"]][os.getenv("CONTACT_US_DATA_COLLECTION")]
 
-    def insert_contact_us_data(self, name: str, email: str, message: str) -> bool:
-        """Inserts Contact Us Data
+    def generate_query_id(self) -> str:
+        """Generates a unique query id
+
+        Args:
+            None
+
+        Returns:
+            str
+        """
+        q_id = "".join(
+            random.choice(
+                string.ascii_uppercase + string.ascii_lowercase + string.digits
+            )
+            for _ in range(16)
+        )
+        q_id = "query_" + q_id
+
+        if self.db.find_one({"query_id": q_id}):
+            q_id = self.generate_query_id()
+        return q_id
+
+    def validate_query_id(self, qid: str) -> bool:
+        """Validates query id for particular user
+
+        Args:
+            qid: Query ID
+
+        Returns:
+            bool
+        """
+        value = self.db.find_one({"query_id": qid})
+        if value:
+            return True
+
+        raise InvalidQIDError(f"Query With query_id {qid} NOT Found")
+
+    def insert_contact_us_data(self, name: str, email: str, message: str, status: str) -> bool:
+        """Inserts Contact Us Data & Updates User Profile With Query ID
 
         Args:
             name: Name of User
             email: User Email ID
             message: Contact Us Message
+            status: Status of Query
 
         Returns:
             bool
         """
         data = {
+            "query_id": self.generate_query_id(),
             "Name": name,
             "Email": email,
             "Message": message,
+            "Status": status,
         }
 
         try:
             self.db.insert_one(data)
+
+            # UPDATE USER CONTACTUS[] WITH QUERY ID
+
             return True
         except Exception:
             raise ContactUsDataInsertionError("Error Inserting Contact Us Data")

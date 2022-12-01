@@ -9,6 +9,10 @@ class InvalidVerificationError(AuthenticationErrors):
     ...
 
 
+class NoContactUsQueriesFoundError(ContactUsErrors):
+    ...
+
+
 class ContactUsDataInsertionError(ContactUsErrors):
     ...
 
@@ -30,4 +34,8 @@ class UserExistsError(AuthenticationErrors):
 
 
 class InvalidUIDError(AuthenticationErrors):
+    ...
+
+
+class InvalidQIDError(ContactUsErrors):
     ...
