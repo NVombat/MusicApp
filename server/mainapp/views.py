@@ -1,10 +1,10 @@
-from rest_framework.permissions import AllowAny
-from rest_framework.views import APIView
-from django.http import response
-
-from .utils import recv_music_data, send_music_data, recv_contact_us_data
 from authentication import validate
 from core.throttle import throttle
+from django.http import response
+from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+
+from .utils import recv_contact_us_data, recv_music_data, send_music_data
 
 
 class Uploads(APIView):

@@ -1,18 +1,14 @@
-from dotenv import load_dotenv
-import requests
-import unittest
-import pymongo
 import os
+import unittest
 
+import pymongo
+import requests
 from core.settings import DATABASE
-from mainapp.errors import (
-    FileAlreadyExistsForCurrentUserError,
-    FileDoesNotExistForCurrentUserError,
-)
-from mainapp import (
-    S3_Functions,
-    Music_Data,
-)
+from dotenv import load_dotenv
+from mainapp import Music_Data, S3_Functions
+from mainapp.errors import (FileAlreadyExistsForCurrentUserError,
+                            FileDoesNotExistForCurrentUserError)
+
 from . import Base
 
 data = Base()
