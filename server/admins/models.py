@@ -1,17 +1,15 @@
-from dotenv import load_dotenv
-import hashlib, binascii
-import pymongo
+import binascii
+import hashlib
+import os
 import random
 import string
-import os
 
+import pymongo
 from core.settings import DATABASE
-from .errors import (
-    InvalidAdminCredentialsError,
-    AdminDoesNotExistError,
-    InvalidAdminIDError,
-    AdminExistsError,
-)
+from dotenv import load_dotenv
+
+from .errors import (AdminDoesNotExistError, AdminExistsError,
+                     InvalidAdminCredentialsError, InvalidAdminIDError)
 
 load_dotenv()
 

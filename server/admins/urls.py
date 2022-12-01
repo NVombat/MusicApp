@@ -1,5 +1,6 @@
-from .views import AdminView, AdminLogin, GenerateTokens
 from django.urls import path
+
+from .views import AdminLogin, AdminView, GenerateTokens
 
 urlpatterns = [
     path("", AdminView.as_view()),
