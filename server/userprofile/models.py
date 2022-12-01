@@ -5,8 +5,7 @@ from core.settings import DATABASE
 from django.http import response
 from dotenv import load_dotenv
 
-from .errors import (FileDoesNotExistForCurrentUserError,
-                     ProfileDataUnavailableError)
+from .errors import FileDoesNotExistForCurrentUserError, ProfileDataUnavailableError
 
 load_dotenv()
 

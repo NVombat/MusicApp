@@ -2,10 +2,15 @@ from django.http import response
 from rest_framework import status
 
 from . import Token_Auth, User_Auth
-from .errors import (InvalidTokenError, InvalidUIDError,
-                     InvalidUserCredentialsError, InvalidVerificationError,
-                     TokenGenerationError, UserDoesNotExistError,
-                     UserExistsError)
+from .errors import (
+    InvalidTokenError,
+    InvalidUIDError,
+    InvalidUserCredentialsError,
+    InvalidVerificationError,
+    TokenGenerationError,
+    UserDoesNotExistError,
+    UserExistsError,
+)
 from .mailer import send_reset_pwd_mail
 
 

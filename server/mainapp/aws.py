@@ -1,8 +1,11 @@
 import boto3
 import botocore
 from boto3.session import Session
-from core.settings import (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY,
-                           AWS_STORAGE_BUCKET_NAME)
+from core.settings import (
+    AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY,
+    AWS_STORAGE_BUCKET_NAME,
+)
 from django.http import response
 from rest_framework import status
 

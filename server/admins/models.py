@@ -8,8 +8,12 @@ import pymongo
 from core.settings import DATABASE
 from dotenv import load_dotenv
 
-from .errors import (AdminDoesNotExistError, AdminExistsError,
-                     InvalidAdminCredentialsError, InvalidAdminIDError)
+from .errors import (
+    AdminDoesNotExistError,
+    AdminExistsError,
+    InvalidAdminCredentialsError,
+    InvalidAdminIDError,
+)
 
 load_dotenv()
 

@@ -1,7 +1,6 @@
 from django.urls import path
 
-from .views import (GenerateTokens, Login, Register, ResetPassword,
-                    ResetPasswordLink)
+from .views import GenerateTokens, Login, Register, ResetPassword, ResetPasswordLink
 
 urlpatterns = [
     path("register", Register.as_view()),

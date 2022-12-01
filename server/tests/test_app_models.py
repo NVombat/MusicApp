@@ -6,8 +6,10 @@ import requests
 from core.settings import DATABASE
 from dotenv import load_dotenv
 from mainapp import Music_Data, S3_Functions
-from mainapp.errors import (FileAlreadyExistsForCurrentUserError,
-                            FileDoesNotExistForCurrentUserError)
+from mainapp.errors import (
+    FileAlreadyExistsForCurrentUserError,
+    FileDoesNotExistForCurrentUserError,
+)
 
 from . import Base
 

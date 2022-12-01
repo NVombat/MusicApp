@@ -1,7 +1,10 @@
 import unittest
 
-from admins.errors import (AdminDoesNotExistError,
-                           InvalidAdminCredentialsError, InvalidAdminIDError)
+from admins.errors import (
+    AdminDoesNotExistError,
+    InvalidAdminCredentialsError,
+    InvalidAdminIDError,
+)
 from admins.models import AdminAuth
 from dotenv import load_dotenv
 

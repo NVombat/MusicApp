@@ -7,8 +7,12 @@ from rest_framework import status
 from userprofile.errors import FileDoesNotExistForCurrentUserError
 
 from . import Admin_Auth, Admin_Token_Auth, Music_Data, Paginate, User_Data
-from .errors import (AdminDoesNotExistError, AdminTokenGenerationError,
-                     InvalidAdminCredentialsError, InvalidAdminIDError)
+from .errors import (
+    AdminDoesNotExistError,
+    AdminTokenGenerationError,
+    InvalidAdminCredentialsError,
+    InvalidAdminIDError,
+)
 
 
 def login_admin(request, **kwargs) -> response.JsonResponse:

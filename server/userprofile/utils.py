@@ -4,8 +4,7 @@ from mainapp.aws import AWSFunctionsS3
 from rest_framework import status
 
 from . import Paginate, User_Data
-from .errors import (FileDoesNotExistForCurrentUserError,
-                     ProfileDataUnavailableError)
+from .errors import FileDoesNotExistForCurrentUserError, ProfileDataUnavailableError
 
 
 def send_profile_data(request, **kwargs) -> response.JsonResponse:

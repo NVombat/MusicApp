@@ -8,8 +8,11 @@ from django.http import response
 from rest_framework import status
 
 from . import Music_Data, Paginate, S3_Functions
-from .errors import (AWSDownloadError, DataFetchingError,
-                     FileAlreadyExistsForCurrentUserError)
+from .errors import (
+    AWSDownloadError,
+    DataFetchingError,
+    FileAlreadyExistsForCurrentUserError,
+)
 
 Contact_Us = ContactUsData()
 

@@ -9,10 +9,16 @@ import pymongo
 from core.settings import DATABASE
 from dotenv import load_dotenv
 
-from .errors import (ContactUsDataInsertionError, InvalidQIDError,
-                     InvalidUIDError, InvalidUserCredentialsError,
-                     InvalidVerificationError, NoContactUsQueriesFoundError,
-                     UserDoesNotExistError, UserExistsError)
+from .errors import (
+    ContactUsDataInsertionError,
+    InvalidQIDError,
+    InvalidUIDError,
+    InvalidUserCredentialsError,
+    InvalidVerificationError,
+    NoContactUsQueriesFoundError,
+    UserDoesNotExistError,
+    UserExistsError,
+)
 
 load_dotenv()
 
@@ -94,10 +100,10 @@ class UserAuth:
                 "user_id": self.generate_uid(),
                 "Email": email,
                 "Password": pwd,
-                "ContactUs": [], # Query ID
-                "Likes": [], # Like ID
-                "Comments": [], # Comment ID
-                "Notes": [] # Notes on When Password was Last Changed - FOR ADMIN
+                "ContactUs": [],  # Query ID
+                "Likes": [],  # Like ID
+                "Comments": [],  # Comment ID
+                "Notes": [],  # Notes on When Password was Last Changed - FOR ADMIN
             }
             self.db.insert_one(rec)
 
@@ -112,10 +118,12 @@ class UserAuth:
         """
         if value := self.db.find_one({"Email": email}):
             query_ids = value["ContactUs"]
-            if isinstance(query_ids, list) and len(query_ids)>0:
+            if isinstance(query_ids, list) and len(query_ids) > 0:
                 return query_ids
             else:
-                raise NoContactUsQueriesFoundError(f"User {email} Has No Contact Us Queries Raised")
+                raise NoContactUsQueriesFoundError(
+                    f"User {email} Has No Contact Us Queries Raised"
+                )
 
         raise UserDoesNotExistError(f"User {email} Does Not Exist")
 
@@ -298,7 +306,9 @@ class ContactUsData:
 
         raise InvalidQIDError(f"Query With query_id {qid} NOT Found")
 
-    def insert_contact_us_data(self, name: str, email: str, message: str, status: str) -> bool:
+    def insert_contact_us_data(
+        self, name: str, email: str, message: str, status: str
+    ) -> bool:
         """Inserts Contact Us Data & Updates User Profile With Query ID
 
         Args:
