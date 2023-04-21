@@ -24,7 +24,7 @@ pytz==2021.1
 pyyaml==5.4
 requests==2.26.0
 s3transfer==0.5.0
-sqlparse==0.4.2
+sqlparse==0.4.4
 uritemplate==4.1.1
 
 # sudo apt-get install black
