@@ -6880,9 +6880,9 @@ multicast-dns@^7.2.5:
     dns-packet "^5.2.2"
     thunky "^1.0.2"
 
-nanoid@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.4.tgz#730b67e3cd09e2deacf03c027c81c9d9dbc5e8ab"
+nanoid@^3.3.6:
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
 
 natural-compare-lite@^1.4.0:
   version "1.4.0"
@@ -7780,10 +7780,10 @@ postcss@^7, postcss@^7.0.18, postcss@^7.0.32, postcss@^7.0.35:
     source-map "^0.6.1"
 
 postcss@^8, postcss@^8.3.5, postcss@^8.4.18, postcss@^8.4.4:
-  version "8.4.19"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.19.tgz#61178e2add236b17351897c8bcc0b4c8ecab56fc"
+  version "8.4.31"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.31.tgz#92b451050a9f914da6755af352bdc0192508656d"
   dependencies:
-    nanoid "^3.3.4"
+    nanoid "^3.3.6"
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
