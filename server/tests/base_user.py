@@ -1,11 +1,11 @@
-from dotenv import load_dotenv
-from unittest import TestCase
-import requests
-import pymongo
 import json
 import os
+from unittest import TestCase
 
+import pymongo
+import requests
 from core.settings import DATABASE
+from dotenv import load_dotenv
 
 load_dotenv()
 

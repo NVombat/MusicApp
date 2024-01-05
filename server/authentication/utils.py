@@ -1,17 +1,17 @@
-from rest_framework import status
 from django.http import response
+from rest_framework import status
 
+from . import Token_Auth, User_Auth
 from .errors import (
+    InvalidTokenError,
+    InvalidUIDError,
     InvalidUserCredentialsError,
     InvalidVerificationError,
-    UserDoesNotExistError,
     TokenGenerationError,
-    InvalidTokenError,
+    UserDoesNotExistError,
     UserExistsError,
-    InvalidUIDError,
 )
 from .mailer import send_reset_pwd_mail
-from . import Token_Auth, User_Auth
 
 
 def register_user(request, **kwargs) -> response.JsonResponse:

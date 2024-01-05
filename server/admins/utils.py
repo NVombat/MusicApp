@@ -1,19 +1,18 @@
-from rest_framework import status
-from django.http import response
-
-from userprofile.errors import FileDoesNotExistForCurrentUserError
 from authentication.errors import InvalidTokenError
 from core.errors import PageDoesNotExistError
+from django.http import response
+from mainapp.aws import AWSFunctionsS3
 from mainapp.errors import DataFetchingError
+from rest_framework import status
+from userprofile.errors import FileDoesNotExistForCurrentUserError
+
+from . import Admin_Auth, Admin_Token_Auth, Music_Data, Paginate, User_Data
 from .errors import (
-    InvalidAdminCredentialsError,
-    AdminTokenGenerationError,
     AdminDoesNotExistError,
+    AdminTokenGenerationError,
+    InvalidAdminCredentialsError,
     InvalidAdminIDError,
 )
-
-from . import Paginate, Music_Data, User_Data, Admin_Auth, Admin_Token_Auth
-from mainapp.aws import AWSFunctionsS3
 
 
 def login_admin(request, **kwargs) -> response.JsonResponse:

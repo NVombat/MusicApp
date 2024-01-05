@@ -1,17 +1,18 @@
-from rest_framework import status
-from django.http import response
 import datetime as d
 
-from core.settings import AWS_BUCKET_FOLDER, AWS_OBJECT_URL_PREFIX
 from authentication.errors import ContactUsDataInsertionError
 from authentication.models import ContactUsData
 from core.errors import PageDoesNotExistError
+from core.settings import AWS_BUCKET_FOLDER, AWS_OBJECT_URL_PREFIX
+from django.http import response
+from rest_framework import status
+
+from . import Music_Data, Paginate, S3_Functions
 from .errors import (
-    FileAlreadyExistsForCurrentUserError,
-    DataFetchingError,
     AWSDownloadError,
+    DataFetchingError,
+    FileAlreadyExistsForCurrentUserError,
 )
-from . import S3_Functions, Music_Data, Paginate
 
 Contact_Us = ContactUsData()
 

@@ -1,9 +1,9 @@
 from core.pagination import CustomPagination
-from userprofile.models import UserData
-from .issue_jwt import AdminTokenAuth
 from mainapp.models import MusicData
-from .models import AdminAuth
+from userprofile.models import UserData
 
+from .issue_jwt import AdminTokenAuth
+from .models import AdminAuth
 
 Admin_Token_Auth = AdminTokenAuth()
 Paginate = CustomPagination()

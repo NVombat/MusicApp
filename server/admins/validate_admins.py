@@ -1,7 +1,7 @@
+from authentication.errors import InvalidTokenError
 from rest_framework.permissions import BasePermission
 
-from authentication.errors import InvalidTokenError
-from . import Admin_Token_Auth, Admin_Auth
+from . import Admin_Auth, Admin_Token_Auth
 from .errors import InvalidAdminIDError
 
 
