@@ -1,9 +1,9 @@
-from rest_framework.views import APIView
-from django.http import response
-
-from .utils import send_profile_data, delete_profile_data
 from authentication import validate
 from core.throttle import throttle
+from django.http import response
+from rest_framework.views import APIView
+
+from .utils import delete_profile_data, send_profile_data
 
 
 class Profile(APIView):

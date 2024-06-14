@@ -1,13 +1,14 @@
-from dotenv import load_dotenv
-import requests
-import unittest
-import pymongo
 import os
+import unittest
 
-from .base_user import CustomUserTests
+import pymongo
+import requests
 from core.settings import DATABASE
+from dotenv import load_dotenv
 from mainapp import S3_Functions
+
 from . import Base
+from .base_user import CustomUserTests
 
 user = CustomUserTests()
 data = Base()

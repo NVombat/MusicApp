@@ -1,5 +1,6 @@
-from .views import Contact_Us, Uploads, Posts
 from django.urls import path
+
+from .views import Contact_Us, Posts, Uploads
 
 urlpatterns = [
     path("uploads", Uploads.as_view()),
