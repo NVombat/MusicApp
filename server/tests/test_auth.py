@@ -1,6 +1,8 @@
-from .base_user import CustomUserTests
-import requests
 import json
+
+import requests
+
+from .base_user import CustomUserTests
 
 
 class TestAuthentication(CustomUserTests):

@@ -1,10 +1,10 @@
+from core.throttle import throttle
+from django.http import response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
-from django.http import response
 
-from .utils import delete_music_data, send_music_data, login_admin, get_tokens
-from core.throttle import throttle
 from . import validate_admins
+from .utils import delete_music_data, get_tokens, login_admin, send_music_data
 
 
 class AdminLogin(APIView):

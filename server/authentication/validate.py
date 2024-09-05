@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 
+from . import Token_Auth, User_Auth
 from .errors import InvalidTokenError, InvalidUIDError
-from . import User_Auth, Token_Auth
 
 
 class ValidateUser(BasePermission):

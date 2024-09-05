@@ -1,7 +1,7 @@
 import unittest
 
-from authentication.errors import InvalidTokenError
 from admins.issue_jwt import AdminTokenAuth
+from authentication.errors import InvalidTokenError
 
 
 class Test_Admin_JWT(unittest.TestCase):

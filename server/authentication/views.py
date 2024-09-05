@@ -1,9 +1,9 @@
+from core.throttle import throttle
+from django.http import response
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
-from django.http import response
 
-from .utils import register_user, login_user, reset_pwd, reset_pwd_data, get_tokens
-from core.throttle import throttle
+from .utils import get_tokens, login_user, register_user, reset_pwd, reset_pwd_data
 
 
 class Register(APIView):

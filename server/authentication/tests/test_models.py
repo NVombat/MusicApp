@@ -1,12 +1,12 @@
-from dotenv import load_dotenv
 import unittest
 
-from authentication.models import UserAuth, ContactUsData
 from authentication.errors import (
+    InvalidUIDError,
     InvalidUserCredentialsError,
     UserDoesNotExistError,
-    InvalidUIDError,
 )
+from authentication.models import ContactUsData, UserAuth
+from dotenv import load_dotenv
 
 
 class Test_Auth_Model(unittest.TestCase):

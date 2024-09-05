@@ -1,18 +1,8 @@
 import unittest
 
-from authentication.tests import (
-    test_models,
-    test_jwt,
-)
-from admins.tests import (
-    test_models_adm,
-    test_jwt_adm,
-)
-from tests import (
-    test_app_models,
-    test_app_apis,
-    test_auth,
-)
+from admins.tests import test_jwt_adm, test_models_adm
+from authentication.tests import test_jwt, test_models
+from tests import test_app_apis, test_app_models, test_auth
 
 
 def get_unittests(suite):
