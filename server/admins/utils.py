@@ -12,7 +12,7 @@ from .errors import (
     InvalidAdminIDError,
 )
 
-from . import Paginate, Music_Data, User_Data, Admin_Auth, Admin_Token_Auth
+from . import Paginate, Music_Data, User_Data, Admin_Auth, Admin_Token_Auth, Comments
 from mainapp.aws import AWSFunctionsS3
 
 
@@ -139,6 +139,36 @@ def delete_music_data(request, **kwargs) -> response.JsonResponse:
             {
                 "error_status": True,
                 "success_status": False,
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+def delete_comments(request, **kwargs) -> response.JsonResponse:
+    """Deletes exact comment specified by its ID
+
+    Args:
+        request
+        **kwargs
+
+    Returns:
+        response.JsonResponse
+    """
+    try:
+        comment = request.query_params.get("comment")
+        Comments.delete_data(comment=comment)
+
+        return response.JsonResponse(
+            {"success_status": True},
+            status=status.HTTP_200_OK,
+        )
+
+    except Exception as e:
+        return response.JsonResponse(
+            {
+                "error_status": True,
+                "success_status": False,
+                "exception": e
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
